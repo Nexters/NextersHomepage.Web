@@ -16,17 +16,23 @@ public class memberLogin {
 	
 	@Autowired
 	MemberDAO memDao;
+	MemberDTO memDto;
 	
-	@RequestMapping("/api/Login.do")
+	@RequestMapping("api/login.do")
 	public @ResponseBody MemberDTO Login(Model model){
 		
 		Map<String, String> mapMemberReqData = new HashMap<String, String>();
 		mapMemberReqData.put("userid", "admin@teamnexters.com");
-		mapMemberReqData.put("userpw", "admin@teamnexters.com");
+		mapMemberReqData.put("userpw", "qwer1234");
 		
-		MemberDTO rsltListData = (MemberDTO) memDao.searchMember(mapMemberReqData);
+		memDto = (MemberDTO) memDao.searchMember(mapMemberReqData);
 		
+		if(memDto == null) {
+			memDto.setErrAct("9999");
+			memDto.setErrCd("0001");
+			memDto.setErrMsg("아이디가 존재하지 않거나 비밀번호가 틀렸습니다.");
+		}
 		
-		return rsltListData;
+		return memDto;
 	}
 }

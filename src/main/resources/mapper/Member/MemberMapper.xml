@@ -3,6 +3,6 @@
           "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
 <mapper namespace="com.teamnexters.mapper">   
 	<select id="searchMember" resultType="com.teamnexters.dto.MemberDTO">  
-	       SELECT * FROM member WHERE "userId" = #{userid} AND "userPw" = #{userpw]
+	       SELECT * FROM member WHERE "userId" = #{userid} AND "userPw" = #{userpw}
 	</select>   
 </mapper>
