@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-	UserDetailsService customuserDetailsService;
+	UserDetailsService customuserDetailsService; //The critical error : Cannot initial The User Details Service because of the autowired function.
 	
 	@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
