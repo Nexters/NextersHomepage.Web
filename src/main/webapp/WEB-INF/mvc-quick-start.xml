@@ -18,6 +18,7 @@
 	    <property name="contentNegotiationManager" ref="contentNegotiationManager" />
 	</bean>
 	
+		
 	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" >
 		<mvc:message-converters register-defaults="false">
 			<bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
@@ -29,6 +30,7 @@
 		<property name="prefix" value="/WEB-INF/view/" />
 		<property name="suffix" value=".jsp" />
 	</bean>	
+ 
     
 	<context:component-scan base-package="com.teamnexters"/>    
 </beans>

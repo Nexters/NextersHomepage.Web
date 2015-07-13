@@ -8,6 +8,7 @@ public class MemberDTO {
 	private String userCellNum;     
 	private String userPic;
 	private String userStatus;
+	private int userRole;
 	private String errCd;
 	private String errMsg;
 	private String errAct;
@@ -30,6 +31,9 @@ public class MemberDTO {
 		this.userPw=userPw;
 	}
 	
+	public String getUserPw() {
+		return userPw;
+	}
 	public void setUserNm(String userNm){
 		this.userNm=userNm;
 	}
@@ -56,6 +60,12 @@ public class MemberDTO {
 	}
 	public String getUserStatus(){
 		return userStatus;
+	}
+	public int getUserRole() {
+		return userRole;
+	}
+	public void setUserRole(int userRole) {
+		this.userRole = userRole;
 	}
 	public String getErrCd() {
 		return errCd;

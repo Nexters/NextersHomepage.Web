@@ -18,7 +18,7 @@ public class memberLogin {
 	MemberDAO memDao;
 	MemberDTO memDto;
 	
-	@RequestMapping("api/login.do")
+	@RequestMapping("login/login.do")
 	public @ResponseBody MemberDTO Login(Model model){
 		
 		Map<String, String> mapMemberReqData = new HashMap<String, String>();

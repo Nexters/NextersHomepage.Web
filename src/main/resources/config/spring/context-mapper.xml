@@ -14,4 +14,12 @@
     <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg index="0" ref="sqlSession"/>
     </bean>  
+    
+    <bean id="LoginService" class="com.teamnexters.security.LoginService"> 
+		<property name="LoginDAO" ref="LoginDAO" />
+	</bean>
+	
+	<bean id="LoginDAO" class="com.teamnexters.dao.LoginDAO">
+		<property name="sqlSession" ref="sqlSessionTemplate" />
+	</bean>
 </beans>
