@@ -12,18 +12,20 @@ import com.teamnexters.dao.MemberDAO;
 import com.teamnexters.dto.MemberDTO;
 
 @Controller
-public class HelloController {
+public class memberLogin {
 	
 	@Autowired
 	MemberDAO memDao;
 	
-	@RequestMapping("/hello.do")
-	public @ResponseBody List<MemberDTO> hello(Model model){
-
+	@RequestMapping("/api/Login.do")
+	public @ResponseBody MemberDTO Login(Model model){
+		
 		Map<String, String> mapMemberReqData = new HashMap<String, String>();
 		mapMemberReqData.put("userid", "admin@teamnexters.com");
+		mapMemberReqData.put("userpw", "admin@teamnexters.com");
 		
-		List<MemberDTO> rsltListData = memDao.selectList("selectByLoginId",mapMemberReqData);
+		MemberDTO rsltListData = (MemberDTO) memDao.searchMember(mapMemberReqData);
+		
 		
 		return rsltListData;
 	}

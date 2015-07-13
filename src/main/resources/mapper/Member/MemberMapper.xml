@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
-          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-          
-     <mapper namespace="com.teamnexters.mapper">   
-       <select id="selectByLoginId" resultType="com.teamnexters.dto.MemberDTO">  
-              SELECT * FROM member WHERE "userId" = #{userid}   
-       </select>   
-
-       
-     </mapper>
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.teamnexters.mapper">   
+	<select id="searchMember" resultType="com.teamnexters.dto.MemberDTO">  
+	       SELECT * FROM member WHERE "userId" = #{userid} AND "userPw" = #{userpw]
+	</select>   
+</mapper>
