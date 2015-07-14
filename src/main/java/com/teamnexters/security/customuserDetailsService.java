@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,27 +19,29 @@ import com.teamnexters.dao.LoginDAO;
 import com.teamnexters.dto.MemberDTO;
 
 @Service
-@Qualifier("customuserDetailsService")
 public class customuserDetailsService implements UserDetailsService {
-	
-	private LoginDAO LoginDAO;
 
-	public void setLoginDAO(LoginDAO LoginDAO) {
-		System.out.println("LoginDAO:::::"+LoginDAO);
-		this.LoginDAO = LoginDAO;
-	}
-	
+	private static LoginDAO LoginDAO;
+	private static PasswordEncoder passwordEncoder;
 	private MemberDTO memDto;
+	  
 	
+	public void setLoginDAO(LoginDAO loginDAO) {
+		LoginDAO = loginDAO;
+	}
+
+	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+		customuserDetailsService.passwordEncoder = passwordEncoder;
+	}
+
 	@Transactional(readOnly=true)
 	@Override
-	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		System.out.println(userName);
-		System.out.println(LoginDAO);
+	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {	
 		memDto = (MemberDTO) LoginDAO.searchByUserName(userName);
-		if(memDto==null) throw new UsernameNotFoundException("사용자 아이디가 존재하지 않습니다.");
+		if(memDto==null) throw new UsernameNotFoundException("사용자가 존재하지 않습니다.");
 				
-		UserDetails user = new User(userName, memDto.getUserPw(), getAuthorities(memDto.getUserRole()) );
+		UserDetails user = new User(userName, passwordEncoder.encode(memDto.getUserPw()), getAuthorities(memDto.getUserRole()) );
+		
 		return user;
 	}
 	

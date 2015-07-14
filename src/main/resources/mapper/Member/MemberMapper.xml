@@ -6,6 +6,9 @@
 	       SELECT * FROM member WHERE "userId" = #{userid} AND "userPw" = #{userpw}
 	</select>
 	<select id="searchByUserName" resultType="com.teamnexters.dto.MemberDTO">  
-	       SELECT * FROM member WHERE "userId" = #{userid} AND "userPw" = #{userpw}
+	       SELECT * FROM member WHERE "userId" = #{userid}
+	</select>
+	<select id="getMemberList" resultType="com.teamnexters.dto.MemberDTO">  
+	       SELECT * FROM member
 	</select>
 </mapper>

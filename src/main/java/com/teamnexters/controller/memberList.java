@@ -12,27 +12,20 @@ import com.teamnexters.dao.MemberDAO;
 import com.teamnexters.dto.MemberDTO;
 
 @Controller
-public class memberLogin {
+public class memberList {
 	
 	@Autowired
 	MemberDAO memDao;
 	MemberDTO memDto;
 	
-	@RequestMapping("login/login.do")
-	public @ResponseBody MemberDTO Login(Model model){
+	@RequestMapping("api/member.do")
+	public @ResponseBody ArrayList<MemberDTO> getMemberList(Model model){
 		
 		Map<String, String> mapMemberReqData = new HashMap<String, String>();
-		mapMemberReqData.put("userid", "admin@teamnexters.com");
-		mapMemberReqData.put("userpw", "qwer1234");
+
+		@SuppressWarnings("unchecked")
+		ArrayList<MemberDTO> memberList = (ArrayList<MemberDTO>) memDao.getMemberList(mapMemberReqData);
 		
-		memDto = (MemberDTO) memDao.searchMember(mapMemberReqData);
-		
-		if(memDto == null) {
-			memDto.setErrAct("9999");
-			memDto.setErrCd("0001");
-			memDto.setErrMsg("아이디가 존재하지 않거나 비밀번호가 틀렸습니다.");
-		}
-		
-		return memDto;
+		return  memberList;
 	}
 }

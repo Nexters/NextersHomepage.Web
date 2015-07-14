@@ -19,6 +19,10 @@ public class MemberDAO implements MemberMapper {
     	return sqlsession.selectOne("searchMember", params);
     }
     
+    public Object getMemberList(Object params) {
+    	return sqlsession.selectList("getMemberList", params);
+    }
+    
     public Object searchByUserName(String strUserName){
     	System.out.println("strUserName::"+strUserName);
     	System.out.println("sqlSession::"+sqlsession);
