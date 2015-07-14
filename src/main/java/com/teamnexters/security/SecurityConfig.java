@@ -15,6 +15,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private SuccessHandler successhandler = new SuccessHandler();
 	private FailureHandler failurehandler = new FailureHandler();
 	private AccessdeniedHandler accessdeniedhandler = new AccessdeniedHandler();
+	private LogoutHandler logouthandler = new LogoutHandler();
 
 	@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -38,6 +39,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 			.exceptionHandling()
 				.accessDeniedHandler(accessdeniedhandler)
+		.and()
+			.logout()
+				.logoutSuccessHandler(logouthandler)
 		.and()
 			.csrf()
 				.disable();
