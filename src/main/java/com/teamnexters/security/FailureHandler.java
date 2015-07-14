@@ -16,7 +16,7 @@ public class FailureHandler implements AuthenticationFailureHandler {
 			HttpServletResponse response, AuthenticationException exception)
 			throws IOException, ServletException {
 		response.setContentType("application/json");
-		response.getWriter().write("{\"success\":false}");
+		response.getWriter().write("{\"result\":\"error\",\"_error_msg\":\""+exception.getMessage()+"\"}");
 		
 	}
 	
