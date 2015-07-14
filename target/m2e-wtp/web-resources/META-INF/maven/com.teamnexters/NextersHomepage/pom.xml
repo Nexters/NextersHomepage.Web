@@ -52,8 +52,17 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>4.1.7.RELEASE</version>
 		</dependency>
-
 		
+		<dependency>
+	        <groupId>org.springframework.security</groupId>
+	        <artifactId>spring-security-web</artifactId>
+	        <version>4.0.1.RELEASE</version>
+	    </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>4.0.1.RELEASE</version>
+		</dependency>
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
