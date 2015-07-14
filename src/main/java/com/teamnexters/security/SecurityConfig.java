@@ -15,7 +15,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private SuccessHandler successhandler = new SuccessHandler();
 	private FailureHandler failurehandler = new FailureHandler();
 	private AccessdeniedHandler accessdeniedhandler = new AccessdeniedHandler();
-	
+
 	@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     	auth.userDetailsService(customuserDetailsService);

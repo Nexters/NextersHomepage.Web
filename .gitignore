@@ -1,1 +1,5 @@
-/target/
+/target
+*.class
+pom.properties
+.classpath
+.DS_Store

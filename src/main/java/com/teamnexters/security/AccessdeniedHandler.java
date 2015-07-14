@@ -18,9 +18,4 @@ public class AccessdeniedHandler implements AccessDeniedHandler {
 		response.getWriter().write("{\"result\":\"error\",\"_error_msg\":\""+accessDeniedException.getMessage()+"\"}");
 		
 	}
-
-	
-	
-	
-
 }

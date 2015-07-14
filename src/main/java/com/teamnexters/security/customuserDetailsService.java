@@ -39,9 +39,8 @@ public class customuserDetailsService implements UserDetailsService {
 		
 		memDto = (MemberDTO) LoginDAO.searchByUserName(userName);
 		if(memDto==null) throw new UsernameNotFoundException("사용자가 존재하지 않습니다.");
-				
-		UserDetails user = new User(userName, passwordEncoder.encode(memDto.getUserPw()), getAuthorities(memDto.getUserRole()) );
 
+		UserDetails user = new User(userName, passwordEncoder.encode(memDto.getUserPw()), getAuthorities(memDto.getUserRole()) );
 		return user;
 	}
 	
