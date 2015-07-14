@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,26 +20,19 @@ import com.teamnexters.dto.MemberDTO;
 public class customuserDetailsService implements UserDetailsService {
 
 	private static LoginDAO LoginDAO;
-	private static PasswordEncoder passwordEncoder;
 	private MemberDTO memDto;
 	  
 	
 	public void setLoginDAO(LoginDAO loginDAO) {
 		LoginDAO = loginDAO;
 	}
-
-	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-		customuserDetailsService.passwordEncoder = passwordEncoder;
-	}
-
+	
 	@Transactional(readOnly=true)
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		
 		memDto = (MemberDTO) LoginDAO.searchByUserName(userName);
 		if(memDto==null) throw new UsernameNotFoundException("사용자가 존재하지 않습니다.");
-
-		UserDetails user = new User(userName, passwordEncoder.encode(memDto.getUserPw()), getAuthorities(memDto.getUserRole()) );
+		UserDetails user = new User(userName, memDto.getUserPw(), getAuthorities(memDto.getUserRole()) );
 		return user;
 	}
 	
