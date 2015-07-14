@@ -15,7 +15,7 @@ public class LogoutHandler implements LogoutSuccessHandler {
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
 			throws IOException, ServletException {
 		response.setContentType("application/json");
-		response.getWriter().write("{\"result\":\"logout\",\"userName\":\""+authentication.getName()+"\"}");
+		response.getWriter().write("{\"result\":\"logout\"}");
 		
 	}
 

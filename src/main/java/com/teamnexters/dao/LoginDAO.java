@@ -37,8 +37,6 @@ public class LoginDAO implements MemberMapper {
      * @return Member DTO Class
      */
     public Object searchByUserName(String strUserName){
-    	System.out.println("strUserName::"+strUserName);
-    	System.out.println("sqlSession::"+SqlSession);
     	return SqlSession.selectOne("searchByUserName", strUserName);
     }
 }

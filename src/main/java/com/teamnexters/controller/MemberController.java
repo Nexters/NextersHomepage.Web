@@ -18,7 +18,7 @@ public class MemberController {
 	MemberDAO memDao;
 	MemberDTO memDto;
 	
-	@RequestMapping("api/member.do")
+	@RequestMapping("/api/member.do")
 	public @ResponseBody ArrayList<MemberDTO> getMemberList(Model model){
 		
 		Map<String, String> mapMemberReqData = new HashMap<String, String>();
@@ -29,4 +29,14 @@ public class MemberController {
 		return  memberList;
 	}
 	
+	@RequestMapping("/api/user/member.do")
+	public @ResponseBody ArrayList<MemberDTO> getUserMemberList(Model model){
+		
+		Map<String, String> mapMemberReqData = new HashMap<String, String>();
+
+		@SuppressWarnings("unchecked")
+		ArrayList<MemberDTO> memberList = (ArrayList<MemberDTO>) memDao.getMemberList(mapMemberReqData);
+		
+		return  memberList;
+	}
 }
