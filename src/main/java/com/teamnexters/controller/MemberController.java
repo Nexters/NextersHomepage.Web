@@ -12,7 +12,7 @@ import com.teamnexters.dao.MemberDAO;
 import com.teamnexters.dto.MemberDTO;
 
 @Controller
-public class memberList {
+public class MemberController {
 	
 	@Autowired
 	MemberDAO memDao;

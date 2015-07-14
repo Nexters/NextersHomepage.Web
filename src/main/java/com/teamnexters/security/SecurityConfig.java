@@ -14,6 +14,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private customuserDetailsService customuserDetailsService = new customuserDetailsService();
 	private SuccessHandler successhandler = new SuccessHandler();
 	private FailureHandler failurehandler = new FailureHandler();
+	private AccessdeniedHandler accessdeniedhandler = new AccessdeniedHandler();
 	
 	@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -22,14 +23,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-		.antMatchers("/api/**").permitAll()
-		.antMatchers("/api/user/**").access("hasRole('ROLE_USER')")
-		.antMatchers("/api/admin/**").access("hasRole('ROLE_ADMIN')")
-		.antMatchers("/user/**").access("hasRole('ROLE_USER')")
-		.antMatchers("/admin/**").access("hasRole('ROLE_SUPERADMIN')")
+		http
+			.authorizeRequests()
+				.antMatchers("/api/**").permitAll()
+				.antMatchers("/api/user/**").access("hasRole('ROLE_USER')")
+				.antMatchers("/api/admin/**").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/user/**").access("hasRole('ROLE_USER')")
+				.antMatchers("/admin/**").access("hasRole('ROLE_SUPERADMIN')")
 		.and()
-			.formLogin().loginProcessingUrl("/login").successHandler(successhandler).failureHandler(failurehandler)
-			.and().csrf().disable();
+			.formLogin()
+				.loginProcessingUrl("/login")
+				.successHandler(successhandler)
+				.failureHandler(failurehandler)
+		.and()
+			.exceptionHandling()
+				.accessDeniedHandler(accessdeniedhandler)
+		.and()
+			.csrf()
+				.disable();
 	}
 }
