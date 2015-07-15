@@ -26,11 +26,11 @@ function onSubmit() {
 		} ,
 		dataType : "json" ,
 		success : function(data) {
-			$("#status").html("result::"+data.result+"<br/>error Msg::"+data._error_msg);
+			$("#status").html("result::"+JSON.stringify(data));
 			if(data.result=="success") {
 				alert("로그인 성공");
 			} else {
-				alert("로그인 실패\n사유 : "+data._error_msg);
+				alert("로그인 실패\n사유 : "+data.resData[0].errorMsg);
 			}
 		}
 	});
@@ -42,8 +42,8 @@ function onLogout() {
 		type : "POST",
 		dataType : "json" ,
 		success : function(data) {
-			$("#status").html("result::"+data.result);
-			if(data.result=="logout"){
+			$("#status").html("result::"+JSON.stringify(data));
+			if(data.result=="success"){
 				alert("로그아웃 성공");
 			}
 		}
@@ -58,9 +58,9 @@ function isLogin() {
 		success : function(data) {
 			$("#status").html("result::"+JSON.stringify(data));
 			if(data.result=="error"){
-				alert("[오류]\n오류코드:"+data._error_cd+"\n오류메시지:"+data._error_msg);
+				alert("[오류]\n오류코드:"+data.resData[0].errorCd+"\n오류메시지:"+data.resData[0].errorMsg);
 			} else {
-				alert(data.userData.userName+"님 환영합니다.");
+				alert(data.resData[0].userName+"님 환영합니다.");
 			}
 		}
 	});

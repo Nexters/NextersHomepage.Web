@@ -23,7 +23,7 @@ public class LogoutHandler implements LogoutSuccessHandler {
 		String jsonStr;
 		
 		if(authentication==null) {
-			jsonStr = om.writeValueAsString(JsonUtil.putFailJsonContainer("LogoutHandlerERR0001", "로그인 상태가 압니다."));
+			jsonStr = om.writeValueAsString(JsonUtil.putFailJsonContainer("LogoutHandlerERR0001", "로그인 상태가 아닙니다."));
 		} else {
 			Map<String, Object> mapRslt = new HashMap<String, Object>();
 			mapRslt.put("userName", authentication.getName());
