@@ -8,6 +8,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.teamnexters.security.handler.AccessdeniedHandler;
+import com.teamnexters.security.handler.FailureHandler;
+import com.teamnexters.security.handler.LogoutHandler;
+import com.teamnexters.security.handler.SuccessHandler;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -32,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/user/**").access("hasRole('ROLE_USER')")
 				.antMatchers("/api/admin/**").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/user/**").access("hasRole('ROLE_USER')")
-				.antMatchers("/admin/**").access("hasRole('ROLE_SUPERADMIN')")
+				.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
 		.and()
 			.logout()
 				.logoutSuccessHandler(logouthandler)
@@ -49,5 +54,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 			.csrf()
 				.disable();
+		http
+			.sessionManagement()
+				.sessionFixation()
+					.migrateSession()
+				.maximumSessions(1)
+				.maxSessionsPreventsLogin(false)
+				.expiredUrl("/expiredSession.do");
 	}
 }
