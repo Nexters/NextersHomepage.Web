@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teamnexters.dao.MemberDAO;
 import com.teamnexters.dto.MemberDTO;
+import com.teamnexters.util.JsonUtil;
 
 @Controller
 public class MemberController {
@@ -19,24 +20,20 @@ public class MemberController {
 	MemberDTO memDto;
 	
 	@RequestMapping("/api/member.do")
-	public @ResponseBody ArrayList<MemberDTO> getMemberList(Model model){
-		
-		Map<String, String> mapMemberReqData = new HashMap<String, String>();
-
+	public @ResponseBody Map<String, Object> getMemberList(Model model){
+		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
 		@SuppressWarnings("unchecked")
 		ArrayList<MemberDTO> memberList = (ArrayList<MemberDTO>) memDao.getMemberList(mapMemberReqData);
-		
-		return  memberList;
+		mapMemberReqData.put("userList", memberList);
+		return  JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
 	
 	@RequestMapping("/api/user/member.do")
-	public @ResponseBody ArrayList<MemberDTO> getUserMemberList(Model model){
-		
-		Map<String, String> mapMemberReqData = new HashMap<String, String>();
-
+	public @ResponseBody  Map<String, Object> getUserMemberList(Model model){
+		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
 		@SuppressWarnings("unchecked")
 		ArrayList<MemberDTO> memberList = (ArrayList<MemberDTO>) memDao.getMemberList(mapMemberReqData);
-		
-		return  memberList;
+		mapMemberReqData.put("userList", memberList);
+		return  JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
 }

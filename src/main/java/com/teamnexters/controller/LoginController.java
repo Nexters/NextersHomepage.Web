@@ -46,6 +46,8 @@ public class LoginController {
 			mapUserData.put("userName", memDto.getUserNm());
 			mapUserData.put("userNo", memDto.getUserNo());
 			mapUserData.put("userId", memDto.getUserId());
+			mapUserData.put("userStatus", memDto.getUserStatus());
+			mapUserData.put("userRole", memDto.getUserRole());
 			mapRsltData = JsonUtil.putSuccessJsonContainer(mapUserData);
 		}
 		return mapRsltData;
