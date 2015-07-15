@@ -6,7 +6,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
@@ -33,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/user/**").access("hasRole('ROLE_USER')")
 				.antMatchers("/api/admin/**").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/user/**").access("hasRole('ROLE_USER')")
-				.antMatchers("/admin/**").access("hasRole('ROLE_SUPERADMIN')")
+				.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
 		.and()
 			.logout()
 				.logoutSuccessHandler(logouthandler)
@@ -55,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionFixation()
 					.migrateSession()
 				.maximumSessions(1)
-				.maxSessionsPreventsLogin(false);
+				.maxSessionsPreventsLogin(false)
+				.expiredUrl("/expiredSession.do");
 	}
 }

@@ -22,13 +22,21 @@ public class LoginController {
 	MemberDTO memDto;
 	
 	@RequestMapping("/needlogin.do")
-	public @ResponseBody Map<String, Object> getMemberList(Model model){
+	public @ResponseBody Map<String, Object> showNeedLogin(Model model){
 		Map<String, Object> mapRsltData = new HashMap<String, Object>();
 		mapRsltData = JsonUtil.putFailJsonContainer("LoginControllerERR0001", "접근이 거부되었습니다.");
 		return mapRsltData;
 	}
 	
-	@RequestMapping("/api/loginUser.do")
+	@RequestMapping("/expiredSession.do")
+	public @ResponseBody Map<String, Object> showSessionExpired(Model model){
+		Map<String, Object> mapRsltData = new HashMap<String, Object>();
+		mapRsltData = JsonUtil.putFailJsonContainer("LoginControllerERR0003", "세션이 파괴되었습니다.(중복로그인 불가능)");
+		return mapRsltData;
+	}
+	
+	
+	@RequestMapping("/api/main/loginUser.do")
 	public @ResponseBody Map<String, Object> getUserInfor() {
 		Map<String, Object> mapRsltData = new HashMap<String, Object>();
 		
