@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teamnexters.dao.MemberDAO;
-import com.teamnexters.dto.MemberDTO;;
+import com.teamnexters.dto.MemberDTO;
+import com.teamnexters.util.JsonUtil;;
 
 @Controller
 public class LoginController {
@@ -22,12 +23,9 @@ public class LoginController {
 	
 	@RequestMapping("/needlogin.do")
 	public @ResponseBody Map<String, Object> getMemberList(Model model){
-		
-		Map<String, Object> resData = new HashMap<String, Object>();
-		resData.put("result", "fail");
-		resData.put("errMsg", "로그인이 필요합니다.");
-
-		return resData;
+		Map<String, Object> mapRsltData = new HashMap<String, Object>();
+		mapRsltData = JsonUtil.putFailJsonContainer("LoginControllerERR0001", "접근이 거부되었습니다.");
+		return mapRsltData;
 	}
 	
 	@RequestMapping("/api/loginUser.do")
@@ -37,17 +35,14 @@ public class LoginController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String strUserId = auth.getName();
 		if(!auth.isAuthenticated() || "anonymousUser".equals(strUserId)) {
-			mapRsltData.put("result", "error");
-			mapRsltData.put("_error_cd", "0001");
-			mapRsltData.put("_error_msg", "로그인한 사용자가 아닙니다.");
+			mapRsltData = JsonUtil.putFailJsonContainer("LoginControllerERR0002", "로그인하시길 바랍니다.");
 		} else {
 			Map<String, Object> mapUserData = new HashMap<String, Object>();
 			memDto = (MemberDTO) memDao.searchByUserName(strUserId);
 			mapUserData.put("userName", memDto.getUserNm());
 			mapUserData.put("userNo", memDto.getUserNo());
 			mapUserData.put("userId", memDto.getUserId());
-			mapRsltData.put("result", "success");
-			mapRsltData.put("userData", mapUserData);
+			mapRsltData = JsonUtil.putSuccessJsonContainer(mapUserData);
 		}
 		return mapRsltData;
 	}
