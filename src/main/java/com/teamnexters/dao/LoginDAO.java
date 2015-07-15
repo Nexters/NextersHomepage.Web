@@ -39,5 +39,7 @@ public class LoginDAO implements MemberMapper {
     public Object searchByUserName(String strUserName){
     	return SqlSession.selectOne("searchByUserName", strUserName);
     }
+    
+    
 }
 

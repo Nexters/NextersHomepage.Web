@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teamnexters.dao.MemberDAO;
@@ -38,5 +39,21 @@ public class MemberController {
 		ArrayList<MemberDTO> memberList = (ArrayList<MemberDTO>) memDao.getMemberList(mapMemberReqData);
 		
 		return  memberList;
+	}
+	
+	@RequestMapping("userTag.do")
+	public @ResponseBody Map<String, Object> getUserTag(Model model,@RequestParam(value = "str", required = false) 
+														String str){
+		
+		@SuppressWarnings("unchecked")
+		ArrayList<MemberDTO> memberList=(ArrayList<MemberDTO>) memDao.searchUserTag(str);
+		
+		Map<String, Object> resData=new HashMap<String, Object>();
+		resData.put("reslut", "success");
+		resData.put("resData", memberList);
+		
+		
+		
+		return resData;
 	}
 }

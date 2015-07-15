@@ -11,4 +11,7 @@
 	<select id="getMemberList" resultType="com.teamnexters.dto.MemberDTO">  
 	       SELECT * FROM member
 	</select>
+	<select id="userTag" resultType="com.teamnexters.dto.MemberDTO">
+		   SELECT "userNm" FROM member WHERE "userNm" LIKE '%' || #{str} || '%'
+	</select>
 </mapper>
