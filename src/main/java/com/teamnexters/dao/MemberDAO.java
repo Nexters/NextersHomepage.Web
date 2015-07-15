@@ -15,22 +15,24 @@ public class MemberDAO implements MemberMapper {
     @Autowired
     private SqlSession sqlsession;
      
-    public Object searchMember(Object params){
-    	return sqlsession.selectOne("searchMember", params);
-    }
-    
     public Object getMemberList(Object params) {
     	return sqlsession.selectList("getMemberList", params);
     }
     
     public Object searchByUserName(String strUserName){
-    	System.out.println("strUserName::"+strUserName);
-    	System.out.println("sqlSession::"+sqlsession);
     	return sqlsession.selectOne("searchByUserName", strUserName);
     }
+    
     public Object searchUserTag(String str){
-    	
     	return sqlsession.selectList("userTag",str);
     }
+    
+	public Object getMemberListByGener(String strGener) {
+		return sqlsession.selectList("getMemberListByGener",strGener);
+	}
+	
+	public Object getMemberAttrList() {
+		return sqlsession.selectList("getMemberInfoAttr");
+	}
 }
 
