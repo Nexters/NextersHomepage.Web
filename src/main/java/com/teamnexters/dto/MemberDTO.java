@@ -6,8 +6,7 @@ public class MemberDTO {
 	private String userPw;     
 	private String userNm;     
 	private String userCellNum;     
-	private String userPic;
-	private String userStatus;
+	private int userStatus;
 	private int userRole;
 	
 	public void setUserNo(String userNo){
@@ -45,17 +44,10 @@ public class MemberDTO {
 		return userCellNum;
 	}
 	
-	public void setUserPic(String userPic){
-		this.userPic=userPic;
-	}
-	public String getUserPic(){
-		return userPic;
-	}
-	
-	public void setUserStatus(String userStatus){
+	public void setUserStatus(int userStatus){
 		this.userStatus=userStatus;
 	}
-	public String getUserStatus(){
+	public int getUserStatus(){
 		return userStatus;
 	}
 	public int getUserRole() {

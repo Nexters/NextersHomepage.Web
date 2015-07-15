@@ -6,14 +6,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.teamnexters.util.JsonUtil;
 
-public class FailureHandler implements AuthenticationFailureHandler {
-
+public class FailureHandler implements AuthenticationFailureHandler {	
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request,
 			HttpServletResponse response, AuthenticationException exception)
@@ -23,7 +23,6 @@ public class FailureHandler implements AuthenticationFailureHandler {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(jsonStr);
-		
 	}
 	
 	
