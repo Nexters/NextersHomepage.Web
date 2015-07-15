@@ -8,13 +8,11 @@
   	
   	<bean id="customuserDetailsService" class="com.teamnexters.security.customuserDetailsService">
     	<property name="LoginDAO" ref="LoginDAO"/>
-    	<property name="passwordEncoder" ref="encoder"/>
 	</bean>
 	
     <bean id="LoginDAO" class="com.teamnexters.dao.LoginDAO">
     	<property name="sqlSession" ref="sqlSessionTemplate"/>
 	</bean>
-	<bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
 	  
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="myDataSource1" />

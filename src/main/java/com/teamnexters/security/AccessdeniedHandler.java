@@ -15,6 +15,7 @@ public class AccessdeniedHandler implements AccessDeniedHandler {
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
 		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write("{\"result\":\"error\",\"_error_msg\":\""+accessDeniedException.getMessage()+"\"}");
 		
 	}

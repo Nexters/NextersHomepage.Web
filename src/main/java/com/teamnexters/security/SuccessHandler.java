@@ -16,6 +16,7 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
 			HttpServletResponse response, Authentication authentication)
 			throws IOException, ServletException {
 		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write("{\"result\":\"success\",\"userName\":\""+authentication.getName()+"\"}");
 
 	}
