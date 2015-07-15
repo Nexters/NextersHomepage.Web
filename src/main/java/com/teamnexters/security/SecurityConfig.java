@@ -8,6 +8,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.teamnexters.security.handler.AccessdeniedHandler;
+import com.teamnexters.security.handler.FailureHandler;
+import com.teamnexters.security.handler.LogoutHandler;
+import com.teamnexters.security.handler.SuccessHandler;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
