@@ -8,15 +8,15 @@
 		border:1px solid black;
 	}
 	.tag{
-		background-color:red
+		color : red;
+		
 		
 	}
-	.tagList{
-		border:1px solid black;
+	
+	.tagHover{
+		background-color:red;
 	}
-	.tagList:hover{
-		background-color:gray;
-	}
+	
 	.selectTag{
 		background-color:gray;
 	}
@@ -26,15 +26,62 @@
 	$(document).ready(function(){
 		var tagSet=false;
 		var tagIndex;
+		var liIndex=-1;
 		
 		$('#test').focus();
+		$('#test').keypress(function(){
+			if(event.keyCode==13 && $('.tagHover').length==1){
+				
+				var tagName=$('.tagHover').html();
+				var uId=$('.tagHover').children().val();
+				$('#test').html(function(index,html){
+					
+					
+					var cursorPointer=window.getSelection().getRangeAt(0).startOffset;
+				
+					
+					var start=html.substring(0,cursorPointer).lastIndexOf("@");
+					
+					var preTag=html.substring(start,cursorPointer);
+					
+					
+					
+					html=html.replace(html.substr(cursorPointer*(-1)),"<a class='tag' href='/abc.do?userId="+uId+"'>@"+tagName+"</a>");
+					
+					
+					
+					return html;
+				})
+				
+			
+				
+				
+				
+				
+				$('#list').html('');
+				
+				tagSet=false;
+				elem = document.getElementById('test');
+				setEndOfContenteditable(elem)
+				event.preventDefault();
+				
+			}
+		})
 		$('#test').keyup(function(){
 			
+			
 			if(event.keyCode==40){
-				alert($(this).get(0).nextSibling.nextSibling);
-				
-				next.focus();
-				alert(next.val());
+				liIndex++;
+				document.getElementById('test').nextSibling.nextSibling.children[liIndex-1].classList.remove('tagHover');
+				document.getElementById('test').nextSibling.nextSibling.children[liIndex].classList.add('tagHover');
+								
+			}
+			else if(event.keyCode==38){
+				if(liIndex>-1){
+					liIndex--;
+				}
+				document.getElementById('test').nextSibling.nextSibling.children[liIndex+1].classList.remove('tagHover');
+				document.getElementById('test').nextSibling.nextSibling.children[liIndex].classList.add('tagHover');
 				
 			}
 			var tag;
@@ -61,11 +108,22 @@
 					"dataType":"json",
 					"success":function(obj){
 						var txt="";
-						$.each(obj.resData,function(){
-							txt+="<li class='tagList' >"+this.userNm+"</li>";
+						$.each(obj.resData[0].tagList,function(idx){
+							if(idx==liIndex)
+								txt+="<li class='tagList tagHover' >"+this.userNm+" <input type='hidden' value='"+this.userId+"'/> </li>";
+							else
+								txt+="<li class='tagList' >"+this.userNm+" <input type='hidden' value='"+this.userId+"'/> </li>";
 							
 						})
 						$('#list').html(txt);
+						
+						$('#list li').hover(function(){
+							if(liIndex!=-1)
+								document.getElementById('test').nextSibling.nextSibling.children[liIndex].classList.remove('tagHover');
+							$(this).addClass('tagHover');
+						},function(){
+							$(this).removeClass('tagHover');
+						})
 					
 					},
 					"error":function(request,status,error){
@@ -80,21 +138,24 @@
 			
 		})
 		
+		
+		
 		$(document).on("click", ".tagList", function(){
 			var tagName=$(this).html();
+			var uId=$(this).children().val();
 			$('#test').html(function(index,html){
 				
+				
 				var cursorPointer=window.getSelection().getRangeAt(0).startOffset;
+			
 				
-				
-				var start=html.substring(0,cursorPointer).lastIndexOf("@"),cursorPointer;
+				var start=html.substring(0,cursorPointer).lastIndexOf("@");
 				
 				var preTag=html.substring(start,cursorPointer);
 				
 				
 				
-				
-				html=html.replace(preTag,"<span class='tag'>"+tagName+"</span><pre>");
+				html=html.replace(html.substr(cursorPointer*(-1)),"<a class='tag' href='/abc.do?userId="+uId+"'>@"+tagName+"</a>");
 				
 				
 				
@@ -103,7 +164,7 @@
 			
 		
 			
-			alert($('#test').html().length);
+			
 			
 			
 			$('#list').html('');
@@ -144,10 +205,11 @@ function setEndOfContenteditable(contentEditableElement)
 }	
 
 	
+	
 </script>
 </head>
 <body>
-<div class='tagList' >dd</div><br>
+
 <div id="tagTest">
 	<div id="test" contenteditable="true"></div>
 	<div id="list"></div>

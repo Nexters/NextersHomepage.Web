@@ -75,18 +75,44 @@ public class MemberController {
 	}
 	
 	@RequestMapping("userTag.do")
-	public @ResponseBody Map<String, Object> getUserTag(Model model,@RequestParam(value = "str", required = false) 
-														String str){
+	public @ResponseBody Map<String, Object> getUserTag(@RequestParam(value = "str", required = false) String str){
 		
 		@SuppressWarnings("unchecked")
 		ArrayList<MemberDTO> memberList=(ArrayList<MemberDTO>) memDao.searchUserTag(str);
-		
-		Map<String, Object> resData=new HashMap<String, Object>();
-		resData.put("reslut", "success");
-		resData.put("resData", memberList);
+		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
+		mapMemberReqData.put("tagList", memberList);
 		
 		
 		
-		return resData;
+		
+		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
+	}
+	
+	@RequestMapping("/memberAdd.do")
+	public @ResponseBody Map<String,Object> memberAdd(@RequestParam(value = "grade", required= false) String grade,
+			@RequestParam(value = "position", required= false) String position,
+			@RequestParam(value = "userId", required= false) String userId,
+			@RequestParam(value = "userNm", required= false) String userNm,
+			@RequestParam(value = "userCellNum", required= false) String userCellNum){
+		Map<String, Object> mapReqParam = new HashMap<String, Object>();
+		
+		String tmp="N";
+		
+		mapReqParam.put("userNo",tmp);
+		
+		int insertSuc=(Integer)memDao.insertUser(mapReqParam);
+		
+		Map<String, Object> mapMemberReqData =new HashMap<String, Object>();
+		mapMemberReqData.put("insertSuc", insertSuc);
+		
+		
+		
+		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
+		
+	}
+	
+	@RequestMapping("/memberModify.do")
+	public @ResponseBody Map<String, Object> memberUpdate(){
+		return null;
 	}
 }
