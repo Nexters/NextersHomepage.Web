@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.teamnexters.mapper">   
+	<select id="getMemberInfoAttr" resultType="com.teamnexters.dto.MemberInfoDTO">  
+	       SELECT * FROM member_info
+	</select>
+	<select id="getMemberInfoValue" resultType="Map">  
+	       SELECT
+	       "userNo"
+	       	, "attr"
+	       	, "value" 
+	       FROM 
+	       	member_info_value
+	       	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		       <if test="userNoArray  != null">
+		           AND "userNo" IN (
+		              <foreach collection="userNoArray" item="a" separator=",">#{a}</foreach>
+		          	)
+	        	</if>
+	        </trim>
+	       ORDER BY "userNo" DESC
+	</select>
+</mapper>

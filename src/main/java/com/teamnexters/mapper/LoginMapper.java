@@ -1,7 +1,6 @@
 package com.teamnexters.mapper;
 
-public interface MemberMapper { 
+public interface LoginMapper { 
 	Object searchByUserName(String strUserName);
-	Object getMemberListByGener(String strGener);
 	
 } 
