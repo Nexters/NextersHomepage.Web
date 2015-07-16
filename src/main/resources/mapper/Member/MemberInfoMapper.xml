@@ -6,6 +6,19 @@
 	       SELECT * FROM member_info
 	</select>
 	<select id="getMemberInfoValue" resultType="Map">  
-	       SELECT "attr", "value" FROM member_info_value WHERE "userNo" = #{userno} ORDER BY "attr" asc
+	       SELECT
+	       "userNo"
+	       	, "attr"
+	       	, "value" 
+	       FROM 
+	       	member_info_value
+	       	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		       <if test="userNoArray  != null">
+		           AND "userNo" IN (
+		              <foreach collection="userNoArray" item="a" separator=",">#{a}</foreach>
+		          	)
+	        	</if>
+	        </trim>
+	       ORDER BY "userNo" DESC
 	</select>
 </mapper>

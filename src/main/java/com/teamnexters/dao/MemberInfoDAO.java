@@ -1,5 +1,7 @@
 package com.teamnexters.dao;
 
+import java.util.HashMap;
+
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.SqlSession;
@@ -19,8 +21,8 @@ public class MemberInfoDAO implements MemberInfoMapper {
     	return sqlsession.selectList("getMemberInfoAttr");
     }
     
-    public Object getMemberInfoValue(String strUserId) {
-    	return sqlsession.selectList("getMemberInfoValue", strUserId);
+    public Object getMemberInfoValue(Object paramObject) {
+    	return sqlsession.selectList("getMemberInfoValue", paramObject);
     }
     
 }

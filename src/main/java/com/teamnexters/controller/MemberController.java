@@ -2,6 +2,7 @@ package com.teamnexters.controller;
 
 import java.util.*;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,11 +14,12 @@ import com.teamnexters.dao.MemberDAO;
 import com.teamnexters.dao.MemberInfoDAO;
 import com.teamnexters.dto.MemberDTO;
 import com.teamnexters.dto.MemberInfoDTO;
-import com.teamnexters.dto.MemberInfoValueDTO;
 import com.teamnexters.util.JsonUtil;
 
 @Controller
 public class MemberController {
+	
+	private static final Logger logger =  Logger.getLogger(MemberController.class);
 	
 	@Autowired
 	MemberDAO memDao;
@@ -30,13 +32,22 @@ public class MemberController {
 		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
 		ArrayList<Map> memberList = (ArrayList<Map>) memDao.getMemberListByGener(strGener);
 
-		for(int i=0; i<memberList.size(); i++) {
-			ArrayList<Map> memberInfoValue = (ArrayList<Map>)memInfoDao.getMemberInfoValue((String)memberList.get(i).get("userNo"));
-			ArrayList<Map> arrMemberInfoValue = new ArrayList<Map>();
-			for(int j=0; j<memberInfoValue.size(); j++) {
-				arrMemberInfoValue.add(memberInfoValue.get(j));
+		ArrayList<String> memberArrayList = new ArrayList<String>();
+		
+		for (int i=0; i<memberList.size(); i++) {
+			memberList.get(i).put("userAddInfo", new ArrayList<Map>());
+			memberArrayList.add(memberList.get(i).get("userNo").toString());
+		}
+		logger.debug("UserList::"+memberArrayList.toString());
+		
+		ArrayList<Map> memberInfoValue = (ArrayList<Map>)memInfoDao.getMemberInfoValue(new HashMap<String, Object>().put("userNoArray", memberArrayList));
+		for(int i=0; i<memberInfoValue.size(); i++) {
+			String strInfoUserNo = memberInfoValue.get(i).get("userNo").toString();
+			for(int j=0; j<memberList.size(); j++){
+				if(memberList.get(j).get("userNo").equals(strInfoUserNo)) {
+					((ArrayList<Map>)memberList.get(j).get("userAddInfo")).add(memberInfoValue.get(i));
+				}
 			}
-			((Map<String, Object>)memberList.get(i)).put("userAddInfo", arrMemberInfoValue);
 		}
 		
 		mapMemberReqData.put("userList", memberList);

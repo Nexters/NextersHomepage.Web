@@ -15,6 +15,6 @@
 		   SELECT "userNm" FROM member WHERE "userNm" LIKE '%' || #{str} || '%'
 	</select>
 	<select id="getMemberListByGener" resultType="Map">  
-	       SELECT "userNo", "userId", "userNm", "userCellNum" FROM member WHERE "userNo" LIKE '_' || #{gener} || '____'
+	       SELECT "userNo", "userId", "userNm", "userCellNum" FROM member WHERE "userNo" LIKE '_' || #{gener} || '____' ORDER BY "userNm" ASC
 	</select>
 </mapper>
