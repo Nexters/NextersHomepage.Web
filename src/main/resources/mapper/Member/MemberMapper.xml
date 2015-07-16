@@ -17,4 +17,14 @@
 	<select id="getMemberListByGener" resultType="Map">  
 	       SELECT "userNo", "userId", "userNm", "userCellNum" FROM member WHERE "userNo" LIKE '_' || #{gener} || '____' ORDER BY "userNm" ASC
 	</select>
+	
+	<insert id="insertUser" parameterType="com.teamnexters.dto.MemberDTO"  useGeneratedKeys="true">
+
+		
+
+		INSERT INTO member("userNo","userId","userNm","userCellNum","userStatus","userRole") VALUES ((SELECT MAX(substr("userNo", 0, 6))||MAX(substr("userNo", 5, 3))::numeric+1 FROM member WHERE "userNo" LIKE #{userNo} || '%') ,'1','1','1','3','2')
+		<selectKey resultType="string" keyProperty="userNo" order="AFTER">
+		   select 1
+		</selectKey>
+	</insert>
 </mapper>
