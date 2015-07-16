@@ -44,13 +44,12 @@ public class MemberController {
 		
 		@SuppressWarnings("unchecked")
 		ArrayList<MemberDTO> memberList=(ArrayList<MemberDTO>) memDao.searchUserTag(str);
-		
-		Map<String, Object> resData=new HashMap<String, Object>();
-		resData.put("reslut", "success");
-		resData.put("resData", memberList);
+		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
+		mapMemberReqData.put("tagList", memberList);
 		
 		
 		
-		return resData;
+		
+		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
 }
