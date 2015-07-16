@@ -65,6 +65,18 @@ public class MemberController {
 		return  JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
 	
+	@RequestMapping("/api/main/memberGenerList.do")
+	public @ResponseBody Map<String, Object> getGenerList(){
+		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
+		
+		@SuppressWarnings("unchecked")
+		ArrayList<Map<String, Object>> memberInfoAttrList = (ArrayList<Map<String, Object>>) memDao.getGenerList();
+		
+		mapMemberReqData.put("generList", memberInfoAttrList);
+		return  JsonUtil.putSuccessJsonContainer(mapMemberReqData);
+	}
+	
+	
 	@RequestMapping("/api/user/member.do")
 	public @ResponseBody  Map<String, Object> getUserMemberList(Model model){
 		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
@@ -104,9 +116,6 @@ public class MemberController {
 		
 		Map<String, Object> mapMemberReqData =new HashMap<String, Object>();
 		mapMemberReqData.put("insertSuc", insertSuc);
-		
-		
-		
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 		
 	}

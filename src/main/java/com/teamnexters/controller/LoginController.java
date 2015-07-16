@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teamnexters.dao.MemberDAO;
 import com.teamnexters.dto.MemberDTO;
-import com.teamnexters.util.JsonUtil;;
+import com.teamnexters.util.JsonUtil;
 
 @Controller
 public class LoginController {
