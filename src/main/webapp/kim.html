@@ -24,43 +24,35 @@
 <script src="js/jquery-1.11.3.min.js"></script>
 <script>
 	$(document).ready(function(){
-		var tagSet=false;
-		var tagIndex;
-		var liIndex=-1;
 		
+		
+		
+		var liIndex=0;
+		var word=/@([ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z|0-9]+)/ig;
+		var tagName;
 		$('#test').focus();
 		$('#test').keypress(function(){
+			
 			if(event.keyCode==13 && $('.tagHover').length==1){
 				
-				var tagName=$('.tagHover').html();
-				var uId=$('.tagHover').children().val();
+				var name=$('.tagHover').text();
+				var userNo=$('.tagHover').children().val();
 				$('#test').html(function(index,html){
-					
-					
-					var cursorPointer=window.getSelection().getRangeAt(0).startOffset;
-				
-					
-					var start=html.substring(0,cursorPointer).lastIndexOf("@");
-					
-					var preTag=html.substring(start,cursorPointer);
-					
-					
-					
-					html=html.replace(html.substr(cursorPointer*(-1)),"<a class='tag' href='/abc.do?userId="+uId+"'>@"+tagName+"</a>");
-					
-					
+						
+					html=html.replace(tagName,"<a class='tag' href='/abc.do?userNo="+userNo+"'>"+name+"</a>");
+						
 					
 					return html;
 				})
 				
-			
 				
 				
 				
-				
+				liIndex=0;
+				tagName=null;
 				$('#list').html('');
 				
-				tagSet=false;
+				
 				elem = document.getElementById('test');
 				setEndOfContenteditable(elem)
 				event.preventDefault();
@@ -69,42 +61,52 @@
 		})
 		$('#test').keyup(function(){
 			
-			
+			tagName=$(this).text().match(word);
 			if(event.keyCode==40){
+				
 				liIndex++;
-				document.getElementById('test').nextSibling.nextSibling.children[liIndex-1].classList.remove('tagHover');
+				
+				if(liIndex!=0){
+						
+					document.getElementById('test').nextSibling.nextSibling.children[liIndex-1].classList.remove('tagHover');
+				}
+				
 				document.getElementById('test').nextSibling.nextSibling.children[liIndex].classList.add('tagHover');
 								
 			}
 			else if(event.keyCode==38){
+				
 				if(liIndex>-1){
 					liIndex--;
 				}
+				
 				document.getElementById('test').nextSibling.nextSibling.children[liIndex+1].classList.remove('tagHover');
 				document.getElementById('test').nextSibling.nextSibling.children[liIndex].classList.add('tagHover');
 				
 			}
-			var tag;
 			
-			if(!tagSet){
+			
+			
+			
+			if(tagName!=null){
 				
-				tagIndex=$(this).html().length-1;
 				
-				tag=$(this).html().charAt(tagIndex);
-				if(tag=='@'){
-					
-					tagSet=true;
-				}
-			}
-			else{
 				
-				tag=$(this).html().charAt($(this).html().length-1);
 				
-				var str=$(this).html().substring(tagIndex+1,$(this).html().length);
+				 var insertTagName=tagName.toString().split("@").join("").split(",");
+				 
+				 insertTagName=insertTagName[insertTagName.length-1];
+				 
+				
+				
+				
+				
+				
+				
 				$.ajax({
 					"url":"userTag.do",
 					"type":"POST",
-					"data":"str="+str,
+					"data":"str="+insertTagName,
 					"dataType":"json",
 					"success":function(obj){
 						var txt="";
@@ -141,21 +143,17 @@
 		
 		
 		$(document).on("click", ".tagList", function(){
-			var tagName=$(this).html();
-			var uId=$(this).children().val();
+			var name=$(this).text();
+			var userNo=$(this).children().val();
 			$('#test').html(function(index,html){
 				
 				
-				var cursorPointer=window.getSelection().getRangeAt(0).startOffset;
-			
-				
-				var start=html.substring(0,cursorPointer).lastIndexOf("@");
-				
-				var preTag=html.substring(start,cursorPointer);
 				
 				
 				
-				html=html.replace(html.substr(cursorPointer*(-1)),"<a class='tag' href='/abc.do?userId="+uId+"'>@"+tagName+"</a>");
+				
+				
+				html=html.replace(tagName,"<a class='tag' href='/abc.do?userId="+userNo+"'>"+name+"</a>");
 				
 				
 				
@@ -165,11 +163,11 @@
 		
 			
 			
-			
-			
+			liIndex=0;
+			tagName=null;
 			$('#list').html('');
 			
-			tagSet=false;
+			
 			elem = document.getElementById('test');
 			setEndOfContenteditable(elem)
 			
@@ -214,6 +212,7 @@ function setEndOfContenteditable(contentEditableElement)
 	<div id="test" contenteditable="true"></div>
 	<div id="list"></div>
 </div>
+
 
 
 </body>
