@@ -42,5 +42,8 @@ public class MemberDAO implements MemberMapper {
 	public Object insertUser(Object tmp){
 		return sqlsession.insert("insertUser", tmp);
 	}
+	public Object getMemberDetailInfo(Object userNo){
+		return sqlsession.selectOne("getMemberDetailInfo",userNo);
+	}
 }
 

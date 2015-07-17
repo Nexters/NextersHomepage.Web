@@ -32,4 +32,15 @@
 		   select 1
 		</selectKey>
 	</insert>
+	
+	<select id="getMemberDetailInfo" resultType="Map">
+		select "userNo","userId","userNm","userCellNum",(select "value"
+									from member_info_value
+									where "userNo"=#{userNo} and "attr"='nowCompany') as nowCompany,
+								(select "value"
+									from member_info_value
+									where "userNo"=#{userNo} and "attr"='finalSchool') as finalSchool
+		from member
+		where "userNo"=#{userNo}
+	</select>
 </mapper>

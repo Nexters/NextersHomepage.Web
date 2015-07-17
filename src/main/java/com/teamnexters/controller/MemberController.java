@@ -120,8 +120,17 @@ public class MemberController {
 		
 	}
 	
+	@RequestMapping("/memberDetail.do")
+	public @ResponseBody Map<String, Object> memberDetail(@RequestParam(value ="userNo", required=false) String userNo){
+		Map<String, Object> mapReqParam=new HashMap<String, Object>();
+		mapReqParam.put("userNo", "N00T027");
+		Map<String, Object> mapMemberReqData =new HashMap<String,Object>();
+		mapMemberReqData.put("memberData", memDao.getMemberDetailInfo(mapReqParam));
+		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
+	}
+	
 	@RequestMapping("/memberModify.do")
-	public @ResponseBody Map<String, Object> memberUpdate(){
+	public @ResponseBody Map<String, Object> memberModify(){
 		return null;
 	}
 }
