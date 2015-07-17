@@ -3,6 +3,7 @@ $(document).ready(function(){
 		
 		
 		var liIndex=0;
+		var listLength;
 		var word=/@([ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z|0-9]+)/ig;
 		var tagName;
 		$('#test').focus();
@@ -39,7 +40,10 @@ $(document).ready(function(){
 			tagName=$(this).text().match(word);
 			if(event.keyCode==40){
 				
-				liIndex++;
+				if(listLength>liIndex){
+					liIndex++;
+				}
+					
 				
 				if(liIndex!=0){
 						
@@ -55,7 +59,10 @@ $(document).ready(function(){
 					liIndex--;
 				}
 				
-				document.getElementById('test').nextSibling.nextSibling.children[liIndex+1].classList.remove('tagHover');
+				if(liIndex!=listLength-1){
+					document.getElementById('test').nextSibling.nextSibling.children[liIndex+1].classList.remove('tagHover');
+				}
+					
 				document.getElementById('test').nextSibling.nextSibling.children[liIndex].classList.add('tagHover');
 				
 			}
@@ -85,6 +92,7 @@ $(document).ready(function(){
 					"dataType":"json",
 					"success":function(obj){
 						var txt="";
+						listLength=obj.resData[0].tagList.length;
 						$.each(obj.resData[0].tagList,function(idx){
 							if(idx==liIndex)
 								txt+="<li class='tagList tagHover' >"+this.userNm+" <input type='hidden' value='"+this.userNo+"'/> </li>";
