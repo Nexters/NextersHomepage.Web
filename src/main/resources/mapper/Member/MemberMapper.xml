@@ -12,7 +12,7 @@
 	       SELECT * FROM member
 	</select>
 	<select id="userTag" resultType="com.teamnexters.dto.MemberDTO">
-		   SELECT "userId","userNm" FROM member WHERE "userNm" LIKE '%' || #{str} || '%'
+		   SELECT "userNo","userNm" FROM member WHERE "userNm" LIKE '%' || #{str} || '%'
 	</select>
 	<select id="getMemberListByGener" resultType="Map">  
 	       SELECT "userNo", "userId", "userNm", "userCellNum" FROM member WHERE "userNo" LIKE '_' || #{gener} || '____' ORDER BY "userNm" ASC

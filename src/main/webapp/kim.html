@@ -112,9 +112,9 @@
 						var txt="";
 						$.each(obj.resData[0].tagList,function(idx){
 							if(idx==liIndex)
-								txt+="<li class='tagList tagHover' >"+this.userNm+" <input type='hidden' value='"+this.userId+"'/> </li>";
+								txt+="<li class='tagList tagHover' >"+this.userNm+" <input type='hidden' value='"+this.userNo+"'/> </li>";
 							else
-								txt+="<li class='tagList' >"+this.userNm+" <input type='hidden' value='"+this.userId+"'/> </li>";
+								txt+="<li class='tagList' >"+this.userNm+" <input type='hidden' value='"+this.userNo+"'/> </li>";
 							
 						})
 						$('#list').html(txt);
