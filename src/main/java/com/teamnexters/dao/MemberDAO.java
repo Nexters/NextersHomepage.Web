@@ -45,5 +45,11 @@ public class MemberDAO implements MemberMapper {
 	public Object getMemberDetailInfo(Object userNo){
 		return sqlsession.selectOne("getMemberDetailInfo",userNo);
 	}
+	public Object updateMember(Object memberInfo){
+		return sqlsession.update("updateMember",memberInfo);
+	}
+	public Object deleteMember(Object userNo){
+		return sqlsession.delete("deleteMember",userNo);
+	}
 }
 

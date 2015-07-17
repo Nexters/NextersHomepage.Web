@@ -21,4 +21,15 @@
 	        </trim>
 	       ORDER BY "userNo" DESC
 	</select>
+	
+	<select id="memberInfoValueExist" resultType="Boolean">
+		select case when count("userNo")>0 then 1 else 0 end
+		from member_info_value
+		where "userNo"=#{userNo}
+	</select>
+	
+	<insert id="insertInfoValue">
+		insert into member_info_value("userNo","attr") values(#{userNo},'nowCompany');
+		insert into member_info_value("userNo","attr") values(#{userNo},'finalSchool')
+	</insert>
 </mapper>

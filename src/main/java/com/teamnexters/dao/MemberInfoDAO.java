@@ -25,5 +25,13 @@ public class MemberInfoDAO implements MemberInfoMapper {
     	return sqlsession.selectList("getMemberInfoValue", paramObject);
     }
     
+    public Boolean memberInfoValueExist(Object userNo){
+    	return sqlsession.selectOne("memberInfoValueExist",userNo);
+    }
+    
+    public void insertInfoValue(Object userNo){
+    	sqlsession.insert("insertInfoValue",userNo);
+    }
+    
 }
 

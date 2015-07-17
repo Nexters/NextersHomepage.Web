@@ -43,4 +43,27 @@
 		from member
 		where "userNo"=#{userNo}
 	</select>
+	
+	
+	<update id="updateMember">
+		update member
+		set "userNm"=#{userNm}
+		where "userNo"=#{userNo};
+		
+		update member_info_value
+		set "value"=#{nowCompany}
+		where "userNo"=#{userNo} and "attr"='nowCompany';
+		
+		update member_info_value
+		set "value"=#{finalSchool}
+		where "userNo"=#{userNo} and "attr"='finalSchool'
+	</update>
+	
+	<delete id="deleteMember">
+		delete from member_info_value
+		where "userNo"=#{userNo};
+		delete from member
+		where "userNo"=#{userNo}
+		
+	</delete>
 </mapper>
