@@ -1,0 +1,40 @@
+{
+    "menu": [
+        {
+            "text": "Home",
+            "id": "1",
+            "parentid": "-1",
+            "url":"Main.html"
+        },
+        {
+            "text": "About",
+            "id": "2",
+            "parentid": "-1",
+            "url":"About.html"
+        },
+        {
+            "text": "Recruiting",
+            "id": "3",
+            "parentid": "-1",
+            "url":"Recruiting.html"
+        },
+        {
+            "text": "Members",
+            "id": "4",
+            "parentid": "-1",
+            "url":"Members.html"
+        },
+        {
+            "text": "Product",
+            "id": "5",
+            "parentid": "-1",
+            "url":"Product.html"
+        },
+        {
+            "text": "Contact",
+            "id": "6",
+            "parentid": "1",
+            "url":"Contact.html"
+        }
+    ]
+}

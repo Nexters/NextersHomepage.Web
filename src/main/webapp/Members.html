@@ -3,16 +3,16 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>test hello</title>
-
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="c_css/c_css.css">
+
 	
 </head>
 
 <body>
-
-
+	
 	<!--Navigarion bar start-->
 	<nav class="navbar custom-center navbar-custom-padding" role="navigation">
 		<div class="container-fluid">
@@ -31,15 +31,16 @@
 		</div>
 	</nav>
 
-	<!--Navigarion bar end-->
+	<nav class="custom-center">
+		<ul class="pagination">
+			<li><a href="#" onclick="getMemberList(this);" gener="01">1</a></li>
+			<li><a href="#" onclick="getMemberList(this);" gener="02">2</a></li>
+			<li><a href="#" onclick="getMemberList(this);" gener="03">3</a></li>
+			<li><a href="#" onclick="getMemberList(this);" gener="04">4</a></li>
+			<li><a href="#" onclick="getMemberList(this);" gener="00">0</a></li>
+		</ul>
+	</nav>
 
-	<div class="container custom-center">
-		<div class="jumbotron no-margin">
-			<img src="image/main_picture.png" class="img-responsive">
-		</div>	
-	</div>
-
-	<span id="status"></span>
 
 	<!--modal login popup-->
 
@@ -86,77 +87,11 @@
 		</div>
 	</div>
 
+
 	<script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.js" type="text/javascript"></script>
-	<script src="js/main.js" type="text/javascript"></script>
+	<script src="js/member.js" type="text/javascript"></script>
 	<script src="menuInfo/menu.js" type="text/javascript"></script>
-
-
-	<script type="text/javascript">
-	
-	var data;
-	
-	var builddata = function () {
-		var source = [];
-		var items = [];
-    // build hierarchical source.
-    for (i = 0; i < data.length; i++) {
-    	var item = data[i];
-    	var label = item["text"];
-    	var parentid = item["parentid"];
-    	var id = item["id"];
-
-    	if (items[parentid]) {
-    		var item = { parentid: parentid, label: label, item: item };
-    		if (!items[parentid].items) {
-    			items[parentid].items = [];
-    		}
-    		items[parentid].items[items[parentid].items.length] = item;
-    		items[id] = item;
-    	}
-    	else {
-    		items[id] = { parentid: parentid, label: label, item: item };
-    		source[id] = items[id];
-    	}
-    }
-    return source;
-
-}
-
-var buildUL = function (parent, items) {
-	$.each(items, function () {
-		if (this.label) {
-            // create LI element and append it to the parent element.
-            var li = $("<li><a href=" + this.label+".html\">" + this.label + "</a></li>");
-
-            li.appendTo(parent);
-            // if there are sub items, call the buildUL function.
-            if (this.items && this.items.length > 0) {
-            	var ul = $("<ul></ul>");
-            	ul.appendTo(li);
-            	buildUL(ul, this.items);
-            }
-        }
-    });
-}
-
-$(document).ready(function() {
-	$.getJSON( "menuInfo/menuInfo.json", function( jsonData ) {
-		data = jsonData.menu;
-		
-		var ul = $("<ul class=\"nav navbar-header\"></ul>");
-		var source = builddata();
-		buildUL(ul, source);
-		$("#jqxMenu").html(ul);
-		$("#jqxMenu li").addClass("navbar-nav");
-		
-	});
-});
-
-
-</script>
-
-
 
 </body>
 </html>
