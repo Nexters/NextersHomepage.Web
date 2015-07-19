@@ -130,22 +130,15 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/memberModify.do")
-	public @ResponseBody Map<String, Object> memberModify(@RequestParam(value="userNo", required=false) String userNo,
-															@RequestParam(value="userNm", required=false) String userNm,
-															@RequestParam(value="nowCompany", required=false) String nowCompany,
-															@RequestParam(value="finalSchool", required=false) String finalSchool){
-		Map<String, Object> mapReqParam=new HashMap<String, Object>();
-		mapReqParam.put("userNo", "N00T060");
-		if(!memInfoDao.memberInfoValueExist(mapReqParam)){
-			memInfoDao.insertInfoValue("N00T060");
+	public @ResponseBody Map<String, Object> memberModify(@RequestParam Map<String,String> params){
+		
+		if(!memInfoDao.memberInfoValueExist(params)){
+			memInfoDao.insertInfoValue(params.get("userNo"));
 		}
-		mapReqParam.put("userNm", "kim");
-		mapReqParam.put("nowCompany", "무직");
-		mapReqParam.put("finalSchool", "성공회대");
 		
 		
 		Map<String, Object> mapMemberReqData=new HashMap<String, Object>();
-		mapMemberReqData.put("updateSuc", memDao.updateMember(mapReqParam));
+		mapMemberReqData.put("updateSuc", memDao.updateMember(params));
 		
 		
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
