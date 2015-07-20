@@ -109,6 +109,13 @@ public class MemberController {
 		Map<String, Object> mapReqParam = new HashMap<String, Object>();
 		
 		String tmp="N";
+		tmp+=grade;
+		if(position.equals("개발자")){
+			tmp+="T";
+		}
+		else{
+			tmp+="D";
+		}
 		
 		mapReqParam.put("userNo",tmp);
 		
@@ -176,7 +183,7 @@ public class MemberController {
 	@RequestMapping("/memberRemove.do")
 	public @ResponseBody Map<String, Object> memberDelete(@RequestParam(value="userNo", required=false) String userNo){
 		Map<String, Object> mapReqParam=new HashMap<String, Object>();
-		mapReqParam.put("userNo", "N00T060");
+		mapReqParam.put("userNo", userNo);
 		Map<String, Object> mapMemberReqData=new HashMap<String, Object>();
 		mapMemberReqData.put("deleteSuc",memDao.deleteMember(mapReqParam));
 		
