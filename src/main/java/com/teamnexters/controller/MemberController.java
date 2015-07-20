@@ -2,6 +2,8 @@ package com.teamnexters.controller;
 
 import java.util.*;
 
+import javax.mail.MessagingException;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import com.teamnexters.dao.MemberDAO;
 import com.teamnexters.dao.MemberInfoDAO;
 import com.teamnexters.dto.MemberDTO;
 import com.teamnexters.dto.MemberInfoDTO;
+import com.teamnexters.mail.EmailSender;
 import com.teamnexters.util.JsonUtil;
 
 @Controller
@@ -25,6 +28,8 @@ public class MemberController {
 	MemberDAO memDao;
 	@Autowired
 	MemberInfoDAO memInfoDao;
+	@Autowired
+	private EmailSender emailSender;
 		
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/api/main/memberList.do")
@@ -105,24 +110,27 @@ public class MemberController {
 			@RequestParam(value = "position", required= false) String position,
 			@RequestParam(value = "userId", required= false) String userId,
 			@RequestParam(value = "userNm", required= false) String userNm,
-			@RequestParam(value = "userCellNum", required= false) String userCellNum){
+			@RequestParam(value = "userCellNum", required= false) String userCellNum) throws MessagingException{
 		Map<String, Object> mapReqParam = new HashMap<String, Object>();
 		
 		String tmp="N";
 		tmp+=grade;
-		if(position.equals("개발자")){
+		/*if(position.equals("개발자")){
 			tmp+="T";
 		}
 		else{
 			tmp+="D";
-		}
+		} */
 		
-		mapReqParam.put("userNo",tmp);
+		mapReqParam.put("userNo","N00T");
 		
 		int insertSuc=(Integer)memDao.insertUser(mapReqParam);
 		
 		Map<String, Object> mapMemberReqData =new HashMap<String, Object>();
+		
 		mapMemberReqData.put("insertSuc", insertSuc);
+		emailSender.sendEmail("ksi4687@nate.com");
+		System.out.println(emailSender.toString());
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 		
 	}

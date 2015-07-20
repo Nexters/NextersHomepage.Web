@@ -30,7 +30,18 @@
 		<property name="prefix" value="/WEB-INF/view/" />
 		<property name="suffix" value=".jsp" />
 	</bean>	
- 
+
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="webcash.sws@gmail.com" />
+		<property name="password" value="swsfwqwert1234%" /> 
+		 <property name="javaMailProperties">
+		<props>
+	        <prop key="mail.smtp.starttls.enable">true</prop>
+	    </props>
+	    </property>
+	</bean>
     
 	<context:component-scan base-package="com.teamnexters"/>    
 </beans>
