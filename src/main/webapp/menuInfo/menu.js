@@ -43,6 +43,8 @@ var buildUL = function(parent, items) {
 			// create LI element and append it to the parent element.
 			if (this.label == "Sign In") {
 				var li = $("<li><a data-toggle=\"modal\" href=\"#myModal\">" + this.label + "</a></li>");
+			}else if(this.label == "="){
+				var li = $("<li><a href=\"#\"><img src=\"image/menu_origin_resize.png\" ></a></li>");
 			}
 			else {
 				

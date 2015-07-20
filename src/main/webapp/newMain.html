@@ -2,37 +2,41 @@
 
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css_custom/newMain.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title></title>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css_custom/newMain.css">
 </head>
 
 <body>
-	
+
 	<!--Navigarion bar start-->
 	<nav class="navbar" role="navigation" id="myNavbar">
 		<div class="container-fluid no-padding">
-			<img src="image/Logo.png" style="float:left;" >
+			<img src="image/Logo.png" style="float: left;">
 
 			<div class="container-fluid no-padding">
 				<div class="navbar-header navbar-right">
-					<ul class="nav navbar-nav"id="jqxMenu">
+					<ul class="nav navbar-nav" id="jqxMenu">
 
 					</ul>
+					<div class="leftMenu">
+						<a href="#"><img src="image/menu2.png"></a>
+					</div>
 				</div>
+
 			</div>
-			
+
 		</div>
 	</nav>
 	<!--Navigarion bar end-->
 
 
 	<div class="container-fluid no-padding" id="myJombotron">
-		<a href="#"><img src="image/Main.png" ></a>
+		<a href="#"><img src="image/Main.png"></a>
 	</div>
-	
+
 	<div class="container-fluid no-padding" id="myNotices">
 		<div class="container-fluid" id="myNotices2">
 			<div class="col-md-3">
@@ -59,11 +63,12 @@
 	</div>
 	<!--modal login popup-->
 
-	<div id="myModal" class="modal fade"  role="dialog">
+	<div id="myModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
-			<div class="modal-content"> 
+			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">x</button>
 					<h2>Login form</h2>
 				</div>
 				<div class="modal-body">
@@ -73,31 +78,33 @@
 						<div class="form-group">
 							<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
 							<div class="col-sm-8">
-								<input type="email" class="form-control" name="username" placeholder="Email">
+								<input type="email" class="form-control" name="username"
+									placeholder="Email">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
 							<div class="col-sm-8">
-								<input type="password" class="form-control" name="password" placeholder="Password">
+								<input type="password" class="form-control" name="password"
+									placeholder="Password">
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
 								<div class="checkbox">
-									<label>
-										<input type="checkbox"> Remember me
+									<label> <input type="checkbox"> Remember me
 									</label>
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
-								<button type="button" class="btn btn-primary" onclick="onSubmit()">Sign in</button>
+								<button type="button" class="btn btn-primary"
+									onclick="onSubmit()">Sign in</button>
 							</div>
 						</div>
 					</form>
-				</div>			
+				</div>
 			</div>
 		</div>
 	</div>
