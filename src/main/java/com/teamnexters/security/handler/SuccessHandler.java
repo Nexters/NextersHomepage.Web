@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.teamnexters.util.HttpUtil;
 import com.teamnexters.util.JsonUtil;
 
 public class SuccessHandler implements AuthenticationSuccessHandler {
@@ -28,7 +29,6 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(jsonStr);
-
 	}
 	
 	private int isUserRoles(Object[] arrayUser) {

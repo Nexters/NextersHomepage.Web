@@ -1,6 +1,10 @@
 package com.teamnexters.controller;
 
+import java.io.IOException;
 import java.util.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teamnexters.dao.MemberDAO;
 import com.teamnexters.dto.MemberDTO;
+import com.teamnexters.util.HttpUtil;
 import com.teamnexters.util.JsonUtil;
 
 @Controller
@@ -22,13 +27,27 @@ public class LoginController {
 	MemberDTO memDto;
 	
 	@RequestMapping("/needlogin.do")
-	public @ResponseBody Map<String, Object> showNeedLogin(Model model){
-		return JsonUtil.putFailJsonContainer("LoginControllerERR0001", "접근이 거부되었습니다.");
+	public @ResponseBody Map<String, Object> showNeedLogin(HttpServletRequest request, HttpServletResponse response){
+		if(HttpUtil.isAjax(request)) {
+			return JsonUtil.putFailJsonContainer("LoginControllerERR0001", "로그인이 필요합니다.");
+		} else {
+			try {
+				response.sendRedirect(request.getContextPath()+"/");
+			} catch(Exception e) {}
+			return null;
+		}
 	}
 	
 	@RequestMapping("/expiredSession.do")
-	public @ResponseBody Map<String, Object> showSessionExpired(Model model){
-		return JsonUtil.putFailJsonContainer("LoginControllerERR0003", "세션이 파괴되었습니다.(중복로그인 불가능)");
+	public @ResponseBody Map<String, Object> showSessionExpired(HttpServletRequest request, HttpServletResponse response){
+		if(HttpUtil.isAjax(request)) {
+			return JsonUtil.putFailJsonContainer("LoginControllerERR0003", "세션이 파괴되었습니다.(중복로그인 불가능)");
+		} else {
+			try {
+				response.sendRedirect(request.getContextPath()+"/expiredSession.html");
+			} catch(Exception e) {}
+			return null;
+		}
 	}
 	
 	
