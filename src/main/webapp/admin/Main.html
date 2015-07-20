@@ -39,6 +39,14 @@
 	
 	<!-- Config File -->
 	<script src="../js/config.js"></script>
+	
+	<script src="../js/common.js"></script>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#mainTitle").click();
+		});
+	</script>
 </head>
 
 <body>
@@ -55,7 +63,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="Main.html">Nexters Admin</a>
+				<a class="navbar-brand" id="mainTitle" onclick="getPageContents('service/mainContents.html');">Nexters Admin</a>
 			</div>
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
@@ -97,6 +105,10 @@
 		</div>
 
 	</div>
+	<div class="wrap-loading display-none">
+    	<div><img src="../image/ajax-loader.gif" /></div>
+	</div>    
+
 	<!-- /#wrapper -->
     <script src="js/adminCommon.js"></script>
 

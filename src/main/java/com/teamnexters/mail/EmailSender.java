@@ -7,10 +7,7 @@ import javax.mail.internet.MimeMessage.RecipientType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
-
-import com.teamnexters.dto.*;
 
 @Component
 public class EmailSender implements SendMailService {

@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.teamnexters.util.HttpUtil;
 import com.teamnexters.util.JsonUtil;
 
 public class SuccessHandler implements AuthenticationSuccessHandler {
