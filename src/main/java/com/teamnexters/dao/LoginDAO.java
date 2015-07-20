@@ -5,7 +5,7 @@ import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
 
-import com.teamnexters.mapper.MemberMapper;
+import com.teamnexters.mapper.LoginMapper;
 
 /**
  * To use spring framework security service 
@@ -13,7 +13,7 @@ import com.teamnexters.mapper.MemberMapper;
  *
  */
 @Component
-public class LoginDAO implements MemberMapper {
+public class LoginDAO implements LoginMapper {
     protected Log log = LogFactory.getLog(LoginDAO.class);
 
     private SqlSession SqlSession;
@@ -21,15 +21,6 @@ public class LoginDAO implements MemberMapper {
     public void setSqlSession(SqlSession sqlSession) {
 		SqlSession = sqlSession;
 	}
-
-	/**
-     * Search User Account Information by using ID and password
-     * @param User Account Information
-     * @return Member DTO Class
-     */
-    public Object searchMember(Object params){
-    	return SqlSession.selectOne("searchMember", params);
-    }
     
     /**
      * Search User Account Information by using ID

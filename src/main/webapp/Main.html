@@ -16,15 +16,8 @@
 			<a class="navbar-brand" href="Main.html">Nexters</a>
 		</div>
 		<div class="container-fluid">
-			<div class="navbar-header">
-				<ul class="nav navbar-nav">
-					<li><a href="Main.html">Home</a></li>
-					<li><a href="About.html">About</a></li>
-					<li><a href="Recruiting.html">Recruiting</a></li>
-					<li><a href="#">Members</a></li>
-					<li><a href="#">Product</a></li>
-					<li><a href="Contact.html">Contact</a></li>
-				</ul>
+			<div class="navbar-header" id="jqxMenu">
+				
 			</div>
 
 			<div class="navbar-header navbar-right">
@@ -35,15 +28,13 @@
 		</div>
 	</nav>
 
-	<!--Navigarion bar end-->
-
 	<div class="container custom-center">
 		<div class="jumbotron no-margin">
 			<img src="image/main_picture.png" class="img-responsive">
 		</div>	
 	</div>
 
-	
+	<span id="status"></span>
 
 	<!--modal login popup-->
 
@@ -61,13 +52,13 @@
 						<div class="form-group">
 							<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
 							<div class="col-sm-8">
-								<input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+								<input type="email" class="form-control" name="username" placeholder="Email">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
 							<div class="col-sm-8">
-								<input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+								<input type="password" class="form-control" name="password" placeholder="Password">
 							</div>
 						</div>
 						<div class="form-group">
@@ -81,11 +72,10 @@
 						</div>
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
-								<button type="submit" class="btn btn-primary">Sign in</button>
+								<button type="button" class="btn btn-primary" onclick="onSubmit();">Sign in</button>
 							</div>
 						</div>
 					</form>
-					
 				</div>			
 			</div>
 		</div>
@@ -95,6 +85,8 @@
 
 	<script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
+	<script src="menuInfo/menu.js" type="text/javascript"></script>
 
 </body>
 </html>

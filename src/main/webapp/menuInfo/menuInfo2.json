@@ -1,0 +1,29 @@
+{
+    "menu": [
+       
+        {
+            "text": "About",
+            "id": "1",
+            "parentid": "-1",
+            "url":"About.html"
+        },
+        {
+            "text": "Activity",
+            "id": "2",
+            "parentid": "-1",
+            "url":"Recruiting.html"
+        },
+        {
+            "text": "Contact",
+            "id": "3",
+            "parentid": "-1",
+            "url":"Contact.html"
+        },
+        {
+            "text": "Sign In",
+            "id": "4",
+            "parentid": "-1",
+            "url":"Contact.html"
+        }
+    ]
+}
