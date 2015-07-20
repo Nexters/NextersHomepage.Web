@@ -39,11 +39,10 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2 text">
-                            <h1><strong>Bootstrap</strong> Login Form</h1>
+                            <h1><strong>Nexters</strong> Admin Login</h1>
                             <div class="description">
                             	<p>
-	                            	This is a free responsive login form made with Bootstrap. 
-	                            	Download it on <a href="http://azmind.com"><strong>AZMIND</strong></a>, customize and use it as you like!
+	                            	안녕하세요! 연합 앱개발 동아리 넥스터즈입니다!
                             	</p>
                             </div>
                         </div>
@@ -52,8 +51,8 @@
                         <div class="col-sm-6 col-sm-offset-3 form-box">
                         	<div class="form-top">
                         		<div class="form-top-left">
-                        			<h3>Login to our site</h3>
-                            		<p>Enter your username and password to log on:</p>
+                        			<h3>Admin에 로그인하기</h3>
+                            		<p>아래에 아이디와 비밀번호를 입력해주세요 :</p>
                         		</div>
                         		<div class="form-top-right">
                         			<i class="fa fa-lock"></i>
@@ -62,14 +61,14 @@
                             <div class="form-bottom">
 			                    <form role="form" action="" method="post" class="login-form">
 			                    	<div class="form-group">
-			                    		<label class="sr-only" for="form-username">Username</label>
-			                        	<input type="text" name="username" placeholder="Username..." class="form-username form-control" id="form-username">
+			                    		<label class="sr-only" for="form-username">아이디</label>
+			                        	<input type="text" name="username" placeholder="아이디..." class="form-username form-control" id="form-username">
 			                        </div>
 			                        <div class="form-group">
-			                        	<label class="sr-only" for="form-password">Password</label>
-			                        	<input type="password" name="password" placeholder="Password..." class="form-password form-control" id="form-password">
+			                        	<label class="sr-only" for="form-password">비밀번호</label>
+			                        	<input type="password" name="password" placeholder="비밀번호..." class="form-password form-control" id="form-password">
 			                        </div>
-			                        <button type="button" class="btn" onclick="onSubmit();">Sign in!</button>
+			                        <button type="button" class="btn" id="signin">로그인!</button>
 			                    </form>
 		                    </div>
                         </div>
@@ -79,12 +78,20 @@
             
         </div>
 
-
+		<div class="wrap-loading display-none">
+		    <div><img src="image/ajax-loader.gif" /></div>
+		</div>
+		
         <!-- Javascript -->
         <script src="assets/js/jquery-1.11.1.min.js"></script>
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>
         <script src="assets/js/jquery.backstretch.min.js"></script>
         <script src="assets/js/scripts.js"></script>
+       <!-- Config File -->
+		<script src="js/config.js"></script>
+		
+		<script src="js/common.js"></script>
+	
         <script src="js/login_admin.js"></script>
         
         <!--[if lt IE 10]>
