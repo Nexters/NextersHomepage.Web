@@ -33,13 +33,12 @@
 		</selectKey>
 	</insert>
 	
+	
 	<select id="getMemberDetailInfo" resultType="Map">
-		select "userNo","userId","userNm","userCellNum",(select "value"
-									from member_info_value
-									where "userNo"=#{userNo} and "attr"='nowCompany') as nowCompany,
-								(select "value"
-									from member_info_value
-									where "userNo"=#{userNo} and "attr"='finalSchool') as finalSchool
+		select "userNo","userId","userNm","userCellNum",
+		<foreach item="info" index="index" collection="list" separator=",">
+			(select "value" as ${info} from member_info_value where "userNo"=#{userNo} and "attr"=#{info}) 
+		</foreach>
 		from member
 		where "userNo"=#{userNo}
 	</select>
@@ -49,16 +48,12 @@
 		update member
 		set "userNm"=#{userNm}
 		where "userNo"=#{userNo};
-		
-		update member_info_value
-		set "value"=#{nowCompany}
-		where "userNo"=#{userNo} and "attr"='nowCompany';
-		
-		update member_info_value
-		set "value"=#{finalSchool}
-		where "userNo"=#{userNo} and "attr"='finalSchool'
 	</update>
-	
+	<update id="updateMemberInfo">
+			update member_info_value
+			set "value"=#{value}
+			where "userNo"=#{userNo} and "attr"=#{attr}
+	</update>
 	<delete id="deleteMember">
 		delete from member_info_value
 		where "userNo"=#{userNo};
