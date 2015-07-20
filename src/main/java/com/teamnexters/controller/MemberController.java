@@ -109,6 +109,13 @@ public class MemberController {
 		Map<String, Object> mapReqParam = new HashMap<String, Object>();
 		
 		String tmp="N";
+		tmp+=grade;
+		if(position.equals("개발자")){
+			tmp+="T";
+		}
+		else{
+			tmp+="D";
+		}
 		
 		mapReqParam.put("userNo",tmp);
 		
@@ -122,10 +129,18 @@ public class MemberController {
 	
 	@RequestMapping("/memberDetail.do")
 	public @ResponseBody Map<String, Object> memberDetail(@RequestParam(value ="userNo", required=false) String userNo){
-		Map<String, Object> mapReqParam=new HashMap<String, Object>();
-		mapReqParam.put("userNo", "N00T027");
+		
+		ArrayList<MemberInfoDTO> list=(ArrayList<MemberInfoDTO>)memInfoDao.getMemberInfoAttr();
+		ArrayList<String> arrayList=new ArrayList<String>();
+		for(int i=0;i<list.size();i++){
+			
+			arrayList.add(list.get(i).getAttr());
+		}
+		Map<String,Object> map=new HashMap<String, Object>();
+		map.put("list", arrayList);
+		map.put("userNo","N00T001");
 		Map<String, Object> mapMemberReqData =new HashMap<String,Object>();
-		mapMemberReqData.put("memberData", memDao.getMemberDetailInfo(mapReqParam));
+		mapMemberReqData.put("memberData", memDao.getMemberDetailInfo(map));
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
 	
@@ -135,11 +150,32 @@ public class MemberController {
 		if(!memInfoDao.memberInfoValueExist(params)){
 			memInfoDao.insertInfoValue(params.get("userNo"));
 		}
+		ArrayList<MemberInfoDTO> list=(ArrayList<MemberInfoDTO>)memInfoDao.getMemberInfoAttr();
+		ArrayList<String> arrayList=new ArrayList<String>();
+		for(int i=0;i<list.size();i++){
+			arrayList.add(list.get(i).getAttr());
+		}
 		
-		
+		Map<String, Object> mapReqParam =new HashMap<String, Object>();
+		mapReqParam.put("list", list);
+		mapReqParam.put("userNo", params.get("userNo"));
+		mapReqParam.put("userNm", params.get("userNm"));
 		Map<String, Object> mapMemberReqData=new HashMap<String, Object>();
-		mapMemberReqData.put("updateSuc", memDao.updateMember(params));
-		
+		mapMemberReqData.put("updateSuc", memDao.updateMember(mapReqParam));
+
+		//
+		for(int i=0;i<list.size();i++){
+			String strAttr = list.get(i).getAttr();
+			String strAttrValue = params.get(strAttr);
+			
+			if(strAttrValue != null) {
+				HashMap<String, Object> paramReqData = new HashMap<String, Object>();
+				paramReqData.put("attr", strAttr);
+				paramReqData.put("value", strAttrValue);
+				paramReqData.put("userNo", params.get("userNo"));
+				memInfoDao.updateMemberInfo(paramReqData);
+			}
+		}
 		
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
@@ -147,7 +183,7 @@ public class MemberController {
 	@RequestMapping("/memberRemove.do")
 	public @ResponseBody Map<String, Object> memberDelete(@RequestParam(value="userNo", required=false) String userNo){
 		Map<String, Object> mapReqParam=new HashMap<String, Object>();
-		mapReqParam.put("userNo", "N00T060");
+		mapReqParam.put("userNo", userNo);
 		Map<String, Object> mapMemberReqData=new HashMap<String, Object>();
 		mapMemberReqData.put("deleteSuc",memDao.deleteMember(mapReqParam));
 		
