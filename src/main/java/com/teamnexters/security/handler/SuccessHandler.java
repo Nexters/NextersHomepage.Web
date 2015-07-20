@@ -23,11 +23,25 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
 		ObjectMapper om = new ObjectMapper();
 		Map<String, Object> mapRslt = new HashMap<String, Object>();
 		mapRslt.put("userName", authentication.getName());
+		mapRslt.put("userRoles", isUserRoles(authentication.getAuthorities().toArray()));
 		String jsonStr = om.writeValueAsString(JsonUtil.putSuccessJsonContainer(mapRslt));
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(jsonStr);
 
+	}
+	
+	private int isUserRoles(Object[] arrayUser) {
+		int intRole = 2;
+		for(int i=0; i<arrayUser.length; i++) {
+			String strUserRole = arrayUser[i].toString();
+			if("ROLE_ADMIN".equals(strUserRole))
+				intRole--;
+			else if("ROLE_SUPERADMIN".equals(strUserRole))
+				intRole--;
+		}
+		return intRole;
+		
 	}
 	
 	
