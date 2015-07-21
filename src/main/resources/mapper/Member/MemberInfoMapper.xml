@@ -4,6 +4,7 @@
 <mapper namespace="com.teamnexters.mapper">   
 	<select id="getMemberInfoAttr" resultType="com.teamnexters.dto.MemberInfoDTO">  
 	       SELECT * FROM member_info
+	       ORDER BY "attr" ASC
 	</select>
 	<select id="getMemberInfoValue" resultType="Map">  
 	       SELECT
@@ -19,7 +20,7 @@
 		          	)
 	        	</if>
 	        </trim>
-	       ORDER BY "userNo" DESC
+	       ORDER BY "userNo" DESC, "attr" ASC
 	</select>
 	
 	<select id="memberInfoValueExist" resultType="Boolean">

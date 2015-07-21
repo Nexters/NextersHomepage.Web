@@ -4,7 +4,7 @@ function requestJsonData(requestUrl, requestParam, successFunction) {
 		type : "POST",
 		async: true,
 		data : requestParam,
-		dataType : "json" ,
+		dataType : "json",
 		beforeSend:function(){
 	        $('.wrap-loading').removeClass('display-none');
 	    },

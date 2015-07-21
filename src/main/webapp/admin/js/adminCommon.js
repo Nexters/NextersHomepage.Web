@@ -1,5 +1,8 @@
 function getPageContents(fileLocation) {
 	$("#page-wrapper").load(fileLocation);
+	if($(".navbar-ex1-collapse").attr("aria-expanded")=="true") {
+		$(".navbar-toggle").click();
+	}
 }
 
 function getUserInformation(data) {
