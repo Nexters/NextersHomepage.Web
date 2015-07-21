@@ -132,7 +132,7 @@ public class MemberController {
 		
 		mapMemberReqData.put("insertSuc", insertSuc);
 		emailSender.sendEmail("ksi4687@nate.com");
-		System.out.println(emailSender.toString());
+		
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 		
 	}
