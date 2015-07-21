@@ -25,7 +25,7 @@ function getGenerList(rsltData) {
 		generList=generList+"<li><a href=\"#\"  gener=\""+data.generList[i].gener+"\">"+num+"</a></li>\n";
 	}
 	$("#memberListPage").html(generList);
-	$("#memberListPage li a").click(function() {
+	$("#memberListPage li a,#showAll a").click(function() {
 		requestJsonData("api/main/memberList.do", {gener:$(this).attr("gener")}, getMemberList);
 	});
 

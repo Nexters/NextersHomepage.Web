@@ -35,7 +35,10 @@ public class MemberController {
 	@RequestMapping("/api/main/memberList.do")
 	public @ResponseBody Map<String, Object> getMemberListByGener(@RequestParam(value="gener") String strGener ){
 		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
-		ArrayList<Map> memberList = (ArrayList<Map>) memDao.getMemberListByGener(strGener);
+		Map<String, Object> mapMemberSqlReqData = new HashMap<String, Object>();
+		
+		mapMemberSqlReqData.put("gener", strGener);
+		ArrayList<Map> memberList = (ArrayList<Map>) memDao.getMemberListByGener(mapMemberSqlReqData);
 
 		ArrayList<String> memberArrayList = new ArrayList<String>();
 		
@@ -43,7 +46,6 @@ public class MemberController {
 			memberList.get(i).put("userAddInfo", new ArrayList<Map>());
 			memberArrayList.add(memberList.get(i).get("userNo").toString());
 		}
-		logger.debug("UserList::"+memberArrayList.toString());
 		
 		ArrayList<Map> memberInfoValue = (ArrayList<Map>)memInfoDao.getMemberInfoValue(new HashMap<String, Object>().put("userNoArray", memberArrayList));
 		for(int i=0; i<memberInfoValue.size(); i++) {

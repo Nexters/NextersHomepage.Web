@@ -15,7 +15,11 @@
 		   SELECT "userNo","userNm" FROM member WHERE "userNm" LIKE '%' || #{str} || '%'
 	</select>
 	<select id="getMemberListByGener" resultType="Map">  
-	       SELECT "userNo", "userId", "userNm", "userCellNum" FROM member WHERE "userNo" LIKE '_' || #{gener} || '____' ORDER BY "userNm" ASC
+	       SELECT "userNo", "userId", "userNm", "userCellNum" FROM member WHERE  1=1
+	       <if test="gener != null and gener != ''">
+	       	AND "userNo" LIKE '_' || #{gener} || '____' 
+	       </if>
+	       ORDER BY "userNo" DESC
 	</select>
 	<select id="getGenerList" resultType="Map">
 		SELECT "gener"

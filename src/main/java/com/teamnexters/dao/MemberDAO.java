@@ -27,8 +27,8 @@ public class MemberDAO implements MemberMapper {
     	return sqlsession.selectList("userTag",str);
     }
     
-	public Object getMemberListByGener(String strGener) {
-		return sqlsession.selectList("getMemberListByGener",strGener);
+	public Object getMemberListByGener(Object paramObj) {
+		return sqlsession.selectList("getMemberListByGener",paramObj);
 	}
 	
 	public Object getMemberAttrList() {
