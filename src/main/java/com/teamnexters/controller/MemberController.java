@@ -61,6 +61,36 @@ public class MemberController {
 		return  JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping("/api/admin/memberList.do")
+	public @ResponseBody Map<String, Object> getMemberAdminListByGener(@RequestParam(value="gener") String strGener ){
+		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
+		Map<String, Object> mapMemberSqlReqData = new HashMap<String, Object>();
+		
+		mapMemberSqlReqData.put("gener", strGener);
+		ArrayList<Map> memberList = (ArrayList<Map>) memDao.getMemberAdminListByGener(mapMemberSqlReqData);
+
+		ArrayList<String> memberArrayList = new ArrayList<String>();
+		
+		for (int i=0; i<memberList.size(); i++) {
+			memberList.get(i).put("userAddInfo", new ArrayList<Map>());
+			memberArrayList.add(memberList.get(i).get("userNo").toString());
+		}
+		
+		ArrayList<Map> memberInfoValue = (ArrayList<Map>)memInfoDao.getMemberInfoValue(new HashMap<String, Object>().put("userNoArray", memberArrayList));
+		for(int i=0; i<memberInfoValue.size(); i++) {
+			String strInfoUserNo = memberInfoValue.get(i).get("userNo").toString();
+			for(int j=0; j<memberList.size(); j++){
+				if(memberList.get(j).get("userNo").equals(strInfoUserNo)) {
+					((ArrayList<Map>)memberList.get(j).get("userAddInfo")).add(memberInfoValue.get(i));
+				}
+			}
+		}
+		
+		mapMemberReqData.put("userList", memberList);
+		return  JsonUtil.putSuccessJsonContainer(mapMemberReqData);
+	}
+	
 	@RequestMapping("/api/main/memberAttr.do")
 	public @ResponseBody Map<String, Object> getMemberAttr(){
 		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();

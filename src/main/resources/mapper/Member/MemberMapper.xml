@@ -21,6 +21,13 @@
 	       </if>
 	       ORDER BY "userNo" DESC
 	</select>
+	<select id="getMemberAdminListByGener" resultType="Map">  
+	       SELECT "userNo", "userId", "userNm", "userCellNum", "userStatus", "userRole" FROM member WHERE  1=1
+	       <if test="gener != null and gener != ''">
+	       	AND "userNo" LIKE '_' || #{gener} || '____' 
+	       </if>
+	       ORDER BY "userNo" DESC
+	</select>
 	<select id="getGenerList" resultType="Map">
 		SELECT "gener"
 			, count(*) as cnt

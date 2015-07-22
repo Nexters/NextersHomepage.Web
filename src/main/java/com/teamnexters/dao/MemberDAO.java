@@ -31,6 +31,10 @@ public class MemberDAO implements MemberMapper {
 		return sqlsession.selectList("getMemberListByGener",paramObj);
 	}
 	
+	public Object getMemberAdminListByGener(Object paramObj) {
+		return sqlsession.selectList("getMemberAdminListByGener",paramObj);
+	}
+	
 	public Object getMemberAttrList() {
 		return sqlsession.selectList("getMemberInfoAttr");
 	}
