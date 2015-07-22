@@ -36,7 +36,7 @@ public class EmailSender implements SendMailService {
 		String host="smtp.gmail.com";
 
 		String fromName="";
-		String from="teamnexters@gmail.com";
+		String from="";
 		String mailTo=email;
 		String password="";
 
@@ -83,8 +83,8 @@ public class EmailSender implements SendMailService {
 
 		String fromName=name;
 		String from=email;
-		String mailTo="teamnexters@gmail.com";
-		String password="stxw15!%";
+		String mailTo="";
+		String password="";
 
 
 		try{
