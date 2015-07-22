@@ -131,7 +131,9 @@ public class MemberController {
 		Map<String, Object> mapMemberReqData =new HashMap<String, Object>();
 		
 		mapMemberReqData.put("insertSuc", insertSuc);
-		emailSender.sendEmail("ksi4687@nate.com");
+		String subject="[공지]회원가입 안내";
+		String content="가입을 축하합니다";
+		emailSender.sendEmail(subject,content,"ksi4687@nate.com");
 		
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 		
@@ -198,5 +200,16 @@ public class MemberController {
 		mapMemberReqData.put("deleteSuc",memDao.deleteMember(mapReqParam));
 		
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
+	}
+	
+	@RequestMapping("/contact.do")
+	public @ResponseBody Map<String, Object> contactMailSubmit(@RequestParam Map<String,String> params) throws MessagingException{
+		String name=params.get("userName");
+		String email=params.get("userEmail");
+		String comment=params.get("userComment");
+		
+		emailSender.sendContact(name, comment, email);
+		
+		return JsonUtil.putSuccessJsonContainer(null);
 	}
 }
