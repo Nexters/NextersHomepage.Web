@@ -36,9 +36,9 @@ public class EmailSender implements SendMailService {
 		String host="smtp.gmail.com";
 
 		String fromName="";
-		String from="teamnexters@gmail.com";
+		String from="";
 		String mailTo=email;
-		String password="stxw15!%";
+		String password="";
 
 
 		try{
@@ -83,8 +83,8 @@ public class EmailSender implements SendMailService {
 
 		String fromName=name;
 		String from=email;
-		String mailTo="teamnexters@gmail.com";
-		String password="stxw15!%";
+		String mailTo="";
+		String password="";
 
 
 		try{
@@ -108,10 +108,10 @@ public class EmailSender implements SendMailService {
 			InternetAddress[] address={new InternetAddress(mailTo)};
 			message.setRecipients(Message.RecipientType.TO, address);
 			
-			message.addFrom(InternetAddress.parse(from));
+			
 			message.setSubject("넥스터즈 Contact : "+ email+" "+ name);
 			message.setSentDate(new java.util.Date());
-			message.setContent(content.replaceAll("\n","<br>"),"text/html;charset=utf-8");
+			message.setContent(content,"text/html;charset=utf-8");
 
 			Transport.send(message);
 		} catch(MessagingException e){
