@@ -137,7 +137,7 @@ public class MemberController {
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
 	
-	@RequestMapping("/memberAdd.do")
+	@RequestMapping("api/admin/SmemberAdd.do")
 	public @ResponseBody Map<String,Object> memberAdd(@RequestParam(value = "grade", required= false) String grade,
 			@RequestParam(value = "position", required= false) String position,
 			@RequestParam(value = "userId", required= false) String userId,
@@ -147,14 +147,17 @@ public class MemberController {
 		
 		String tmp="N";
 		tmp+=grade;
-		/*if(position.equals("개발자")){
+		if(position.equals("개발자")){
 			tmp+="T";
 		}
 		else{
 			tmp+="D";
-		} */
+		} 
 		
-		mapReqParam.put("userNo","N00T");
+		mapReqParam.put("userNo",tmp);
+		mapReqParam.put("userId", userId);
+		mapReqParam.put("userNm", userNm);
+		mapReqParam.put("userCellNum", userCellNum);
 		
 		int insertSuc=(Integer)memDao.insertUser(mapReqParam);
 		
@@ -169,7 +172,7 @@ public class MemberController {
 		
 	}
 	
-	@RequestMapping("/memberDetail.do")
+	@RequestMapping("api/admin/memberDetail.do")
 	public @ResponseBody Map<String, Object> memberDetail(@RequestParam(value ="userNo", required=false) String userNo){
 		
 		ArrayList<MemberInfoDTO> list=(ArrayList<MemberInfoDTO>)memInfoDao.getMemberInfoAttr();
@@ -180,13 +183,13 @@ public class MemberController {
 		}
 		Map<String,Object> map=new HashMap<String, Object>();
 		map.put("list", arrayList);
-		map.put("userNo","N00T001");
+		map.put("userNo",userNo);
 		Map<String, Object> mapMemberReqData =new HashMap<String,Object>();
 		mapMemberReqData.put("memberData", memDao.getMemberDetailInfo(map));
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
 	
-	@RequestMapping("/memberModify.do")
+	@RequestMapping("api/admin/memberModify.do")
 	public @ResponseBody Map<String, Object> memberModify(@RequestParam Map<String,String> params){
 		
 		if(!memInfoDao.memberInfoValueExist(params)){
@@ -222,7 +225,7 @@ public class MemberController {
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
 	
-	@RequestMapping("/memberRemove.do")
+	@RequestMapping("api/admin/memberRemove.do")
 	public @ResponseBody Map<String, Object> memberDelete(@RequestParam(value="userNo", required=false) String userNo){
 		Map<String, Object> mapReqParam=new HashMap<String, Object>();
 		mapReqParam.put("userNo", userNo);
@@ -239,6 +242,24 @@ public class MemberController {
 		String comment=params.get("userComment");
 		
 		emailSender.sendContact(name, comment, email);
+		
+		return JsonUtil.putSuccessJsonContainer(null);
+	}
+	@RequestMapping("api/admin/memberInfoAdd.do")
+	public @ResponseBody Map<String, Object> insertMemberInfo(@RequestParam(value="attr") String attr,@RequestParam(value="desc") String desc){
+		Map<String, String> params =new HashMap<String,String>(); 
+		params.put("attr", attr);
+		params.put("desc", desc);
+		
+		memInfoDao.insertInfo(params);
+		
+		return JsonUtil.putSuccessJsonContainer(null);
+	}
+	@RequestMapping("api/admin/memberInfoRemove.do")
+	public @ResponseBody Map<String, Object> deleteMemberInfo(@RequestParam(value="desc") String desc){
+		Map<String ,String> params=new HashMap<String,String>();
+		params.put("desc", desc);
+		memInfoDao.deleteInfo(params);
 		
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
