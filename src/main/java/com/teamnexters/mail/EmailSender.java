@@ -38,7 +38,7 @@ public class EmailSender implements SendMailService {
 		String fromName="";
 		String from="teamnexters@gmail.com";
 		String mailTo=email;
-		String password="stxw15!%";
+		String password="";
 
 
 		try{
