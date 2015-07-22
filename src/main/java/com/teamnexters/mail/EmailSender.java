@@ -36,9 +36,9 @@ public class EmailSender implements SendMailService {
 		String host="smtp.gmail.com";
 
 		String fromName="";
-		String from="teamnexters@gmail.com";
+		String from="";
 		String mailTo=email;
-		String password="stxw15!%";
+		String password="";
 
 
 		try{
