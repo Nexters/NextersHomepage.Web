@@ -2,10 +2,10 @@
 function onSubmit(data) {
 		if(data.result=="success") {
 			if(data.resData[0].userRoles<2) {
-				location.href="admin/Main.html";
+				location.href="Main.html";
 			} else {
 				alert("Admin 페이지에 접근 권한이 없습니다.")
-				location.href="./";
+				location.href="../index.html";
 			}
 		} else {
 			alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: "+data.resData[0].errorCd+"\n오류 메시지: "+data.resData[0].errorMsg);
