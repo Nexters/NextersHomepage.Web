@@ -34,5 +34,11 @@ public class MemberInfoDAO implements MemberInfoMapper {
     public void insertInfoValue(Object userNo){
     	sqlsession.insert("insertInfoValue",userNo);
     }
+    public void insertInfo(Object params){
+    	sqlsession.insert("insertInfo",params);
+    }
+    public void deleteInfo(Object params){
+    	sqlsession.delete("deleteInfo",params);
+    }
     
 }

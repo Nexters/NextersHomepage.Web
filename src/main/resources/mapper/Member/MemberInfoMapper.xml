@@ -33,4 +33,11 @@
 		insert into member_info_value("userNo","attr") values(#{userNo},'nowCompany');
 		insert into member_info_value("userNo","attr") values(#{userNo},'finalSchool')
 	</insert>
+	
+	<insert id="insertInfo">
+		insert into member_info values(#attr,#desc);
+	</insert>
+	<delete id="deleteInfo">
+		delete from member_info where "desc"=#desc;
+	</delete>
 </mapper>

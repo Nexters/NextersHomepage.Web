@@ -13,6 +13,7 @@ import javax.mail.internet.MimeMessage.RecipientType;
 import javax.mail.internet.MimeUtility;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,10 @@ public class EmailSender implements SendMailService {
 	@Autowired
 	private JavaMailSender mailSender;
 
-
+	@Value("#{emailconfig['email']}")
+	private String id;
+	@Value("#{emailconfig['password']}")
+	private String pass;
 
 	@Override
 	public void sendEmail(String subject, String content,String email) throws MessagingException {
@@ -36,9 +40,9 @@ public class EmailSender implements SendMailService {
 		String host="smtp.gmail.com";
 
 		String fromName="";
-		String from="";
+		String from=id;
 		String mailTo=email;
-		String password="";
+		String password=pass;
 
 
 		try{
@@ -83,10 +87,10 @@ public class EmailSender implements SendMailService {
 
 		String fromName=name;
 		String from=email;
-		String mailTo="";
-		String password="";
+		String mailTo=id;
+		String password=pass;
 
-
+		
 		try{
 			Properties props=new Properties();
 			props.put("mail.smtp.starttls.enable", "true");
