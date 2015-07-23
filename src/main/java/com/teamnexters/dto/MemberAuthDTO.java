@@ -1,5 +1,8 @@
 package com.teamnexters.dto;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MemberAuthDTO {
 	private String auth_key;
 	private String auth_user;

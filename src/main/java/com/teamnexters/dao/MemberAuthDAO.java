@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.teamnexters.dto.MemberAuthDTO;
 import com.teamnexters.mapper.MemberAuthMapper;
 
 @Component
@@ -18,4 +19,8 @@ public class MemberAuthDAO implements MemberAuthMapper {
     public Object getMemberAuth(String key){
     	return sqlsession.selectOne("getMemberAuth", key);
     }
+
+	public void insertMemberAuth(MemberAuthDTO memberAuthDto){
+		sqlsession.insert("insertMemberAuth",memberAuthDto);
+	}
 }
