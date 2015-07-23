@@ -6,8 +6,13 @@
 	<select id="getMemberAuth" resultType="com.teamnexters.dto.MemberAuthDTO">  
 	       SELECT "auth_user", "auth_valid", "insDate" FROM member_auth WHERE "auth_key" = #{key}
 	</select>
+	
 	<insert id="insertMemberAuth">
 		insert into member_auth values(#{auth_key},#{auth_user},'Y',#{auth_insDate})
+	</insert>
+	
+	<insert id="setMemberAuthValid">
+		UPDATE member_auth SET auth_valid=#{valid} WHERE "auth_key" = #{key}
 	</insert>
 
 </mapper>

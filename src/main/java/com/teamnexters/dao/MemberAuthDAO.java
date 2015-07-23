@@ -19,7 +19,11 @@ public class MemberAuthDAO implements MemberAuthMapper {
     public Object getMemberAuth(String key){
     	return sqlsession.selectOne("getMemberAuth", key);
     }
-
+    
+    public void setMemberAuthValid(Object paramObj){
+		sqlsession.insert("setMemberAuthValid",paramObj);
+	}
+    
 	public void insertMemberAuth(MemberAuthDTO memberAuthDto){
 		sqlsession.insert("insertMemberAuth",memberAuthDto);
 	}

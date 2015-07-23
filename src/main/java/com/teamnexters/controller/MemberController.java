@@ -284,6 +284,8 @@ public class MemberController {
 		
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
+	
+	@SuppressWarnings("unchecked")
 	@RequestMapping("api/main/userAuth.do")
 	public @ResponseBody Map<String, Object> authUserInfo(@RequestParam(value="key") String strKey) {
 		MemberAuthDTO memAuthData = (MemberAuthDTO)memAuthDao.getMemberAuth(strKey);
@@ -295,9 +297,7 @@ public class MemberController {
 		} else if("N".equals(memAuthData.getAuth_valid())) {
 			return JsonUtil.putFailJsonContainer("MemberControllerERR002", "만료된 인증 값입니다.");
 		}
-		
-		// 유호기간 확인 절차
-		
+				
 		try {
 			Date authDate = format.parse(memAuthData.getAuth_insDate());
 			Calendar c = Calendar.getInstance(); 
@@ -312,14 +312,18 @@ public class MemberController {
 			Date nowDate = new Date();
 			lnNowDate = nowDate.getTime();
 			
-			if(lnNowDate>lnValidDate)
+			if(lnNowDate>lnValidDate){
+				HashMap<String, Object> mapChgValid = new HashMap<String, Object>();
+				mapChgValid.put("valid", "N");
+				mapChgValid.put("key", strKey);
+				memAuthDao.setMemberAuthValid(mapChgValid);
 				return JsonUtil.putFailJsonContainer("MemberControllerERR003", "만료된 인증 값입니다.");
-			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
+			return JsonUtil.putFailJsonContainer("MemberControllerERR999", "알 수 없는 오류가 발생했습니다.");
 		}
-		//
+		
 		Map<String, Object> mapUserData = new HashMap<String, Object>();
 		MemberDTO memDto = (MemberDTO) memDao.searchByUserName(memAuthData.getAuth_user());
 		mapUserData.put("userName", memDto.getUserNm());
