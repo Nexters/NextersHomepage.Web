@@ -205,6 +205,7 @@ public class MemberController {
 		mapReqParam.put("list", list);
 		mapReqParam.put("userNo", params.get("userNo"));
 		mapReqParam.put("userNm", params.get("userNm"));
+		mapReqParam.put("userCellNum", params.get("userCellNum"));
 		Map<String, Object> mapMemberReqData=new HashMap<String, Object>();
 		mapMemberReqData.put("updateSuc", memDao.updateMember(mapReqParam));
 
