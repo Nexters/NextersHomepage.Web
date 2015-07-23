@@ -264,4 +264,11 @@ public class MemberController {
 		
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
+	
+	@RequestMapping("api/main/userAuth.do")
+	public @ResponseBody Map<String, Object> authUserInfo(@RequestParam(value="key") String strKey) {
+		
+		return null;
+		
+	}
 }
