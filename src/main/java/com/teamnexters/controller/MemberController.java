@@ -1,19 +1,24 @@
 package com.teamnexters.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.mail.MessagingException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.teamnexters.dao.MemberAuthDAO;
 import com.teamnexters.dao.MemberDAO;
 import com.teamnexters.dao.MemberInfoDAO;
+import com.teamnexters.dto.MemberAuthDTO;
 import com.teamnexters.dto.MemberDTO;
 import com.teamnexters.dto.MemberInfoDTO;
 import com.teamnexters.mail.EmailSender;
@@ -28,6 +33,8 @@ public class MemberController {
 	MemberDAO memDao;
 	@Autowired
 	MemberInfoDAO memInfoDao;
+	@Autowired
+	MemberAuthDAO memAuthDao;
 	@Autowired
 	private EmailSender emailSender;
 		
@@ -267,8 +274,51 @@ public class MemberController {
 	
 	@RequestMapping("api/main/userAuth.do")
 	public @ResponseBody Map<String, Object> authUserInfo(@RequestParam(value="key") String strKey) {
+		MemberAuthDTO memAuthData = (MemberAuthDTO)memAuthDao.getMemberAuth(strKey);
+		Map<String, Object> mapRsltData = new HashMap<String, Object>();
+		SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmss");
 		
-		return null;
+		if(memAuthData==null) {
+			return JsonUtil.putFailJsonContainer("MemberControllerERR001", "존재하지 않는 인증 값입니다.");
+		} else if("N".equals(memAuthData.getAuth_valid())) {
+			return JsonUtil.putFailJsonContainer("MemberControllerERR002", "만료된 인증 값입니다.");
+		}
+		
+		// 유호기간 확인 절차
+		
+		try {
+			Date authDate = format.parse(memAuthData.getAuth_insDate());
+			Calendar c = Calendar.getInstance(); 
+			long lnValidDate;
+			long lnNowDate;
+			
+			c.setTime(authDate); 
+			c.add(Calendar.DATE, 1);
+			authDate = c.getTime();
+			lnValidDate = authDate.getTime();
+			
+			Date nowDate = new Date();
+			lnNowDate = nowDate.getTime();
+			
+			if(lnNowDate>lnValidDate)
+				return JsonUtil.putFailJsonContainer("MemberControllerERR003", "만료된 인증 값입니다.");
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//
+		Map<String, Object> mapUserData = new HashMap<String, Object>();
+		MemberDTO memDto = (MemberDTO) memDao.searchByUserName(memAuthData.getAuth_user());
+		mapUserData.put("userName", memDto.getUserNm());
+		mapUserData.put("userNo", memDto.getUserNo());
+		mapUserData.put("userId", memDto.getUserId());
+		mapUserData.put("userCellNum", memDto.getUserCellNum());
+		
+		ArrayList<MemberInfoDTO> memInfoDto = (ArrayList<MemberInfoDTO>) memInfoDao.getMemberInfoAttr();
+		mapRsltData.put("userInfo", mapUserData);
+		mapRsltData.put("info", memInfoDto);
+		return  JsonUtil.putSuccessJsonContainer(mapRsltData);
 		
 	}
 }

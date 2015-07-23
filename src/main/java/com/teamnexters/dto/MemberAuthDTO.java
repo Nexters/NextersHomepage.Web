@@ -4,7 +4,7 @@ public class MemberAuthDTO {
 	private String auth_key;
 	private String auth_user;
 	private String auth_valid;
-	private String auth_insDate;
+	private String insDate;
 	
 	public String getAuth_key() {
 		return auth_key;
@@ -25,10 +25,10 @@ public class MemberAuthDTO {
 		this.auth_valid = auth_valid;
 	}
 	public String getAuth_insDate() {
-		return auth_insDate;
+		return insDate;
 	}
-	public void setAuth_insDate(String auth_insDate) {
-		this.auth_insDate = auth_insDate;
+	public void setAuth_insDate(String insDate) {
+		this.insDate = insDate;
 	}
 	
 }

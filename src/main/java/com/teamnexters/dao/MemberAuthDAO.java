@@ -15,4 +15,7 @@ public class MemberAuthDAO implements MemberAuthMapper {
     @Autowired
     private SqlSession sqlsession;
      
+    public Object getMemberAuth(String key){
+    	return sqlsession.selectOne("getMemberAuth", key);
+    }
 }
