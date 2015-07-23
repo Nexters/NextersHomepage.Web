@@ -1,4 +1,3 @@
-
 function onSubmit(data) {
 		if(data.result=="success") {
 			if(data.resData[0].userRoles<2) {
