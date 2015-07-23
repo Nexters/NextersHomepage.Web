@@ -25,6 +25,8 @@ public class MemberController {
 	private static final Logger logger =  Logger.getLogger(MemberController.class);
 	
 	@Autowired
+	MemberDTO memDto;
+	@Autowired
 	MemberDAO memDao;
 	@Autowired
 	MemberInfoDAO memInfoDao;
@@ -142,7 +144,7 @@ public class MemberController {
 			@RequestParam(value = "position", required= false) String position,
 			@RequestParam(value = "userId", required= false) String userId,
 			@RequestParam(value = "userNm", required= false) String userNm,
-			@RequestParam(value = "userCellNum", required= false) String userCellNum) throws MessagingException{
+			@RequestParam(value = "userCellNum", required= false) String userCellNum){
 		Map<String, Object> mapReqParam = new HashMap<String, Object>();
 		
 		String tmp="N";
@@ -164,9 +166,7 @@ public class MemberController {
 		Map<String, Object> mapMemberReqData =new HashMap<String, Object>();
 		
 		mapMemberReqData.put("insertSuc", insertSuc);
-		String subject="[공지]회원가입 안내";
-		String content="가입을 축하합니다";
-		emailSender.sendEmail(subject,content,"ksi4687@nate.com");
+		
 		
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 		
@@ -261,6 +261,18 @@ public class MemberController {
 		Map<String ,String> params=new HashMap<String,String>();
 		params.put("desc", desc);
 		memInfoDao.deleteInfo(params);
+		
+		return JsonUtil.putSuccessJsonContainer(null);
+	}
+	
+	@RequestMapping("sendAuthEmail.do")
+	public @ResponseBody Map<String, Object> emailSend(@RequestParam(value="userNo", required=false) String userNo,@RequestParam(value="userId", required=false) String userId ) throws MessagingException{
+		
+		memDto.setUserNo(userNo);
+		memDto.setUserId(userId);
+		String subject="회원가입 안내";
+		String content="회원가입입니다 <br> ㅊㅋㅊㅋ";
+		emailSender.sendEmail(subject, content, memDto);
 		
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
