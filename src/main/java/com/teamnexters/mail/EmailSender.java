@@ -1,5 +1,6 @@
 package com.teamnexters.mail;
 
+import java.util.Date;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -19,12 +20,18 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.teamnexters.dao.MemberAuthDAO;
+import com.teamnexters.dto.MemberAuthDTO;
 import com.teamnexters.dto.MemberDTO;
 
 @Component
 public class EmailSender implements SendMailService {
 	@Autowired
 	private JavaMailSender mailSender;
+	@Autowired
+	private MemberAuthDAO memberAuthDao;
+	@Autowired
+	private MemberAuthDTO memberAuthDto;
 
 	@Value("#{emailconfig['email']}")
 	private String id;
@@ -50,12 +57,33 @@ public class EmailSender implements SendMailService {
 		String password=pass;
 
 		//String authenticode=memDto.getUserNo()+memDto.getUserId()+new java.util.Date();
-		String authenticode="N00T001"+"ksi4687@nate.com"+new java.util.Date();
+		Date date=new Date();
+		
+		String year=String.valueOf(date.getYear()-100);
+		String month="";
+		if((date.getMonth()+1)<10){
+			month="0"+(date.getMonth()+1);
+		}
+		else{
+			month=String.valueOf(date.getMonth()+1);
+		}
+		String day=String.valueOf(date.getDate());
+		String hours=String.valueOf(date.getHours());
+		String minute=String.valueOf(date.getMinutes());
+		String second=String.valueOf(date.getSeconds());
+		
+		String insDate=year+month+day+hours+minute+second;
+		
+		String authenticode=memDto.getUserNo()+mailTo+insDate;
 		
 		@SuppressWarnings("deprecation")
 		PasswordEncoder encoder = new Md5PasswordEncoder();
 	    String hashedCode = encoder.encodePassword(authenticode, null);
 	   
+	    memberAuthDto.setAuth_insDate(insDate);
+		memberAuthDto.setAuth_key(hashedCode);
+		memberAuthDto.setAuth_user(mailTo);
+		memberAuthDao.insertMemberAuth(memberAuthDto);
 	    String codeContent=content+"<br> 인증 url: <a href='abc.html?key="+hashedCode+"'>회원가입</a>";
 
 		try{

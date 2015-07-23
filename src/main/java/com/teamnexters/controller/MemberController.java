@@ -265,6 +265,7 @@ public class MemberController {
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
 	
+
 	@RequestMapping("sendAuthEmail.do")
 	public @ResponseBody Map<String, Object> emailSend(@RequestParam(value="userNo", required=false) String userNo,@RequestParam(value="userId", required=false) String userId ) throws MessagingException{
 		
@@ -275,5 +276,11 @@ public class MemberController {
 		emailSender.sendEmail(subject, content, memDto);
 		
 		return JsonUtil.putSuccessJsonContainer(null);
+	}
+	@RequestMapping("api/main/userAuth.do")
+	public @ResponseBody Map<String, Object> authUserInfo(@RequestParam(value="key") String strKey) {
+		
+		return null;
+
 	}
 }
