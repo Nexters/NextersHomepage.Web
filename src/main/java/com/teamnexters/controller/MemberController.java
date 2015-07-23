@@ -1,19 +1,24 @@
 package com.teamnexters.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.mail.MessagingException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.teamnexters.dao.MemberAuthDAO;
 import com.teamnexters.dao.MemberDAO;
 import com.teamnexters.dao.MemberInfoDAO;
+import com.teamnexters.dto.MemberAuthDTO;
 import com.teamnexters.dto.MemberDTO;
 import com.teamnexters.dto.MemberInfoDTO;
 import com.teamnexters.mail.EmailSender;
@@ -25,9 +30,13 @@ public class MemberController {
 	private static final Logger logger =  Logger.getLogger(MemberController.class);
 	
 	@Autowired
+	MemberDTO memDto;
+	@Autowired
 	MemberDAO memDao;
 	@Autowired
 	MemberInfoDAO memInfoDao;
+	@Autowired
+	MemberAuthDAO memAuthDao;
 	@Autowired
 	private EmailSender emailSender;
 		
@@ -142,7 +151,7 @@ public class MemberController {
 			@RequestParam(value = "position", required= false) String position,
 			@RequestParam(value = "userId", required= false) String userId,
 			@RequestParam(value = "userNm", required= false) String userNm,
-			@RequestParam(value = "userCellNum", required= false) String userCellNum) throws MessagingException{
+			@RequestParam(value = "userCellNum", required= false) String userCellNum){
 		Map<String, Object> mapReqParam = new HashMap<String, Object>();
 		
 		String tmp="N";
@@ -164,9 +173,7 @@ public class MemberController {
 		Map<String, Object> mapMemberReqData =new HashMap<String, Object>();
 		
 		mapMemberReqData.put("insertSuc", insertSuc);
-		String subject="[공지]회원가입 안내";
-		String content="가입을 축하합니다";
-		emailSender.sendEmail(subject,content,"ksi4687@nate.com");
+		
 		
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 		
@@ -205,6 +212,7 @@ public class MemberController {
 		mapReqParam.put("list", list);
 		mapReqParam.put("userNo", params.get("userNo"));
 		mapReqParam.put("userNm", params.get("userNm"));
+		mapReqParam.put("userCellNum", params.get("userCellNum"));
 		Map<String, Object> mapMemberReqData=new HashMap<String, Object>();
 		mapMemberReqData.put("updateSuc", memDao.updateMember(mapReqParam));
 
@@ -262,5 +270,71 @@ public class MemberController {
 		memInfoDao.deleteInfo(params);
 		
 		return JsonUtil.putSuccessJsonContainer(null);
+	}
+	
+
+	@RequestMapping("sendAuthEmail.do")
+	public @ResponseBody Map<String, Object> emailSend(@RequestParam(value="userNo", required=false) String userNo,@RequestParam(value="userId", required=false) String userId ) throws MessagingException{
+		
+		memDto.setUserNo(userNo);
+		memDto.setUserId(userId);
+		String subject="회원가입 안내";
+		String content="회원가입입니다 <br> ㅊㅋㅊㅋ";
+		emailSender.sendEmail(subject, content, memDto);
+		
+		return JsonUtil.putSuccessJsonContainer(null);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping("api/main/userAuth.do")
+	public @ResponseBody Map<String, Object> authUserInfo(@RequestParam(value="key") String strKey) {
+		MemberAuthDTO memAuthData = (MemberAuthDTO)memAuthDao.getMemberAuth(strKey);
+		Map<String, Object> mapRsltData = new HashMap<String, Object>();
+		SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmss");
+		
+		if(memAuthData==null) {
+			return JsonUtil.putFailJsonContainer("MemberControllerERR001", "존재하지 않는 인증 값입니다.");
+		} else if("N".equals(memAuthData.getAuth_valid())) {
+			return JsonUtil.putFailJsonContainer("MemberControllerERR002", "만료된 인증 값입니다.");
+		}
+				
+		try {
+			Date authDate = format.parse(memAuthData.getAuth_insDate());
+			Calendar c = Calendar.getInstance(); 
+			long lnValidDate;
+			long lnNowDate;
+			
+			c.setTime(authDate); 
+			c.add(Calendar.DATE, 1);
+			authDate = c.getTime();
+			lnValidDate = authDate.getTime();
+			
+			Date nowDate = new Date();
+			lnNowDate = nowDate.getTime();
+			
+			if(lnNowDate>lnValidDate){
+				HashMap<String, Object> mapChgValid = new HashMap<String, Object>();
+				mapChgValid.put("valid", "N");
+				mapChgValid.put("key", strKey);
+				memAuthDao.setMemberAuthValid(mapChgValid);
+				return JsonUtil.putFailJsonContainer("MemberControllerERR003", "만료된 인증 값입니다.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonUtil.putFailJsonContainer("MemberControllerERR999", "알 수 없는 오류가 발생했습니다.");
+		}
+		
+		Map<String, Object> mapUserData = new HashMap<String, Object>();
+		MemberDTO memDto = (MemberDTO) memDao.searchByUserName(memAuthData.getAuth_user());
+		mapUserData.put("userName", memDto.getUserNm());
+		mapUserData.put("userNo", memDto.getUserNo());
+		mapUserData.put("userId", memDto.getUserId());
+		mapUserData.put("userCellNum", memDto.getUserCellNum());
+		
+		ArrayList<MemberInfoDTO> memInfoDto = (ArrayList<MemberInfoDTO>) memInfoDao.getMemberInfoAttr();
+		mapRsltData.put("userInfo", mapUserData);
+		mapRsltData.put("info", memInfoDto);
+		return  JsonUtil.putSuccessJsonContainer(mapRsltData);
+
 	}
 }

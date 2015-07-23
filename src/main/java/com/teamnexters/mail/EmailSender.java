@@ -15,7 +15,11 @@ import javax.mail.internet.MimeUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import com.teamnexters.dto.MemberDTO;
 
 @Component
 public class EmailSender implements SendMailService {
@@ -28,11 +32,10 @@ public class EmailSender implements SendMailService {
 	private String pass;
 
 	@Override
-	public void sendEmail(String subject, String content,String email) throws MessagingException {
+	public void sendEmail(String subject, String content,MemberDTO memDto) throws MessagingException {
 		/*MimeMessage message = mailSender.createMimeMessage();
         message.setSubject("[공지] 회원 가입 안내");
         message.setText("회원 가입을 축하합니다.");
-
         message.setRecipient(RecipientType.TO, new InternetAddress(email));
         mailSender.send(message);
 		 */
@@ -41,9 +44,18 @@ public class EmailSender implements SendMailService {
 
 		String fromName="";
 		String from=id;
-		String mailTo=email;
+		//String mailTo=memDto.getUserId();
+		String mailTo="ksi4687@nate.com";
 		String password=pass;
 
+		//String authenticode=memDto.getUserNo()+memDto.getUserId()+new java.util.Date();
+		String authenticode="N00T001"+"ksi4687@nate.com"+new java.util.Date();
+		
+		@SuppressWarnings("deprecation")
+		PasswordEncoder encoder = new Md5PasswordEncoder();
+	    String hashedCode = encoder.encodePassword(authenticode, null);
+	   
+	    String codeContent=content+"<br> 인증 url: <a href='abc.html?key="+hashedCode+"'>회원가입</a>";
 
 		try{
 			Properties props=new Properties();
@@ -67,7 +79,7 @@ public class EmailSender implements SendMailService {
 			message.setRecipients(Message.RecipientType.TO, address);
 			message.setSubject(subject);
 			message.setSentDate(new java.util.Date());
-			message.setContent(content,"text/html;charset=utf-8");
+			message.setContent(codeContent,"text/html;charset=utf-8");
 
 			Transport.send(message);
 		} catch(MessagingException e){
