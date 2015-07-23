@@ -1,92 +1,227 @@
+function memberModify(data) {
+	if (data.result == "success") {
+		alert("수정 성공");
 
-function getMemberColumn(data) {
-	if(data.result=="success") {
-		var rsltData = data.resData[0].attrList;
-		var memberInfoList="";
-		memberInfoList+="<tr>";
-		memberInfoList+="<th>번호</th>";
-		memberInfoList+="<th>이름</th>";
-		memberInfoList+="<th>아이디</th>";
-		memberInfoList+="<th>HP</th>";
-		for(i=0;i<rsltData.length;i++) {
-			memberInfoList+="<th columnname='"+rsltData[i].attr+"'>"+rsltData[i].desc+"</th>";
+		if ($(".infoChange").children(':first').attr("status") == "save") {
+
+			alert("save->modify")
+			$(".infoChange").children(':first').removeAttr("status")
+			$(".infoChange").children(':first').attr("status", "modify");
+			$(".infoChange").children(':first').html("수정");
+
 		}
-		memberInfoList+="<th>권한</th>";
-		memberInfoList+="<th>상태</th>";
-		memberInfoList+="<th>액션</th>";
-		memberInfoList+="</tr>";
+	} else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: "
+				+ data.resData[0].errorCd + "\n오류 메시지: "
+				+ data.resData[0].errorMsg);
+	}
+}
+
+function deleteMember(data) {
+	if (data.result == "success") {
+		alert("삭제 성공");
+	} else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: "
+				+ data.resData[0].errorCd + "\n오류 메시지: "
+				+ data.resData[0].errorMsg);
+	}
+}
+function getMemberColumn(data) {
+	if (data.result == "success") {
+		var rsltData = data.resData[0].attrList;
+		var memberInfoList = "";
+		memberInfoList += "<tr>";
+		memberInfoList += "<th>번호</th>";
+		memberInfoList += "<th>이름</th>";
+		memberInfoList += "<th>아이디</th>";
+		memberInfoList += "<th>HP</th>";
+		for (i = 0; i < rsltData.length; i++) {
+			memberInfoList += "<th columnname='" + rsltData[i].attr + "'>"
+					+ rsltData[i].desc + "</th>";
+		}
+		memberInfoList += "<th>권한</th>";
+		memberInfoList += "<th>상태</th>";
+		memberInfoList += "<th>액션</th>";
+		memberInfoList += "</tr>";
 		$("#DataTable thead").html(memberInfoList);
 	} else {
-		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: "+data.resData[0].errorCd+"\n오류 메시지: "+data.resData[0].errorMsg);
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: "
+				+ data.resData[0].errorCd + "\n오류 메시지: "
+				+ data.resData[0].errorMsg);
 	}
 }
 
 function getMemberList(data) {
-	if(data.result=="success") {
-		var memberInfoList="";
-		for(i=0;i<data.resData[0].userList.length;i++){
-			memberInfoList+="<tr> \n";
-			memberInfoList+="<td>"+ data.resData[0].userList[i].userNo +"</td>\n";
-			memberInfoList+="<td>"+ data.resData[0].userList[i].userNm +"</td>\n";
-			memberInfoList+="<td>"+ data.resData[0].userList[i].userId +"</td>\n";
-			memberInfoList+="<td>"+ data.resData[0].userList[i].userCellNum +"</td>\n";
-			$("#DataTable thead th[columnname]").each(function() {
-				var isNotInsert = true;
-				for(var j=0; j<data.resData[0].userList[i].userAddInfo.length; j++) {
-					if(data.resData[0].userList[i].userAddInfo[j].attr==$(this).attr("columnname")) {
-						memberInfoList+="<td>"+ data.resData[0].userList[i].userAddInfo[j].value+"</td>";
-						isNotInsert = false;
-					}	
-				}
-				
-				if(isNotInsert) {
-					memberInfoList+="<td>&nbsp;</td>";
-				}
-			});
-			memberInfoList+="<td>"+getUserRole(data.resData[0].userList[i].userRole)+"</td>\n";
-			memberInfoList+="<td>"+getUserStatus(data.resData[0].userList[i].userStatus)+"</td>\n";
-			memberInfoList+="<td><button>수정</button><button>삭제</button></td>\n";
-			memberInfoList+="<tr> \n";
+	if (data.result == "success") {
+		var memberInfoList = "";
+		for (i = 0; i < data.resData[0].userList.length; i++) {
+			memberInfoList += "<tr id=\"" + data.resData[0].userList[i].userNo
+					+ "\"> \n";
+			memberInfoList += "<td name=\"userNo\" info=\""
+					+ data.resData[0].userList[i].userNo + "\">"
+					+ data.resData[0].userList[i].userNo + "</td>\n";
+			memberInfoList += "<td name=\"userNm\" info=\""
+					+ data.resData[0].userList[i].userNm + "\">"
+					+ data.resData[0].userList[i].userNm + "</td>\n";
+			memberInfoList += "<td name=\"userId\" info=\""
+					+ data.resData[0].userList[i].userId + "\">"
+					+ data.resData[0].userList[i].userId + "</td>\n";
+			memberInfoList += "<td name=\"userCellNum\" info=\""
+					+ data.resData[0].userList[i].userCellNum + "\">"
+					+ data.resData[0].userList[i].userCellNum + "</td>\n";
+			$("#DataTable thead th[columnname]")
+					.each(
+							function() {
+								var isNotInsert = true;
+								for (var j = 0; j < data.resData[0].userList[i].userAddInfo.length; j++) {
+									if (data.resData[0].userList[i].userAddInfo[j].attr == $(
+											this).attr("columnname")) {
+										memberInfoList += "<td info=\""
+												+ data.resData[0].userList[i].userAddInfo[j].value
+												+ "\">"
+												+ data.resData[0].userList[i].userAddInfo[j].value
+												+ "</td>";
+										isNotInsert = false;
+									}
+								}
+
+								if (isNotInsert) {
+									memberInfoList += "<td>&nbsp;</td>";
+								}
+							});
+			memberInfoList += "<td>"
+					+ getUserRole(data.resData[0].userList[i].userRole)
+					+ "</td>\n";
+			memberInfoList += "<td>"
+					+ getUserStatus(data.resData[0].userList[i].userStatus)
+					+ "</td>\n";
+			memberInfoList += "<td><button status=\"modify\" class=\"infoChange\" userNo=\""
+					+ data.resData[0].userList[i].userNo
+					+ "\">수정</button><button class=\"delete\" userNo=\""
+					+ data.resData[0].userList[i].userNo
+					+ "\">삭제</button></td>\n";
+			memberInfoList += "<tr> \n";
 		}
 		$("#memberListInfo").html(memberInfoList);
+
+		$(".delete").click(function() {
+			alert($(this).attr("userNo"));
+			requestJsonData("api/admin/memberRemove.do", {
+				userNo : $(this).attr("userNo")
+			}, deleteMember);
+		});
+
+		$(".infoChange")
+				.click(
+						function() {
+							alert("click");
+							if ($(this).attr("status") == "modify") {
+								alert("수정");
+								$("#" + $(this).attr("userNo") + " td")
+										.each(
+												function() {
+													if ($(this).attr("info") != null) {
+														var inputMemberListInfo = "<input size=\"15\"  type=\"text\" value=\""
+																+ $(this).attr(
+																		"info")
+																+ "\">";
+														$(this)
+																.html(
+																		inputMemberListInfo);
+													}
+													if ($(this).children(
+															':first').attr(
+															"status") == "modify") {
+														// console.log("modify");
+														alert("modify->save")
+														$(this)
+																.children(
+																		':first')
+																.removeAttr(
+																		"status")
+														$(this).children(
+																':first').attr(
+																"status",
+																"save");
+														$(this).children(
+																':first').html(
+																"저장");
+													}
+												})
+							} else {
+								alert("저장 ");
+
+								requestJsonData("api/admin/memberModify.do", {
+
+									userNo : $("input[name=userNo]").val(),
+									userNm : $("input[name=userNm]").val(),
+									userId : $("input[name=userId]").val(),
+									userCellNum : $("input[name=userCellNum]")
+											.val()
+
+								}, memberModify);
+							}
+						});
 	} else {
-		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: "+data.resData[0].errorCd+"\n오류 메시지: "+data.resData[0].errorMsg);
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: "
+				+ data.resData[0].errorCd + "\n오류 메시지: "
+				+ data.resData[0].errorMsg);
 	}
 }
 
 function getUserRole(userRole) {
-	if(userRole=="1"){
+	if (userRole == "1") {
 		return "<span class='label label-info'>Admin</span>";
-	} else if (userRole=="2") {
+	} else if (userRole == "2") {
 		return "<span class='label label-primary'>User</span>";
 	}
 }
 
 function getUserStatus(userStatus) {
-	if(userStatus=="0"){
+	if (userStatus == "0") {
 		return "<span class='label label-success'>정상</span>";
-	} else if(userStatus=="1"){
+	} else if (userStatus == "1") {
 		return "<span class='label label-default'>비활성화</span>";
-	} else if (userStatus=="2") {
+	} else if (userStatus == "2") {
 		return "<span class='label label-warning'>계정 만료</span>";
-	} else if (userStatus=="3") {
+	} else if (userStatus == "3") {
 		return "<span class='label label-warning'>비밀번호 만료</span>";
-	} else if (userStatus=="4") {
+	} else if (userStatus == "4") {
 		return "<span class='label label-danger'>계정 잠금</span>";
 	}
 }
 
 function getGenerList(rsltData) {
 	var data = rsltData.resData[0];
-	var generList="";
-	for(i=0;i<data.generList.length;i++){
-		var num=Number(data.generList[i].gener);
-		generList=generList+"<li><a href=\"#\"  gener=\""+data.generList[i].gener+"\">"+num+"</a></li>\n";
+	var generList = "";
+	for (i = 0; i < data.generList.length; i++) {
+		var num = Number(data.generList[i].gener);
+		generList = generList + "<li><a href=\"#\"  gener=\""
+				+ data.generList[i].gener + "\">" + num + "</a></li>\n";
 	}
+
+	var addButton = "<li><a href=\"#\" id=\"addButton\" >+</a></li>\n";
+	generList += addButton;
 	$("#memberListPage").html(generList);
 	$("#memberListPage li a,#showAll a").click(function() {
-		requestJsonData("api/admin/memberList.do", {gener:$(this).attr("gener")}, getMemberList);
+		if ($(this).attr("gener") == null) {
+
+		} else {
+			requestJsonData("api/admin/memberList.do", {
+				gener : $(this).attr("gener")
+			}, getMemberList);
+		}
 	});
+
+	$("#addButton")
+			.click(
+					function() {
+						var count = $("#memberListPage").children().length;
+						$(
+								"<li><a href=\"#\"  gener=\"" + count + "\">"
+										+ count + "</a></li>\n").insertBefore(
+								$(this).parent());
+					});
 
 }
 
