@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.teamnexters.mapper">   
+
+	<insert id="insertMessage">
+		insert into user_push_message(userNo,senderBoard,senderNo,senderNm,message,transDate)
+		select relationKey as userNo,
+		#{senderBoard} as senderBoard,
+		#{senderNo} senderNo,
+		#{senderNm} senderNm,
+		#{message} as message,
+		#{transDate} as transDate
+		from user_device_information
+		where relationKey in (
+		<foreach item="item" index="index" separator="," collection="userNo">
+			#{item}
+		</foreach>
+		)
+	</insert>
+	
+
+</mapper>

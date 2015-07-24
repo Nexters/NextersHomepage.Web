@@ -1,5 +1,8 @@
 package com.teamnexters.dto;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class UserDeviceInformationDTO {
 	private int deviceNo;
 	private String pushServerKind;

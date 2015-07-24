@@ -1,10 +1,15 @@
 package com.teamnexters.dto;
 
+import java.util.ArrayList;
+
+import org.springframework.stereotype.Component;
+
+@Component
 public class UserPushMessageDTO {
 	private int messageno;
-	private String userno;
+	private ArrayList<String> userno;
 	private String senderboard;
-	private int senderno;
+	private String senderno;
 	private String sendernm;
 	private String message;
 	private String readYN;
@@ -17,10 +22,10 @@ public class UserPushMessageDTO {
 	public void setMessageno(int messageno) {
 		this.messageno = messageno;
 	}
-	public String getUserno() {
+	public ArrayList<String> getUserno() {
 		return userno;
 	}
-	public void setUserno(String userno) {
+	public void setUserno(ArrayList<String> userno) {
 		this.userno = userno;
 	}
 	public String getSenderboard() {
@@ -29,10 +34,10 @@ public class UserPushMessageDTO {
 	public void setSenderboard(String senderboard) {
 		this.senderboard = senderboard;
 	}
-	public int getSenderno() {
+	public String getSenderno() {
 		return senderno;
 	}
-	public void setSenderno(int senderno) {
+	public void setSenderno(String senderno) {
 		this.senderno = senderno;
 	}
 	public String getSendernm() {

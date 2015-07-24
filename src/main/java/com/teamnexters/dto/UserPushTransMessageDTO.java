@@ -1,6 +1,9 @@
 package com.teamnexters.dto;
 
-public class UserPushTransMesasgeDTO {
+import org.springframework.stereotype.Component;
+
+@Component
+public class UserPushTransMessageDTO {
 	private int messageno;
 	private String pushserverkind;
 	private String relationkey;
