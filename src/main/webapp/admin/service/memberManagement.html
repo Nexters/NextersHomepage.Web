@@ -10,18 +10,75 @@
 			</ul>
 			<div id="showAll">
 				<a href="#" gener="">전체보기</a>
-				
-			</div>
-			<div id="addUser">
-				<a href="#">회원 추가</a>
+
 			</div>
 		</div>
-		
+
 	</div>
 
+	<div id="myModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">x</button>
+					<h2>Login form</h2>
+				</div>
+				<div class="modal-body">
 
-	<div class="row">
 
+					<form class="form-horizontal">
+
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-sm-10">
+								<div class="checkbox">
+									<label class="checkbox-inline"> <input type="checkbox">개발자
+									</label> <label class="checkbox-inline"> <input type="checkbox">디자이너
+									</label>
+
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">아이디(e-mail)</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" name="userId"
+									placeholder="Email">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">이름</label>
+							<div class="col-sm-8">
+								<input type="textl" class="form-control" name="userNm"
+									placeholder="Name">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">핸드폰 번호</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" name="userCellNum"
+									placeholder="CellNum">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="button" class="btn btn-primary"
+									onclick="onSubmit();">Sign in</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="col-lg-12">
+			<div id="addUser">
+				
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
 		<div class="col-lg-12">
 			<div class="table-responsive">
 				<table class="table table-bordered table-hover" id="DataTable">
@@ -35,6 +92,8 @@
 			</div>
 		</div>
 	</div>
+
+
 </div>
 <br />
 <br />
