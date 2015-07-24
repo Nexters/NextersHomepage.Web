@@ -72,4 +72,13 @@
 		where "userNo"=#{userNo}
 		
 	</delete>
+	
+	<select id="memberExist" resultType="Boolean">
+		select case when count("userNo")>0 then 1 else 0 end
+		from member_info_value
+		where "userNo" like '%' || #{tmp} || '%'
+	</select>
+	<insert id="insertNewUser">
+		insert into member("userNo","userId","userNm","userCellNum","userStatus","userRole") values (#{userNo},#{userId},#{userNm},#{userCellNum},'3','2');
+	</insert>
 </mapper>

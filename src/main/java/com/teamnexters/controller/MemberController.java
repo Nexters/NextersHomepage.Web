@@ -161,14 +161,23 @@ public class MemberController {
 		}
 		else{
 			tmp+="D";
-		} 
-		
-		mapReqParam.put("userNo",tmp);
+		}
 		mapReqParam.put("userId", userId);
 		mapReqParam.put("userNm", userNm);
 		mapReqParam.put("userCellNum", userCellNum);
+		int insertSuc=0;
+		if(!memDao.memberExist(tmp)){
+			mapReqParam.put("userNo", tmp+"001");
+		}
+		else{
+			mapReqParam.put("userNo",tmp);
+			insertSuc=(Integer)memDao.insertUser(mapReqParam);
+		}
 		
-		int insertSuc=(Integer)memDao.insertUser(mapReqParam);
+		
+		
+		
+		
 		
 		Map<String, Object> mapMemberReqData =new HashMap<String, Object>();
 		
