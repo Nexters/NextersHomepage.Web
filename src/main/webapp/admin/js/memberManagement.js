@@ -5,12 +5,47 @@ function memberModify(data) {
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
 	}
 }
+function SmemberAdd(data){
+	
+	if (data.result == "success") {
+		
+		alert("addmember");
+		
+		requestJsonData("api/admin/memberList.do", {
+			gener : $("#memberListPage li.active a").attr("gener")
+		}, getMemberList);
+		
+		$("#myModal").modal('hide');
+		$("#myModal .form-control").val('');
+				
+	} else {
+		
+		$("#myModal").modal('hide');
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+	
+}
 function putAddUser(location){
 	
 	location.html("<button href=\"#myModal\" data-toggle=\"modal\">회원 추가</button>");
 	var generNum=$("#memberListPage li.active a").attr("gener");
 	$("#generNum").html(generNum);
+	$("#SmemberAdd").click(function(){
+		
+		requestJsonData("api/admin/SmemberAdd.do", {
+			
+			grade : $("#memberListPage li.active a").attr("gener"),
+			position : $("#myModal input[type='checkbox']").val(),
+			userId : $("#myModal input[name=userId]").val(),
+			userNm : $("#myModal input[name=userNm]").val(),
+			userCellNum : $("#myModal input[name=userCellNum]").val()
+			
+		}, SmemberAdd);
+	})
+	
 }
+
+
 function deleteMember(data) {
 	
 	if (data.result == "success") {
