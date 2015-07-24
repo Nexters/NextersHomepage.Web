@@ -6,8 +6,10 @@ function memberModify(data) {
 	}
 }
 function putAddUser(location){
+	
 	location.html("<button href=\"#myModal\" data-toggle=\"modal\">회원 추가</button>");
-	location.css("padding-bottom: 10px");
+	var generNum=$("#memberListPage li.active a").attr("gener");
+	$("#generNum").html(generNum);
 }
 function deleteMember(data) {
 	
@@ -45,7 +47,7 @@ function getMemberColumn(data) {
 
 function getMemberList(data) {
 	if (data.result == "success") {
-		putAddUser($("#addUser"))
+		putAddUser($("#addUser"));
 		var memberInfoList = "";
 		for (i = 0; i < data.resData[0].userList.length; i++) {
 			memberInfoList += "<tr id=\"" + data.resData[0].userList[i].userNo + "\"> \n";
