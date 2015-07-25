@@ -96,7 +96,7 @@ function getMemberList(data) {
 			});
 			memberInfoList += "<td>" + getUserRole(data.resData[0].userList[i].userRole) + "</td>\n";
 			memberInfoList += "<td>" + getUserStatus(data.resData[0].userList[i].userStatus) + "</td>\n";
-			memberInfoList += "<td>" + getUserStatus(data.resData[0].userList[i].activityyn) + "</td>\n";
+			memberInfoList += "<td>" + data.resData[0].userList[i].activityyn + "</td>\n";
 			memberInfoList += "<td><button status=\"modify\" class=\"infoChange\" userNo=\"" + data.resData[0].userList[i].userNo + "\">수정</button><button class=\"delete\" userNo=\""
 					+ data.resData[0].userList[i].userNo + "\">삭제</button></td>\n";
 			memberInfoList += "<tr> \n";

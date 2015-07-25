@@ -48,9 +48,9 @@ public class MemberController {
 
 		mapMemberSqlReqData.put("gener", strGener);
 		ArrayList<Map> memberList = (ArrayList<Map>) memDao.getMemberListByGener(mapMemberSqlReqData);
-
+		
 		ArrayList<String> memberArrayList = new ArrayList<String>();
-
+		
 		for (int i=0; i<memberList.size(); i++) {
 			memberList.get(i).put("userAddInfo", new ArrayList<Map>());
 			memberArrayList.add(memberList.get(i).get("userNo").toString());
