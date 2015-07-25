@@ -28,21 +28,11 @@ function SmemberAdd(data){
 function putAddUser(location){
 	
 	location.html("<button href=\"#myModal\" data-toggle=\"modal\">회원 추가</button>");
-	var generNum=$("#memberListPage li.active a").attr("gener");
-	$("#generNum").html(generNum);
-	$("#SmemberAdd").click(function(){
-		
-		requestJsonData("api/admin/SmemberAdd.do", {
-			
-			grade : $("#memberListPage li.active a").attr("gener"),
-			position : $("#myModal input[type='checkbox']").val(),
-			userId : $("#myModal input[name=userId]").val(),
-			userNm : $("#myModal input[name=userNm]").val(),
-			userCellNum : $("#myModal input[name=userCellNum]").val()
-			
-		}, SmemberAdd);
-	})
 	
+	var generNum=$("#memberListPage li.active a").attr("gener");
+	
+	$("#generNum").html(generNum);
+	alert("asd");
 }
 
 
@@ -141,7 +131,6 @@ function getMemberList(data) {
 					userNo : $("input[name=userNo]").val(),
 					userNm : $("input[name=userNm]").val(),
 					userCellNum : $("input[name=userCellNum]").val()
-
 				}, memberModify);
 				
 				$("#" + $(this).attr("userNo") + " td").each(function() {
@@ -208,6 +197,7 @@ function getGenerList(rsltData) {
 	});
 
 	$("#addButton").click(function() {
+		
 		var count = $("#memberListPage").children().length;
 		$("<li><a href=\"#\"  gener=\"" + "0"+count + "\">" + count + "</a></li>\n").insertBefore($(this).parent());
 		$("#memberListPage li").removeClass("active");
@@ -230,4 +220,21 @@ function getGenerList(rsltData) {
 $(document).ready(function() {
 	requestJsonData("api/main/memberAttr.do", {}, getMemberColumn);
 	requestJsonData("api/main/memberGenerList.do", {}, getGenerList);
+	console.log("------------------");
+	
+	$("#SmemberAdd").click(function(){
+		console.log("추가");
+		
+		console.log($("#memberListPage li.active a").attr("gener"));
+		
+		requestJsonData("api/admin/SmemberAdd.do", {
+			
+			grade : $("#memberListPage li.active a").attr("gener"),
+			position : $("#myModal input[type='checkbox']").val(),
+			userId : $("#myModal input[name=userId]").val(),
+			userNm : $("#myModal input[name=userNm]").val(),
+			userCellNum : $("#myModal input[name=userCellNum]").val()
+			
+		}, SmemberAdd);
+	})
 });
