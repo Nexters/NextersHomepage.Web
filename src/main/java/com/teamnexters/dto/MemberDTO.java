@@ -12,6 +12,7 @@ public class MemberDTO {
 	private String userCellNum;     
 	private int userStatus;
 	private int userRole;
+	private String activityYN;
 	
 	public void setUserNo(String userNo){
 		this.userNo=userNo;
@@ -59,6 +60,12 @@ public class MemberDTO {
 	}
 	public void setUserRole(int userRole) {
 		this.userRole = userRole;
+	}
+	public void setActivityYN(String activityYN){
+		this.activityYN=activityYN;
+	}
+	public String getActivityYN(){
+		return activityYN;
 	}
 } 
 

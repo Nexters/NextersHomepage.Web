@@ -15,7 +15,7 @@
 		   SELECT "userNo","userNm" FROM member WHERE "userNm" LIKE '%' || #{str} || '%'
 	</select>
 	<select id="getMemberListByGener" resultType="Map">  
-	       SELECT "userNo", "userId", "userNm", "userCellNum" FROM member WHERE  1=1
+	       SELECT "userNo", "userId", "userNm", "userCellNum",activityYN FROM member WHERE  1=1
 	       <if test="gener != null and gener != ''">
 	       	AND "userNo" LIKE '_' || #{gener} || '____' 
 	       </if>
@@ -75,10 +75,15 @@
 	
 	<select id="memberExist" resultType="Boolean">
 		select case when count("userNo")>0 then 1 else 0 end
-		from member_info_value
+		from member
 		where "userNo" like '%' || #{tmp} || '%'
 	</select>
 	<insert id="insertNewUser">
 		insert into member("userNo","userId","userNm","userCellNum","userStatus","userRole") values (#{userNo},#{userId},#{userNm},#{userCellNum},'3','2');
 	</insert>
+	<update id="updateActivity">
+		update member
+		set activityYN=#{activityYN}
+		where "userNo"=#{userNo}
+	</update>
 </mapper>
