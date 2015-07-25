@@ -165,18 +165,22 @@ public class MemberController {
 		mapReqParam.put("userId", userId);
 		mapReqParam.put("userNm", userNm);
 		mapReqParam.put("userCellNum", userCellNum);
-		System.out.println(tmp);
-		System.out.println(userId);
-		System.out.println(userNm);
-		System.out.println(userCellNum);
+		
 		int insertSuc=0;
-
+		
 		if(!memDao.memberExist(tmp)){
-			mapReqParam.put("userNo", tmp+"001");
+			tmp=tmp+"001";
+			
+			mapReqParam.put("userNo", tmp);
+			memDao.insertNewUser(mapReqParam);
 		}
-
-		mapReqParam.put("userNo",tmp);
-		insertSuc=(Integer)memDao.insertUser(mapReqParam);
+		
+		else{
+			mapReqParam.put("userNo",tmp);
+			insertSuc=(Integer)memDao.insertUser(mapReqParam);
+		}
+		
+		
 
 
 
