@@ -230,7 +230,9 @@ public class MemberController {
 		for(int i=0;i<list.size();i++){
 			String strAttr = list.get(i).getAttr();
 			String strAttrValue = params.get(strAttr);
-			
+			if(strAttrValue==null){
+				strAttrValue="";
+			}
 			if(strAttrValue != null) {
 				HashMap<String, Object> paramReqData = new HashMap<String, Object>();
 				paramReqData.put("attr", strAttr);
