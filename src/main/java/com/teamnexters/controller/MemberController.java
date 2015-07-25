@@ -291,7 +291,12 @@ public class MemberController {
 
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
-
+	@RequestMapping("api/admin/activitySet.do")
+	public @ResponseBody Map<String, Object> updateActivity(@RequestParam Map<String,String> params){
+		
+		memDao.updateActivity(params);
+		return JsonUtil.putSuccessJsonContainer(null);
+	}
 
 	@RequestMapping("sendAuthEmail.do")
 	public @ResponseBody Map<String, Object> emailSend(@RequestParam(value="userNo", required=false) String userNo,@RequestParam(value="userId", required=false) String userId ) throws MessagingException{
