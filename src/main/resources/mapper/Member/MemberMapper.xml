@@ -57,7 +57,7 @@
 	
 	<update id="updateMember">
 		update member
-		set "userNm"=#{userNm} , "userId"=#{userId}, "userCellNum"=#{userCellNum}
+		set "userNm"=#{userNm} , "userCellNum"=#{userCellNum}
 		where "userNo"=#{userNo};
 	</update>
 	<update id="updateMemberInfo">

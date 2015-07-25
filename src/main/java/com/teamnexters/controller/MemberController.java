@@ -166,6 +166,7 @@ public class MemberController {
 		mapReqParam.put("userNm", userNm);
 		mapReqParam.put("userCellNum", userCellNum);
 		int insertSuc=0;
+		
 		if(!memDao.memberExist(tmp)){
 			mapReqParam.put("userNo", tmp+"001");
 		}
