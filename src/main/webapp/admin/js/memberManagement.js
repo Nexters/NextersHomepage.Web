@@ -62,6 +62,7 @@ function getMemberColumn(data) {
 		}
 		memberInfoList += "<th>권한</th>";
 		memberInfoList += "<th>상태</th>";
+		memberInfoList += "<th>활동</th>";
 		memberInfoList += "<th>액션</th>";
 		memberInfoList += "</tr>";
 		$("#DataTable thead").html(memberInfoList);
@@ -95,6 +96,7 @@ function getMemberList(data) {
 			});
 			memberInfoList += "<td>" + getUserRole(data.resData[0].userList[i].userRole) + "</td>\n";
 			memberInfoList += "<td>" + getUserStatus(data.resData[0].userList[i].userStatus) + "</td>\n";
+			memberInfoList += "<td>" + getUserStatus(data.resData[0].userList[i].activityyn) + "</td>\n";
 			memberInfoList += "<td><button status=\"modify\" class=\"infoChange\" userNo=\"" + data.resData[0].userList[i].userNo + "\">수정</button><button class=\"delete\" userNo=\""
 					+ data.resData[0].userList[i].userNo + "\">삭제</button></td>\n";
 			memberInfoList += "<tr> \n";
@@ -226,6 +228,7 @@ $(document).ready(function() {
 		console.log("추가");
 		
 		console.log($("#memberListPage li.active a").attr("gener"));
+		
 		
 		requestJsonData("api/admin/SmemberAdd.do", {
 			
