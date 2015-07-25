@@ -26,9 +26,9 @@ import com.teamnexters.util.JsonUtil;
 
 @Controller
 public class MemberController {
-	
+
 	private static final Logger logger =  Logger.getLogger(MemberController.class);
-	
+
 	@Autowired
 	MemberDTO memDto;
 	@Autowired
@@ -39,23 +39,23 @@ public class MemberController {
 	MemberAuthDAO memAuthDao;
 	@Autowired
 	private EmailSender emailSender;
-		
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/api/main/memberList.do")
 	public @ResponseBody Map<String, Object> getMemberListByGener(@RequestParam(value="gener") String strGener ){
 		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
 		Map<String, Object> mapMemberSqlReqData = new HashMap<String, Object>();
-		
+
 		mapMemberSqlReqData.put("gener", strGener);
 		ArrayList<Map> memberList = (ArrayList<Map>) memDao.getMemberListByGener(mapMemberSqlReqData);
 
 		ArrayList<String> memberArrayList = new ArrayList<String>();
-		
+
 		for (int i=0; i<memberList.size(); i++) {
 			memberList.get(i).put("userAddInfo", new ArrayList<Map>());
 			memberArrayList.add(memberList.get(i).get("userNo").toString());
 		}
-		
+
 		ArrayList<Map> memberInfoValue = (ArrayList<Map>)memInfoDao.getMemberInfoValue(new HashMap<String, Object>().put("userNoArray", memberArrayList));
 		for(int i=0; i<memberInfoValue.size(); i++) {
 			String strInfoUserNo = memberInfoValue.get(i).get("userNo").toString();
@@ -65,27 +65,27 @@ public class MemberController {
 				}
 			}
 		}
-		
+
 		mapMemberReqData.put("userList", memberList);
 		return  JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/api/admin/memberList.do")
 	public @ResponseBody Map<String, Object> getMemberAdminListByGener(@RequestParam(value="gener") String strGener ){
 		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
 		Map<String, Object> mapMemberSqlReqData = new HashMap<String, Object>();
-		
+
 		mapMemberSqlReqData.put("gener", strGener);
 		ArrayList<Map> memberList = (ArrayList<Map>) memDao.getMemberAdminListByGener(mapMemberSqlReqData);
 
 		ArrayList<String> memberArrayList = new ArrayList<String>();
-		
+
 		for (int i=0; i<memberList.size(); i++) {
 			memberList.get(i).put("userAddInfo", new ArrayList<Map>());
 			memberArrayList.add(memberList.get(i).get("userNo").toString());
 		}
-		
+
 		ArrayList<Map> memberInfoValue = (ArrayList<Map>)memInfoDao.getMemberInfoValue(new HashMap<String, Object>().put("userNoArray", memberArrayList));
 		for(int i=0; i<memberInfoValue.size(); i++) {
 			String strInfoUserNo = memberInfoValue.get(i).get("userNo").toString();
@@ -95,34 +95,34 @@ public class MemberController {
 				}
 			}
 		}
-		
+
 		mapMemberReqData.put("userList", memberList);
 		return  JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
-	
+
 	@RequestMapping("/api/main/memberAttr.do")
 	public @ResponseBody Map<String, Object> getMemberAttr(){
 		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
-		
+
 		@SuppressWarnings("unchecked")
 		ArrayList<MemberInfoDTO> memberInfoAttrList = (ArrayList<MemberInfoDTO>) memDao.getMemberAttrList();
-		
+
 		mapMemberReqData.put("attrList", memberInfoAttrList);
 		return  JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
-	
+
 	@RequestMapping("/api/main/memberGenerList.do")
 	public @ResponseBody Map<String, Object> getGenerList(){
 		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
-		
+
 		@SuppressWarnings("unchecked")
 		ArrayList<Map<String, Object>> memberInfoAttrList = (ArrayList<Map<String, Object>>) memDao.getGenerList();
-		
+
 		mapMemberReqData.put("generList", memberInfoAttrList);
 		return  JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
-	
-	
+
+
 	@RequestMapping("/api/user/member.do")
 	public @ResponseBody  Map<String, Object> getUserMemberList(Model model){
 		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
@@ -131,21 +131,21 @@ public class MemberController {
 		mapMemberReqData.put("userList", memberList);
 		return  JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
-	
+
 	@RequestMapping("userTag.do")
 	public @ResponseBody Map<String, Object> getUserTag(@RequestParam(value = "str", required = false) String str){
-		
+
 		@SuppressWarnings("unchecked")
 		ArrayList<MemberDTO> memberList=(ArrayList<MemberDTO>) memDao.searchUserTag(str);
 		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
 		mapMemberReqData.put("tagList", memberList);
-		
-		
-		
-		
+
+
+
+
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
-	
+
 	@RequestMapping("api/admin/SmemberAdd.do")
 	public @ResponseBody Map<String,Object> memberAdd(@RequestParam(value = "grade", required= false) String grade,
 			@RequestParam(value = "position", required= false) String position,
@@ -153,7 +153,7 @@ public class MemberController {
 			@RequestParam(value = "userNm", required= false) String userNm,
 			@RequestParam(value = "userCellNum", required= false) String userCellNum){
 		Map<String, Object> mapReqParam = new HashMap<String, Object>();
-		
+
 		String tmp="N";
 		tmp+=grade;
 		if(position.equals("개발자")){
@@ -165,37 +165,41 @@ public class MemberController {
 		mapReqParam.put("userId", userId);
 		mapReqParam.put("userNm", userNm);
 		mapReqParam.put("userCellNum", userCellNum);
+		System.out.println(tmp);
+		System.out.println(userId);
+		System.out.println(userNm);
+		System.out.println(userCellNum);
 		int insertSuc=0;
-		
+
 		if(!memDao.memberExist(tmp)){
 			mapReqParam.put("userNo", tmp+"001");
 		}
-		else{
-			mapReqParam.put("userNo",tmp);
-			insertSuc=(Integer)memDao.insertUser(mapReqParam);
-		}
-		
-		
-		
-		
-		
-		
+
+		mapReqParam.put("userNo",tmp);
+		insertSuc=(Integer)memDao.insertUser(mapReqParam);
+
+
+
+
+
+
+
 		Map<String, Object> mapMemberReqData =new HashMap<String, Object>();
-		
+
 		mapMemberReqData.put("insertSuc", insertSuc);
-		
-		
+
+
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
-		
+
 	}
-	
+
 	@RequestMapping("api/admin/memberDetail.do")
 	public @ResponseBody Map<String, Object> memberDetail(@RequestParam(value ="userNo", required=false) String userNo){
-		
+
 		ArrayList<MemberInfoDTO> list=(ArrayList<MemberInfoDTO>)memInfoDao.getMemberInfoAttr();
 		ArrayList<String> arrayList=new ArrayList<String>();
 		for(int i=0;i<list.size();i++){
-			
+
 			arrayList.add(list.get(i).getAttr());
 		}
 		Map<String,Object> map=new HashMap<String, Object>();
@@ -205,10 +209,10 @@ public class MemberController {
 		mapMemberReqData.put("memberData", memDao.getMemberDetailInfo(map));
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
-	
+
 	@RequestMapping("api/admin/memberModify.do")
 	public @ResponseBody Map<String, Object> memberModify(@RequestParam Map<String,String> params){
-		
+
 		if(!memInfoDao.memberInfoValueExist(params)){
 			memInfoDao.insertInfoValue(params.get("userNo"));
 		}
@@ -217,7 +221,7 @@ public class MemberController {
 		for(int i=0;i<list.size();i++){
 			arrayList.add(list.get(i).getAttr());
 		}
-		
+
 		Map<String, Object> mapReqParam =new HashMap<String, Object>();
 		mapReqParam.put("list", list);
 		mapReqParam.put("userNo", params.get("userNo"));
@@ -241,28 +245,28 @@ public class MemberController {
 				memInfoDao.updateMemberInfo(paramReqData);
 			}
 		}
-		
+
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
-	
+
 	@RequestMapping("api/admin/memberRemove.do")
 	public @ResponseBody Map<String, Object> memberDelete(@RequestParam(value="userNo", required=false) String userNo){
 		Map<String, Object> mapReqParam=new HashMap<String, Object>();
 		mapReqParam.put("userNo", userNo);
 		Map<String, Object> mapMemberReqData=new HashMap<String, Object>();
 		mapMemberReqData.put("deleteSuc",memDao.deleteMember(mapReqParam));
-		
+
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
-	
+
 	@RequestMapping("/contact.do")
 	public @ResponseBody Map<String, Object> contactMailSubmit(@RequestParam Map<String,String> params) throws MessagingException{
 		String name=params.get("userName");
 		String email=params.get("userEmail");
 		String comment=params.get("userComment");
-		
+
 		emailSender.sendContact(name, comment, email);
-		
+
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
 	@RequestMapping("api/admin/memberInfoAdd.do")
@@ -270,9 +274,9 @@ public class MemberController {
 		Map<String, String> params =new HashMap<String,String>(); 
 		params.put("attr", attr);
 		params.put("desc", desc);
-		
+
 		memInfoDao.insertInfo(params);
-		
+
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
 	@RequestMapping("api/admin/memberInfoRemove.do")
@@ -280,50 +284,50 @@ public class MemberController {
 		Map<String ,String> params=new HashMap<String,String>();
 		params.put("desc", desc);
 		memInfoDao.deleteInfo(params);
-		
+
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
-	
+
 
 	@RequestMapping("sendAuthEmail.do")
 	public @ResponseBody Map<String, Object> emailSend(@RequestParam(value="userNo", required=false) String userNo,@RequestParam(value="userId", required=false) String userId ) throws MessagingException{
-		
+
 		memDto.setUserNo(userNo);
 		memDto.setUserId(userId);
 		String subject="회원가입 안내";
 		String content="회원가입입니다 <br> ㅊㅋㅊㅋ";
 		emailSender.sendEmail(subject, content, memDto);
-		
+
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@RequestMapping("api/main/userAuth.do")
 	public @ResponseBody Map<String, Object> authUserInfo(@RequestParam(value="key") String strKey) {
 		MemberAuthDTO memAuthData = (MemberAuthDTO)memAuthDao.getMemberAuth(strKey);
 		Map<String, Object> mapRsltData = new HashMap<String, Object>();
 		SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmss");
-		
+
 		if(memAuthData==null) {
 			return JsonUtil.putFailJsonContainer("MemberControllerERR001", "존재하지 않는 인증 값입니다.");
 		} else if("N".equals(memAuthData.getAuth_valid())) {
 			return JsonUtil.putFailJsonContainer("MemberControllerERR002", "만료된 인증 값입니다.");
 		}
-				
+
 		try {
 			Date authDate = format.parse(memAuthData.getAuth_insDate());
 			Calendar c = Calendar.getInstance(); 
 			long lnValidDate;
 			long lnNowDate;
-			
+
 			c.setTime(authDate); 
 			c.add(Calendar.DATE, 1);
 			authDate = c.getTime();
 			lnValidDate = authDate.getTime();
-			
+
 			Date nowDate = new Date();
 			lnNowDate = nowDate.getTime();
-			
+
 			if(lnNowDate>lnValidDate){
 				HashMap<String, Object> mapChgValid = new HashMap<String, Object>();
 				mapChgValid.put("valid", "N");
@@ -335,14 +339,14 @@ public class MemberController {
 			e.printStackTrace();
 			return JsonUtil.putFailJsonContainer("MemberControllerERR999", "알 수 없는 오류가 발생했습니다.");
 		}
-		
+
 		Map<String, Object> mapUserData = new HashMap<String, Object>();
 		MemberDTO memDto = (MemberDTO) memDao.searchByUserName(memAuthData.getAuth_user());
 		mapUserData.put("userName", memDto.getUserNm());
 		mapUserData.put("userNo", memDto.getUserNo());
 		mapUserData.put("userId", memDto.getUserId());
 		mapUserData.put("userCellNum", memDto.getUserCellNum());
-		
+
 		ArrayList<MemberInfoDTO> memInfoDto = (ArrayList<MemberInfoDTO>) memInfoDao.getMemberInfoAttr();
 		mapRsltData.put("userInfo", mapUserData);
 		mapRsltData.put("info", memInfoDto);
