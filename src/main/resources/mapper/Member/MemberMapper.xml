@@ -88,6 +88,6 @@
 	</update>
 	
 	<select id="getActivityMemberList" resultType="com.teamnexters.dto.MemberDTO">
-		select "userNm" from member where activityYN='Y' order by userno asc
+		select "userNm" from member where activityYN='Y' order by "userNo" asc
 	</select>
 </mapper>
