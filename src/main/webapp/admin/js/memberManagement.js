@@ -1,9 +1,26 @@
+var thisComponent="";
+
+
 function memberModify(data) {
 	if (data.result == "success") {
 
 	} else {
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
 	}
+}
+
+function activitySet(data){
+	
+	if (data.result == "success") {
+		if(thisComponent.html()=="N"){
+			thisComponent.html("Y");
+		}else{
+			thisComponent.html("N");
+		}
+	} else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+	
 }
 function SmemberAdd(data){
 	
@@ -32,7 +49,6 @@ function putAddUser(location){
 	var generNum=$("#memberListPage li.active a").attr("gener");
 	
 	$("#generNum").html(generNum);
-	alert("asd");
 }
 
 
@@ -96,13 +112,32 @@ function getMemberList(data) {
 			});
 			memberInfoList += "<td>" + getUserRole(data.resData[0].userList[i].userRole) + "</td>\n";
 			memberInfoList += "<td>" + getUserStatus(data.resData[0].userList[i].userStatus) + "</td>\n";
-			memberInfoList += "<td>" + "<button class='btn btn-default btn-sm'>"+data.resData[0].userList[i].activityyn + "</td>\n";
-			memberInfoList += "<td><button status=\"modify\" class=\"infoChange\" userNo=\"" + data.resData[0].userList[i].userNo + "\">수정</button><button class=\"delete\" userNo=\""
+			memberInfoList += "<td style='text-align:center;'>" + "<button class='btn btn-default btn-xs activitySet' status='"+data.resData[0].userList[i].activityyn+"'>"+data.resData[0].userList[i].activityyn+"</button>" + "</td>\n";
+			memberInfoList += "<td style='text-align:center;'><button status=\"modify\" class=\"btn btn-default btn-xs infoChange\" userNo=\"" + data.resData[0].userList[i].userNo + "\">수정</button>&nbsp;&nbsp;&nbsp;<button class=\" btn btn-default btn-xs delete\" userNo=\""
 					+ data.resData[0].userList[i].userNo + "\">삭제</button></td>\n";
 			memberInfoList += "<tr> \n";
 		}
 		$("#memberListInfo").html(memberInfoList);
-
+		
+		$(".activitySet").click(function(){
+			
+			thisComponent=$(this);
+			
+			if($(this).html()=="N"){
+				
+				requestJsonData("api/admin/activitySet.do", {
+					userNo : $(this).parent().parent().attr("id"),
+					activityYN : "Y"
+				}, activitySet);
+				
+			}else{
+				requestJsonData("api/admin/activitySet.do", {
+					userNo : $(this).parent().parent().attr("id"),
+					activityYN : "N"
+				}, activitySet);
+			}
+		})
+		
 		$(".delete").click(function() {
 			alert($(this).attr("userNo"));
 			requestJsonData("api/admin/memberRemove.do", {
@@ -222,10 +257,8 @@ function getGenerList(rsltData) {
 $(document).ready(function() {
 	requestJsonData("api/main/memberAttr.do", {}, getMemberColumn);
 	requestJsonData("api/main/memberGenerList.do", {}, getGenerList);
-	console.log("------------------");
 	
 	$("#SmemberAdd").click(function(){
-		console.log("추가");
 		
 		console.log($("#memberListPage li.active a").attr("gener"));
 		

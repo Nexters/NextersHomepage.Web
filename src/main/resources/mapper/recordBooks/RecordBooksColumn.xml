@@ -4,7 +4,7 @@
 <mapper namespace="com.teamnexters.mapper">   
 	
 	<insert id="insertDate">
-		insert recordbooks_column(bookcolumnno,bookno) values(#{columnNo},(select bookno from recordBooks where booknm=#{bookNm}))
+		insert into recordbooks_column(bookcolumnno,bookno) values(#{columnNo},(select bookno from recordBooks where booknm=#{bookNm}))
 	</insert>
 	
 
