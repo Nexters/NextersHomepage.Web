@@ -73,4 +73,10 @@ public class RecordBooksController {
 
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
+	@RequestMapping("api/admin/booksValueList.do")
+	public @ResponseBody Map<String, Object> getBooksValueList(){
+		booksValueDao.getBooksValueList();
+		
+		return JsonUtil.putSuccessJsonContainer(null);
+	}
 }

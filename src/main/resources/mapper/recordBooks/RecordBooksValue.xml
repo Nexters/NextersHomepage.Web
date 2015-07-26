@@ -4,12 +4,16 @@
 <mapper namespace="com.teamnexters.mapper">   
 
 	<insert id="insertBooksValue">
-		insert into recordbooks_value(bookno,userno,bookcolumnno) 
+		insert into recordbooks_value(bookno,userno,bookcolumnno)
 		select (select bookno from recordbooks where booknm=#{bookNm}) as bookno,
 		"userNo" as userno,
 		#{columnNo} as bookcolumnno
 		from member
 		where activityYN='Y'
 	</insert>
+	
+	<select id="getBooksValueList" resultType="com.teamnexters.dto.RecordBooksValueDTO">
+		select * from recordbooks_value  order by split_part(bookcolumnno,'-',1)::numeric asc,split_part(bookcolumnno,'-',2)::numeric asc ,split_part(bookcolumnno,'-',3)::numeric asc,userno asc
+	</select>
 
 </mapper>

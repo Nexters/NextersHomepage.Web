@@ -86,7 +86,8 @@
 		set activityYN=#{activityYN}
 		where "userNo"=#{userNo}
 	</update>
+	
 	<select id="getActivityMemberList" resultType="com.teamnexters.dto.MemberDTO">
-		select "userNm" from member where activityYN='Y'
+		select "userNm" from member where activityYN='Y' order by userno asc
 	</select>
 </mapper>
