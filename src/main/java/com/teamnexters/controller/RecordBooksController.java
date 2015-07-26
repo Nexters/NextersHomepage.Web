@@ -56,7 +56,7 @@ public class RecordBooksController {
 		reqParam.put("columnNo", columnNo);
 		reqParam.put("bookNm", params.get("bookNm"));
 		booksColumnDao.insertDate(reqParam);
-		booksValueDao.insertBooksValue(params);
+		
 		
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
