@@ -65,5 +65,8 @@ public class MemberDAO implements MemberMapper {
 	public void updateActivity(Object param){
 		sqlsession.update("updateActivity",param);
 	}
+	public Object getActivityMemberList(){
+		return sqlsession.selectList("getActivityMemberList");
+	}
 }
 
