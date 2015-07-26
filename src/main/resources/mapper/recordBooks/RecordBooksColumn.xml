@@ -8,7 +8,7 @@
 	</insert>
 	
 	<select id="getDateList" resultType="com.teamnexters.dto.RecordBooksColumnDTO">
-		select * from recordbooks_column where bookno=(select bookno from recordBooks where booknm=#{bookNm})
+		select * from recordbooks_column where bookno=(select bookno from recordBooks where booknm=#{bookNm}) order by select * from recordbooks_column order by split_part(bookcolumnno,'-',1)::numeric asc,split_part(bookcolumnno,'-',2)::numeric asc ,split_part(bookcolumnno,'-',3)::numeric asc
 	</select>
 
 </mapper>
