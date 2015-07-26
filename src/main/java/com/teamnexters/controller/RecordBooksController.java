@@ -68,6 +68,7 @@ public class RecordBooksController {
 	}
 	@RequestMapping("api/admin/removeDateColumn.do")
 	public @ResponseBody Map<String, Object> deleteDateColumn(@RequestParam Map<String,String> params){
+		
 		booksColumnDao.deleteDateColumn(params);
 
 		return JsonUtil.putSuccessJsonContainer(null);
