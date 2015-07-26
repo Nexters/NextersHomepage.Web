@@ -147,13 +147,18 @@ function modifyBooksValue(data){
 		switch(thisValue){
 		
 		case "출석":
-			
+			thisComponent.removeClass("btn-danger");
+			thisComponent.addClass("btn-success");
 			break;
 			
 		case "지각":
+			thisComponent.removeClass("btn-success");
+			thisComponent.addClass("btn-warning");
 			break;
 			
 		case "결석":
+			thisComponent.removeClass("btn-warning");
+			thisComponent.addClass("btn-danger");
 			break;
 			
 		}
@@ -177,8 +182,10 @@ function booksValueList(data){
 			$("#activityList tr").each(function(){
 				var value=data.resData[0].valueList[trNum+i*data.resData[0].valueList.length/numOfDate].value;
 				var userNo=data.resData[0].valueList[trNum+i*data.resData[0].valueList.length/numOfDate].userNo;
-				var bookcolumnno=data.resData[0].valueList[trNum+i*data.resData[0].valueList.length/numOfDate].bookcolumnno;
-				
+				var bookcolumnno=data.resData[0].valueList[trNum+i*data.resData[0].valueList.length/numOfDate].bookColumnNo;
+				for(var key in data.resData[0].valueList[trNum+i*data.resData[0].valueList.length/numOfDate]){
+					console.log(key);
+				}
 				var userInfo="userNo='"+userNo+"' "+"bookcolumnno='"+bookcolumnno+"' ";
 				if(value=="출석"){
 					$(this).append("<td  style='text-align:center;'> <button "+userInfo+" class='btn btn-success btn-xs attendenceButton'>출석</button></td>");
