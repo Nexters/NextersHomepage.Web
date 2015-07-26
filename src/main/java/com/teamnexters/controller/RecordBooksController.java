@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.teamnexters.dao.MemberDAO;
 import com.teamnexters.dao.RecordBooksColumnDAO;
+import com.teamnexters.dto.MemberDTO;
 import com.teamnexters.dto.RecordBooksColumnDTO;
 import com.teamnexters.util.JsonUtil;
 
@@ -21,6 +23,20 @@ public class RecordBooksController {
 	private RecordBooksColumnDTO booksColumnDto;
 	@Autowired
 	private RecordBooksColumnDAO booksColumnDao;
+	@Autowired
+	private MemberDAO memDao;
+	
+	
+	@RequestMapping("api/admin/userActivityList.do")
+	public @ResponseBody Map<String,Object> userActivityList(@RequestParam Map<String,String> params){
+		ArrayList<MemberDTO> list=(ArrayList<MemberDTO>)memDao.getActivityMemberList();
+		
+		Map<String,Object> resultData=new HashMap<String, Object>();
+		resultData.put("memberList", list);
+		ArrayList<RecordBooksColumnDTO> dateList=(ArrayList<RecordBooksColumnDTO>)booksColumnDao.getDateList(params.get("bookNm"));
+		resultData.put("dateList", dateList);
+		return  JsonUtil.putSuccessJsonContainer(resultData);
+	}
 	
 	@RequestMapping("api/admin/addDate.do")
 	public @ResponseBody Map<String, Object> addDate(@RequestParam Map<String,String> params){
