@@ -27,24 +27,22 @@ function removeDateColumn(data) {
 
 	if (data.result == "success") {
 
+		requestJsonData("api/admin/getDateList.do", {
+			bookNm : thisName
+		}, getDateList);
+
 	} else {
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
 	}
 }
 function getDateList(data) {
 
-	/*
-	<th>7월 29일 <span class="glyphicon glyphicon-remove-circle"
-		aria-hidden="true"></span>
-	</th>
-	<th><span class="glyphicon glyphicon-plus"
-		aria-hidden="true"></span>
-		<div id="date"></div></th>*/
 
 	if (data.result == "success") {
 
 		var dateList = "";
 
+		dateList = "<tr> <th>이름</th>"
 		for (i = 0; i < data.resData[0].dateList.length; i++) {
 
 			var date = data.resData[0].dateList[i].bookColumnNo.split('-');
@@ -53,17 +51,19 @@ function getDateList(data) {
 		}
 
 		dateList += "<th><span id='addDateButton' class='glyphicon glyphicon-plus' aria-hidden='true'></span> <div id='date'></div></th>";
+		dateList += "</tr>";
 
-		$("#startName").after(dateList);
+		$("#dateList").html(dateList);
 
 		$(".deleteButton").click(function() {
-			
+
 			requestJsonData("api/admin/removeDateColumn.do", {
 				bookNm : thisName,
-				columnNo : '2015-8-12'
+				columnNo : $(this).attr("info")
 			}, removeDateColumn);
-			
+
 		})
+
 		addDatePicker();
 
 	} else {
@@ -71,10 +71,25 @@ function getDateList(data) {
 	}
 
 }
+
+function insertBooksValue(){
+	
+}
 function addDate(data) {
 
 	if (data.result == "success") {
-
+		
+		requestJsonData("api/admin/getDateList.do", {
+			bookNm : thisName
+		}, getDateList);
+		
+		//alert(thisComponent.attr("info"))
+		
+		requestJsonData("api/admin/insertBooksValue.do", {
+			bookNm : thisName,
+			columnNo : thisComponent
+		}, insertBooksValue);
+		
 	} else {
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
 	}
@@ -88,7 +103,8 @@ function pickDate(thisCom) {
 
 	console.log(year + " " + month + " " + day);
 
-	thisComponent = thisCom;
+	thisComponent = year+"-"+month+"-"+day;
+	
 	requestJsonData("api/admin/addDate.do", {
 
 		year : year,
@@ -100,7 +116,7 @@ function pickDate(thisCom) {
 
 }
 
-function getUserActiviyList(data) {
+function userActiviyList(data) {
 
 	if (data.result == "success") {
 
@@ -124,14 +140,11 @@ $(document).ready(function() {
 
 	$(".table").css("width", '0px');
 
-	/*requestJsonData("api/admin/getDateList.do", {
-		bookNm : thisName
-	}, getDateList);*/
-
 	requestJsonData("api/admin/getDateList.do", {
 		bookNm : thisName
 	}, getDateList);
-
-	//requestJsonData("api/admin/userActivityList.do", {}, getUserActiviyList);
+	
+	requestJsonData("api/admin/userActivityList.do", {}, userActiviyList);
+	requestJsonData("api/admin/booksValueList.do", {}, booksValueList);
 
 });

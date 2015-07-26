@@ -62,6 +62,7 @@ public class RecordBooksController {
 	}
 	@RequestMapping("api/admin/insertBooksValue.do")
 	public @ResponseBody Map<String, Object> insertBooksValue(@RequestParam Map<String,String> params){
+		System.out.println(params.toString());
 		booksValueDao.insertBooksValue(params);
 
 		return JsonUtil.putSuccessJsonContainer(null);
