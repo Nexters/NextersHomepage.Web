@@ -1,4 +1,5 @@
 var thisComponent = "";
+var thisValue= "";
 var thisName = "출석부";
 
 function addDatePicker() {
@@ -12,21 +13,21 @@ function addDatePicker() {
 			$(this).draggable();
 		}
 	});
-
+	
 	$("#addDateButton").click(function() {
 
 		$("#date").show();
 	})
-
+	
 	$("#date").css('position', 'absolute');
 	$("#date").hide();
-
+	
 }
 
 function removeDateColumn(data) {
 
 	if (data.result == "success") {
-
+		
 		requestJsonData("api/admin/getDateList.do", {
 			bookNm : thisName
 		}, getDateList);
@@ -39,7 +40,7 @@ function getDateList(data) {
 
 
 	if (data.result == "success") {
-
+		$("#attendenceTable").hide();
 		var dateList = "";
 
 		dateList = "<tr> <th>이름</th>"
@@ -65,11 +66,12 @@ function getDateList(data) {
 		})
 
 		addDatePicker();
-
+		
+		requestJsonData("api/admin/userActivityList.do", {}, userActiviyList);
 	} else {
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
 	}
-
+	
 }
 
 function insertBooksValue(){
@@ -78,12 +80,12 @@ function insertBooksValue(){
 function addDate(data) {
 
 	if (data.result == "success") {
+
+		$("#activityList").html('');
 		
 		requestJsonData("api/admin/getDateList.do", {
 			bookNm : thisName
 		}, getDateList);
-		
-		//alert(thisComponent.attr("info"))
 		
 		requestJsonData("api/admin/insertBooksValue.do", {
 			bookNm : thisName,
@@ -120,7 +122,6 @@ function userActiviyList(data) {
 
 	if (data.result == "success") {
 
-		//alert(data.resData[0].memberList.length);
 		var memberNameList = "";
 
 		for (i = 0; i < data.resData[0].memberList.length; i++) {
@@ -129,17 +130,75 @@ function userActiviyList(data) {
 			memberNameList += "<td>" + data.resData[0].memberList[i].userNm + "</td>";
 			memberNameList += "</tr>";
 		}
-
+		
 		$("#activityList").html(memberNameList)
+		
+		requestJsonData("api/admin/booksValueList.do", {}, booksValueList);
+		
 	} else {
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
 	}
 }
-function booksValueList(){
+
+function modifyBooksValue(data){
+	
 	if (data.result == "success") {
 
-		alert(data.resData[0].toString);
-		$("#activityList").html(memberNameList)
+		thisComponent.html(thisValue);
+		
+	} else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+
+	
+}
+function booksValueList(data){
+	
+	if (data.result == "success") {
+		
+		var numOfDate=($("#dateList").children().children().length-2);
+		console.log(numOfDate);
+		
+		for(i=0;i<numOfDate;i++){
+			var trNum=0;
+			$("#activityList tr").each(function(){
+				var value=data.resData[0].valueList[trNum+i*data.resData[0].valueList.length/numOfDate].value;
+				var userNo=data.resData[0].valueList[trNum+i*data.resData[0].valueList.length/numOfDate].userNo;
+				var bookcolumnno=data.resData[0].valueList[trNum+i*data.resData[0].valueList.length/numOfDate].bookcolumnno;
+				
+				var userInfo="userNo='"+userNo+"' "+"bookcolumno='"+bookcolumnno+"' ";
+				if(value=="출석"){
+					$(this).append("<td  style='text-align:center;'> <button "+userInfo+" class='btn btn-success btn-xs attendenceButton'>출석</button></td>");
+				}else if(value=="지각"){
+					$(this).append("<td  style='text-align:center;'> <button "+userInfo+" class='btn btn-warning btn-xs attendenceButton'>지각</button></td>");
+				}else{
+					$(this).append("<td  style='text-align:center;'> <button "+userInfo+" class='btn btn-danger btn-xs attendenceButton'>결석</button></td>");
+				}
+				trNum++;
+			})
+		}
+		$('.attendenceButton').click(function(){
+			var status="";
+			if($(this).html()=='결석'){
+				status="출석";
+			}else if($(this).html()=='출석'){
+				status="지각";
+			}else{
+				status="결석";
+			}
+			
+			thisComponent=$(this);
+			thisValue=status;
+			
+			requestJsonData("api/admin/modifyBooksValue.do", {
+				bookNm : thisName,
+				value : status,
+				userNo : $(this).attr("userNo"),
+				columnNo : $(this).attr("bookcolumnno")
+			}, modifyBooksValue);
+		})
+		
+		$("#attendenceTable").show();
 	} else {
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
 	}
@@ -152,7 +211,4 @@ $(document).ready(function() {
 		bookNm : thisName
 	}, getDateList);
 	
-	requestJsonData("api/admin/userActivityList.do", {}, userActiviyList);
-	requestJsonData("api/admin/booksValueList.do", {}, booksValueList);
-
 });
