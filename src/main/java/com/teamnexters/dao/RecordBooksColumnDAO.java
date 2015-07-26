@@ -17,4 +17,7 @@ public class RecordBooksColumnDAO {
 	public void insertDate(Object param){
 		sqlsession.insert("insertDate",param);
 	}
+	public Object getDateList(Object param){
+		return sqlsession.selectList("getDateList",param);
+	}
 }

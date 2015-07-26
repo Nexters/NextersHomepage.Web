@@ -1,5 +1,6 @@
 package com.teamnexters.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +32,10 @@ public class RecordBooksController {
 		reqParam.put("columnNo", columnNo);
 		reqParam.put("bookNm", params.get("bookNm"));
 		booksColumnDao.insertDate(reqParam);
+		ArrayList<RecordBooksColumnDTO> list=(ArrayList<RecordBooksColumnDTO>)booksColumnDao.getDateList(params.get("bookNm"));
+		Map<String,Object> resultParam=new HashMap<String,Object>();
+		resultParam.put("dateList", list);
 		
-		return JsonUtil.putSuccessJsonContainer(null);
+		return JsonUtil.putSuccessJsonContainer(resultParam);
 	}
 }

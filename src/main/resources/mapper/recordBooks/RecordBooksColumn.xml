@@ -7,5 +7,8 @@
 		insert into recordbooks_column(bookcolumnno,bookno) values(#{columnNo},(select bookno from recordBooks where booknm=#{bookNm}))
 	</insert>
 	
+	<select id="getDateList" resultType="com.teamnexters.dto.RecordBooksColumnDTO">
+		select * from recordbooks_column where bookno=(select bookno from recordBooks where booknm=#{bookNm})
+	</select>
 
 </mapper>
