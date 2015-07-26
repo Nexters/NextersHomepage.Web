@@ -28,15 +28,15 @@ public class RecordBooksController {
 	private MemberDAO memDao;
 	@Autowired
 	private RecordBooksValueDAO booksValueDao;
-	
-	
+
+
 	@RequestMapping("api/admin/userActivityList.do")
 	public @ResponseBody Map<String,Object> userActivityList(){
 		ArrayList<MemberDTO> list=(ArrayList<MemberDTO>)memDao.getActivityMemberList();
-		
+
 		Map<String,Object> resultData=new HashMap<String, Object>();
 		resultData.put("memberList", list);
-		
+
 		return  JsonUtil.putSuccessJsonContainer(resultData);
 	}
 	@RequestMapping("api/admin/getDateList.do")
@@ -57,7 +57,19 @@ public class RecordBooksController {
 		reqParam.put("bookNm", params.get("bookNm"));
 		booksColumnDao.insertDate(reqParam);
 		
-		
+
+		return JsonUtil.putSuccessJsonContainer(null);
+	}
+	@RequestMapping("api/admin/insertBooksValue.do")
+	public @ResponseBody Map<String, Object> insertBooksValue(@RequestParam Map<String,String> params){
+		booksValueDao.insertBooksValue(params);
+
+		return JsonUtil.putSuccessJsonContainer(null);
+	}
+	@RequestMapping("api/admin/removeDateColumn.do")
+	public @ResponseBody Map<String, Object> deleteDateColumn(@RequestParam Map<String,String> params){
+		booksColumnDao.deleteDateColumn(params);
+
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
 }

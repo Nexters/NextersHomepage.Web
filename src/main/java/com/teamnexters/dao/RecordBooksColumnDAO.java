@@ -20,4 +20,8 @@ public class RecordBooksColumnDAO {
 	public Object getDateList(Object param){
 		return sqlsession.selectList("getDateList",param);
 	}
+	
+	public void deleteDateColumn(Object param){
+		sqlsession.delete("deleteDateColumn",param);
+	}
 }
