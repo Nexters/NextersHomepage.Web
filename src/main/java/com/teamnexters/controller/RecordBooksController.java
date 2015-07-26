@@ -28,16 +28,21 @@ public class RecordBooksController {
 	
 	
 	@RequestMapping("api/admin/userActivityList.do")
-	public @ResponseBody Map<String,Object> userActivityList(@RequestParam Map<String,String> params){
+	public @ResponseBody Map<String,Object> userActivityList(){
 		ArrayList<MemberDTO> list=(ArrayList<MemberDTO>)memDao.getActivityMemberList();
 		
 		Map<String,Object> resultData=new HashMap<String, Object>();
 		resultData.put("memberList", list);
+		
+		return  JsonUtil.putSuccessJsonContainer(resultData);
+	}
+	@RequestMapping("api/admin/getDateList.do")
+	public @ResponseBody Map<String,Object> getDateList(@RequestParam Map<String,String> params){
+		Map<String,Object> resultData=new HashMap<String, Object>();
 		ArrayList<RecordBooksColumnDTO> dateList=(ArrayList<RecordBooksColumnDTO>)booksColumnDao.getDateList(params.get("bookNm"));
 		resultData.put("dateList", dateList);
 		return  JsonUtil.putSuccessJsonContainer(resultData);
 	}
-	
 	@RequestMapping("api/admin/addDate.do")
 	public @ResponseBody Map<String, Object> addDate(@RequestParam Map<String,String> params){
 		String year=params.get("year");
@@ -48,10 +53,8 @@ public class RecordBooksController {
 		reqParam.put("columnNo", columnNo);
 		reqParam.put("bookNm", params.get("bookNm"));
 		booksColumnDao.insertDate(reqParam);
-		ArrayList<RecordBooksColumnDTO> list=(ArrayList<RecordBooksColumnDTO>)booksColumnDao.getDateList(params.get("bookNm"));
-		Map<String,Object> resultParam=new HashMap<String,Object>();
-		resultParam.put("dateList", list);
 		
-		return JsonUtil.putSuccessJsonContainer(resultParam);
+		
+		return JsonUtil.putSuccessJsonContainer(null);
 	}
 }
