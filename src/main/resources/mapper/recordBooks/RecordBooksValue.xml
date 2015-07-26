@@ -3,6 +3,13 @@
           "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
 <mapper namespace="com.teamnexters.mapper">   
 
-	
+	<insert id="insertBooksValue">
+		insert into recordbooks_value(bookno,userno,bookcolumnno) 
+		select (select bookno from recordbooks where booknm=#{bookNm}) as bookno,
+		"userNo" as userno,
+		#{columnNo} as bookcolumnno
+		from member
+		where activityYN='Y'
+	</insert>
 
 </mapper>

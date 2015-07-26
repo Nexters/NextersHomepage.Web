@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teamnexters.dao.MemberDAO;
 import com.teamnexters.dao.RecordBooksColumnDAO;
+import com.teamnexters.dao.RecordBooksValueDAO;
 import com.teamnexters.dto.MemberDTO;
 import com.teamnexters.dto.RecordBooksColumnDTO;
 import com.teamnexters.util.JsonUtil;
@@ -25,6 +26,8 @@ public class RecordBooksController {
 	private RecordBooksColumnDAO booksColumnDao;
 	@Autowired
 	private MemberDAO memDao;
+	@Autowired
+	private RecordBooksValueDAO booksValueDao;
 	
 	
 	@RequestMapping("api/admin/userActivityList.do")
@@ -53,7 +56,7 @@ public class RecordBooksController {
 		reqParam.put("columnNo", columnNo);
 		reqParam.put("bookNm", params.get("bookNm"));
 		booksColumnDao.insertDate(reqParam);
-		
+		booksValueDao.insertBooksValue(params);
 		
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
