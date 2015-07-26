@@ -1,0 +1,9 @@
+.glyphicon{
+	cursor:cursor;
+	cursor:pointer;
+}
+
+.glyphicon:hover{
+	
+	background-color: #eeeeee;
+}
