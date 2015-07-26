@@ -146,6 +146,16 @@ function modifyBooksValue(data){
 
 		switch(thisValue){
 		
+		case "출석":
+			
+			break;
+			
+		case "지각":
+			break;
+			
+		case "결석":
+			break;
+			
 		}
 		thisComponent.html(thisValue);
 		
@@ -169,7 +179,7 @@ function booksValueList(data){
 				var userNo=data.resData[0].valueList[trNum+i*data.resData[0].valueList.length/numOfDate].userNo;
 				var bookcolumnno=data.resData[0].valueList[trNum+i*data.resData[0].valueList.length/numOfDate].bookcolumnno;
 				
-				var userInfo="userNo='"+userNo+"' "+"bookcolumno='"+bookcolumnno+"' ";
+				var userInfo="userNo='"+userNo+"' "+"bookcolumnno='"+bookcolumnno+"' ";
 				if(value=="출석"){
 					$(this).append("<td  style='text-align:center;'> <button "+userInfo+" class='btn btn-success btn-xs attendenceButton'>출석</button></td>");
 				}else if(value=="지각"){
