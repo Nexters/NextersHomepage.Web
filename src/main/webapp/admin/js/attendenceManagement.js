@@ -144,6 +144,9 @@ function modifyBooksValue(data){
 	
 	if (data.result == "success") {
 
+		switch(thisValue){
+		
+		}
 		thisComponent.html(thisValue);
 		
 	} else {
@@ -191,10 +194,12 @@ function booksValueList(data){
 			thisValue=status;
 			
 			requestJsonData("api/admin/modifyBooksValue.do", {
+				
 				bookNm : thisName,
 				value : status,
 				userNo : $(this).attr("userNo"),
 				columnNo : $(this).attr("bookcolumnno")
+				
 			}, modifyBooksValue);
 		})
 		

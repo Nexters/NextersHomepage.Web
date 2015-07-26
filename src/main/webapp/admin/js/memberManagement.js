@@ -105,7 +105,7 @@ function getMemberList(data) {
 						isNotInsert = false;
 					}
 				}
-
+				
 				if (isNotInsert) {
 					memberInfoList += "<td>&nbsp;</td>";
 				}
