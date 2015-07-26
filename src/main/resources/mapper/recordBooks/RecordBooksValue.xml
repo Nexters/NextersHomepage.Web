@@ -15,5 +15,16 @@
 	<select id="getBooksValueList" resultType="com.teamnexters.dto.RecordBooksValueDTO">
 		select * from recordbooks_value  order by split_part(bookcolumnno,'-',1)::numeric asc,split_part(bookcolumnno,'-',2)::numeric asc ,split_part(bookcolumnno,'-',3)::numeric asc,userno asc
 	</select>
+	
+	<update id="updateBooksValue">
+		update recordbooks_value
+		set value=#{value}
+		where bookno=(select bookno from recordbooks where booknm=#{bookNm}) and
+		      userno=#{userNo} and
+		      bookcolumnno=#{columnNo}
+	</update>
+	
+	
+	
 
 </mapper>
