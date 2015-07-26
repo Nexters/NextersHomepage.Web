@@ -3,7 +3,7 @@ package com.teamnexters.dto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RecordBooksValue {
+public class RecordBooksValueDTO {
 
 	
 	private int bookNo;

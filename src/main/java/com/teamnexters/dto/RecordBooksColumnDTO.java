@@ -3,7 +3,7 @@ package com.teamnexters.dto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RecordBooksColumn {
+public class RecordBooksColumnDTO {
 
 	private String bookColumnNo;
 	private int bookNo;
