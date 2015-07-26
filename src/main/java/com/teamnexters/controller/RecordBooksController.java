@@ -82,4 +82,11 @@ public class RecordBooksController {
 		resultData.put("valueList", list);
 		return JsonUtil.putSuccessJsonContainer(resultData);
 	}
+	@RequestMapping("api/admin/modifyBooksValue.do")
+	public @ResponseBody Map<String, Object> updateBooksValue(@RequestParam Map<String,String> params){
+		
+		booksValueDao.updateBooksValue(params);
+		
+		return JsonUtil.putSuccessJsonContainer(null);
+	}
 }

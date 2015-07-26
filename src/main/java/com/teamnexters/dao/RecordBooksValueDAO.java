@@ -19,4 +19,7 @@ public class RecordBooksValueDAO {
 	public Object getBooksValueList(){
 		return sqlsession.selectList("getBooksValueList");
 	}
+	public void updateBooksValue(Object param){
+		sqlsession.update("updateBooksValue",param);
+	}
 }
