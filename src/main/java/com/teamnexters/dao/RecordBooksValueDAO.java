@@ -16,7 +16,7 @@ public class RecordBooksValueDAO {
 	public void insertBooksValue(Object param){
 		sqlsession.insert("insertBooksValue",param);
 	}
-	public void getBooksValueList(){
-		sqlsession.selectList("getBooksValueList");
+	public Object getBooksValueList(){
+		return sqlsession.selectList("getBooksValueList");
 	}
 }

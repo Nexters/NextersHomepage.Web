@@ -15,6 +15,7 @@ import com.teamnexters.dao.RecordBooksColumnDAO;
 import com.teamnexters.dao.RecordBooksValueDAO;
 import com.teamnexters.dto.MemberDTO;
 import com.teamnexters.dto.RecordBooksColumnDTO;
+import com.teamnexters.dto.RecordBooksValueDTO;
 import com.teamnexters.util.JsonUtil;
 
 @Controller
@@ -76,8 +77,9 @@ public class RecordBooksController {
 	}
 	@RequestMapping("api/admin/booksValueList.do")
 	public @ResponseBody Map<String, Object> getBooksValueList(){
-		booksValueDao.getBooksValueList();
-		
-		return JsonUtil.putSuccessJsonContainer(null);
+		ArrayList<RecordBooksValueDTO> list=(ArrayList<RecordBooksValueDTO>)booksValueDao.getBooksValueList();
+		Map<String,Object> resultData=new HashMap<String,Object>();
+		resultData.put("valueList", list);
+		return JsonUtil.putSuccessJsonContainer(resultData);
 	}
 }
