@@ -24,6 +24,18 @@
 		      bookcolumnno=#{columnNo}
 	</update>
 	
+	<select id="bookValueExist" resultType="Boolean">
+		select case when count(userno)>0 then 1 else 0 end
+		from recordbooks_value
+		where userno=#{userno}
+	</select>
+	
+	<insert id="insertNewBooksValue">
+		insert into recordbooks_value(bookno,userno,bookcolumnno)
+		select bookno,#{userNo},bookcolumnno
+		from recordbooks_column
+	</insert>
+	
 	
 	
 

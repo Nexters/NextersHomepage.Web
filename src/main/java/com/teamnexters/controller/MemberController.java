@@ -1,14 +1,16 @@
 package com.teamnexters.controller;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.teamnexters.dao.MemberAuthDAO;
 import com.teamnexters.dao.MemberDAO;
 import com.teamnexters.dao.MemberInfoDAO;
+import com.teamnexters.dao.RecordBooksValueDAO;
 import com.teamnexters.dto.MemberAuthDTO;
 import com.teamnexters.dto.MemberDTO;
 import com.teamnexters.dto.MemberInfoDTO;
@@ -39,6 +42,8 @@ public class MemberController {
 	MemberAuthDAO memAuthDao;
 	@Autowired
 	private EmailSender emailSender;
+	@Autowired
+	RecordBooksValueDAO booksValueDao;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/api/main/memberList.do")
@@ -295,6 +300,12 @@ public class MemberController {
 	public @ResponseBody Map<String, Object> updateActivity(@RequestParam Map<String,String> params){
 		
 		memDao.updateActivity(params);
+		String activityYN=params.get("activityYN");
+		if(activityYN.equals("Y")){
+			if(!booksValueDao.bookValueExist(params)){
+				booksValueDao.insertNewBooksValue(params);
+			}
+		}
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
 
@@ -362,4 +373,6 @@ public class MemberController {
 		return  JsonUtil.putSuccessJsonContainer(mapRsltData);
 
 	}
+	
+	
 }

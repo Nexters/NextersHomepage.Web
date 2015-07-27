@@ -22,4 +22,10 @@ public class RecordBooksValueDAO {
 	public void updateBooksValue(Object param){
 		sqlsession.update("updateBooksValue",param);
 	}
+	public boolean bookValueExist(Object param){
+		return sqlsession.selectOne("bookValueExist",param);
+	}
+	public void insertNewBooksValue(Object param){
+		sqlsession.insert("insertNewBooksValue",param);
+	}
 }
