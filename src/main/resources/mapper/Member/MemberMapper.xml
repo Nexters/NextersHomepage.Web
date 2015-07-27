@@ -90,4 +90,29 @@
 	<select id="getActivityMemberList" resultType="com.teamnexters.dto.MemberDTO">
 		select "userNm" from member where activityYN='Y' order by "userNo" asc
 	</select>
+	
+	<select id="getMemberCountDeveloper" resultType="Integer">
+		select count("userNo")
+		from member
+		where "userNo" like '%T%'
+		<if test="gener != null">
+			and substring("userNo",2,2)=#{gener}
+		</if>
+	</select>
+	<select id="getMemberCountDesigner" resultType="Integer">
+		select count("userNo")
+		from member
+		where "userNo" like '%D%'
+		<if test="gener != null">
+			and substring("userNo",2,2)=#{gener}
+		</if>
+	</select>
+	<select id="getMemberCountEtc" resultType="Integer">
+		select count("userNo")
+		from member
+		where "userNo" like '%E%'
+		<if test="gener != null">
+			and substring("userNo",2,2)=#{gener}
+		</if>
+	</select>
 </mapper>

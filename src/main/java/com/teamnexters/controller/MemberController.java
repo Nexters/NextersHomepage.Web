@@ -164,8 +164,11 @@ public class MemberController {
 		if(position.equals("개발자")){
 			tmp+="T";
 		}
-		else{
+		else if(position.equals("디자이너")){
 			tmp+="D";
+		}
+		else{
+			tmp+="O";
 		}
 		mapReqParam.put("userId", userId);
 		mapReqParam.put("userNm", userNm);
@@ -372,6 +375,18 @@ public class MemberController {
 		mapRsltData.put("info", memInfoDto);
 		return  JsonUtil.putSuccessJsonContainer(mapRsltData);
 
+	}
+	
+	@RequestMapping("api/admin/memberCount.do")
+	public @ResponseBody Map<String, Object> getMemberCount(@RequestParam(value="gener", required=false) String gener){
+		System.out.println(gener);
+		Map<String,String> reqParam=new HashMap<String,String>();
+		reqParam.put("gener", gener);
+		Map<String,Object> resultParam=new HashMap<String,Object>();
+		resultParam.put("developer", memDao.getMemberCountDeveloper(reqParam));
+		resultParam.put("designer", memDao.getMemberCountDesigner(reqParam));
+		resultParam.put("etc", memDao.getMemberCountEtc(reqParam));
+		return  JsonUtil.putSuccessJsonContainer(resultParam);
 	}
 	
 	

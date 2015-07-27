@@ -68,5 +68,14 @@ public class MemberDAO implements MemberMapper {
 	public Object getActivityMemberList(){
 		return sqlsession.selectList("getActivityMemberList");
 	}
+	public Object getMemberCountDeveloper(Object param){
+		return sqlsession.selectOne("getMemberCountDeveloper",param);
+	}
+	public Object getMemberCountDesigner(Object param){
+		return sqlsession.selectOne("getMemberCountDesigner",param);
+	}
+	public Object getMemberCountEtc(Object param){
+		return sqlsession.selectOne("getMemberCountEtc",param);
+	}
 }
 
