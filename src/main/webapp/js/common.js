@@ -16,4 +16,5 @@ function requestJsonData(requestUrl, requestParam, successFunction) {
 			alert("인터넷 연결 상태를 확인해주세요.");
 		}
 	});
+	
 }
