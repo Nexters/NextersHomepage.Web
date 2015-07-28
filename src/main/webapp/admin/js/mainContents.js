@@ -11,6 +11,7 @@ function memberCount(data) {
 		//개발자 : rgb(50,220,250) #32dcfa 
 		//디자이너 : rgb(0,255,0) #00ff00
 		//etc : yellow
+		
 		var ctx = $("#asd").get(0).getContext("2d");
 
 		var numOfDeveloper = data.resData[0].developer;
@@ -32,8 +33,8 @@ function memberCount(data) {
 			label : "디자이너"
 		})
 
-		//		<span style='font-size: 7px; color: #32dfca'>개발자</span><br>
-		//		<span style='font-size: 7px'>디자이너</span>
+		//<span style='font-size: 7px; color: #32dfca'>개발자</span><br>
+		//<span style='font-size: 7px'>디자이너</span>
 
 		var label = "<span style='font-size: 7px; color: #32dcfa;'>개발자</span><br> <span style='font-size: 7px; color: #ccff00; '>디자이너</span>";
 		var myPieChart = new Chart(ctx).Pie(chartData);
@@ -111,23 +112,16 @@ function getMemberAttendenceCount(data) {
 			} ]
 		};
 
-		
-		
-//		Bardata.labels.push("mon");
-//		Bardata.datasets[0].data.push(1);
 		var myBarChart = new Chart(ctx).Bar(Bardata);
 
 	} else {
-
+	
+			alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+		
 	}
 
 }
 $(document).ready(function() {
-
-	//alert("Asd");
-	//console.log("asd");
-
-	//getMemberAttendenceCount()
 
 	requestJsonData("api/admin/memberCount.do", {}, memberCount);
 	requestJsonData("api/admin/attendenceCountList.do", {}, getMemberAttendenceCount);

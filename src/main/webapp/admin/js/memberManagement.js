@@ -44,7 +44,7 @@ function SmemberAdd(data){
 }
 function putAddUser(location){
 	
-	location.html("<button href=\"#myModal\" data-toggle=\"modal\">회원 추가</button>");
+	location.html("<button class='btn btn-default btn-md'href=\"#myModal\" data-toggle=\"modal\">회원 추가</button>");
 	
 	var generNum=$("#memberListPage li.active a").attr("gener");
 	
