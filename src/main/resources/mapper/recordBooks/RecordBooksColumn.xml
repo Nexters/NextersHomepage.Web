@@ -17,6 +17,6 @@
 	</delete>
 	
 	<select id="getAttendenceCount" resultType="com.teamnexters.dto.RecordBooksColumnDTO">
-		select bookcolumnno from recordbooks_column where bookno='1'
+		select bookcolumnno from recordbooks_column where bookno='1'  order by split_part(bookcolumnno,'-',1)::numeric asc,split_part(bookcolumnno,'-',2)::numeric asc ,split_part(bookcolumnno,'-',3)::numeric asc
 	</select>
 </mapper>
