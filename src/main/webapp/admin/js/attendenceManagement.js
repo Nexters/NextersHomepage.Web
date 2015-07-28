@@ -191,8 +191,10 @@ function booksValueList(data){
 					$(this).append("<td  style='text-align:center;'> <button "+userInfo+" class='btn btn-success btn-xs attendenceButton'>출석</button></td>");
 				}else if(value=="지각"){
 					$(this).append("<td  style='text-align:center;'> <button "+userInfo+" class='btn btn-warning btn-xs attendenceButton'>지각</button></td>");
-				}else{
+				}else if(value=="결석"){
 					$(this).append("<td  style='text-align:center;'> <button "+userInfo+" class='btn btn-danger btn-xs attendenceButton'>결석</button></td>");
+				}else{
+					$(this).append("<td  style='text-align:center;'> <button "+userInfo+" class='btn btn-success btn-xs attendenceButton'>출석</button></td>");
 				}
 				trNum++;
 			})
