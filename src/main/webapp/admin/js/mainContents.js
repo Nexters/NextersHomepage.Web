@@ -5,14 +5,14 @@ var colorDev = "#32dcfa";
 var colorDes = "#ccff00";
 
 function memberCount(data) {
-	
+
 	if (data.result == "success") {
 
 		//개발자 : rgb(50,220,250) #32dcfa 
 		//디자이너 : rgb(0,255,0) #00ff00
 		//etc : yellow
 		var ctx = $("#asd").get(0).getContext("2d");
-		
+
 		var numOfDeveloper = data.resData[0].developer;
 		var numOfDesigner = data.resData[0].designer;
 		var numOfEtc = data.resData[0].etc;
@@ -46,58 +46,90 @@ function memberCount(data) {
 
 function getMemberAttendenceCount(data) {
 
-	
+	if (data.result == "success") {
+		
+		
+		//attend 출석
+		//late 지각 
+		//absence 결석
+		
+		var dataLabel=[];
+		var attendCount=[];
+		var lateCount=[];
+		var absenceCount=[];
+		
+		for(i=0;i<data.resData[0].list.length;i++){
+			
+			var listData=data.resData[0].list[i];
+			
+			dataLabel.push(listData.date);
+			
+			/// attend late absence date
+			
+			
+			//attend 
+			attendCount.push(listData.attend);
+			
+			//absence
+			lateCount.push(listData.late);
+			//late
+			absenceCount.push(listData.absence);
+			
+		}
+		
+		
 		
 		var ctx = $("#attendenceCountCanvas").get(0).getContext("2d");
 
-		var data = {
-				
+		var Bardata = {
+
 			//labels 에 날짜
-			labels : [],
+			labels : dataLabel,
 
 			//datasets의 label과 data값
 			datasets : [ {
-				//label : "출석",
+				label : "출석",
 				fillColor : "rgba(92,184,92,0.5)",
 				strokeColor : "rgba(92,184,92,0.8)",
 				highlightFill : "rgba(92,184,92,0.75)",
 				highlightStroke : "rgba(92,184,92,1)",
-				data : [ 65, 20 ]
+				data : attendCount
 			}, {
 				label : "지각",
 				fillColor : "rgba(240,173,78,0.5)",
 				strokeColor : "rgba(240,173,78,0.8)",
 				highlightFill : "rgba(240,173,78,0.75)",
 				highlightStroke : "rgba(240,173,78,1)",
-				data : [ 28, 10 ]
+				data : lateCount
 			}, {
-				//label : "결석",
+				label : "결석",
 				fillColor : "rgba(201,48,44,0.5)",
 				strokeColor : "rgba(201,48,44,0.8)",
 				highlightFill : "rgba(201,48,44,0.75)",
 				highlightStroke : "rgba(201,48,44,1)",
-				data : [ 5, 20 ]
+				data : absenceCount
 			} ]
 		};
 
-		data.labels.push("mon");
-		data.labels.push("tue");
-		//
-		//data.datasets[0].label="출석1";
-		//console.log(data.datasets[0].label);
-		var myBarChart = new Chart(ctx).Bar(data);
 		
-	
+		
+//		Bardata.labels.push("mon");
+//		Bardata.datasets[0].data.push(1);
+		var myBarChart = new Chart(ctx).Bar(Bardata);
+
+	} else {
+
+	}
 
 }
 $(document).ready(function() {
 
-	alert("Asd");
-	console.log("asd");
-	
-	getMemberAttendenceCount()
+	//alert("Asd");
+	//console.log("asd");
+
+	//getMemberAttendenceCount()
 
 	requestJsonData("api/admin/memberCount.do", {}, memberCount);
-	//	requestJsonData("api/admin/memberCount.do", {}, getMemberAttendenceCount);
+	requestJsonData("api/admin/attendenceCountList.do", {}, getMemberAttendenceCount);
 
 });
