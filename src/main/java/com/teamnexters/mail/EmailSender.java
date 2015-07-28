@@ -9,7 +9,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMessage.RecipientType;
 import javax.mail.internet.MimeUtility;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,9 @@ public class EmailSender implements SendMailService {
 	@Autowired
 	private JavaMailSender mailSender;
 
-	@Value("${emailconfig.email}")
+	@Value("#{emailconfig['email']}")
 	private String id;
-	@Value("${emailconfig.password}")
+	@Value("#{emailconfig['password']}")
 	private String pass;
 
 	@Override
