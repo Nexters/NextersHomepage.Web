@@ -40,6 +40,8 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="../js/bootstrap.min.js"></script>
 
+<!-- Bootstrap Tab JavaScript -->
+<script src="../js/tab.js"></script>
 
 <!-- Config File -->
 <script src="../js/config.js"></script>
@@ -92,7 +94,8 @@
 						onclick="getPageContents('service/memberManagement.html');"><i class="fa fa-fw"></i>회원 관리</a></li>
 					<li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw"></i>출석부 장부 설문지 <i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo" class="collapse">    
+                        <ul id="demo" class="collapse">
+                        	<li><a href="#" onclick="getPageContents('service/BooksList.html');">장부</a></li>
                             <li><a href="#" onclick="getPageContents('service/attendenceManagement.html');">출석부</a></li>
 							<li><a href="#">장부</a></li>
 							<li><a href="#">설문지</a></li>
