@@ -36,6 +36,24 @@
 		from recordbooks_column
 	</insert>
 	
+	<delete id="deleteNewBooksValue">
+		delete from recordbooks_value
+		where userno=#{userNo}
+	</delete>
+	
+	<select id="getAttendenceCountList" resultType="Map">
+		select(select count(*)
+		from recordbooks_value
+		where bookno='1' and bookcolumnno=#{bookColumnNo}
+		and (value is null or value='출석')) as attend, (select count(*)
+		from recordbooks_value
+		where bookno='1' and bookcolumnno=#{bookColumnNo}
+		and value='지각') as late, (select count(*)
+		from recordbooks_value
+		where bookno='1' and bookcolumnno=#{bookColumnNo}
+		and value='결석') as absence
+		from recordbooks_value limit 1
+	</select>
 	
 	
 

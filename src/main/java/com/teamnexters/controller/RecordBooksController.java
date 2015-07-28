@@ -89,4 +89,22 @@ public class RecordBooksController {
 		
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
+	
+	@RequestMapping("api/admin/attendenceCountList.do")
+	public @ResponseBody Map<String, Object> attendenceCountList(){
+		
+		Map<String,Object> params=new HashMap<String,Object>();
+		ArrayList<RecordBooksColumnDTO> list=(ArrayList<RecordBooksColumnDTO>)booksColumnDao.getAttendenceCount();
+		Map<String,Object> resultParam=new HashMap<String,Object>();
+		
+		for(int i=0;i<list.size();i++){
+			ArrayList tmp=(ArrayList)booksValueDao.getAttendenceCountList(list.get(i));
+			resultParam.put(list.get(i).getBookColumnNo(), tmp.get(0));
+			
+			
+		}
+		
+		
+		return JsonUtil.putSuccessJsonContainer(resultParam);
+	}
 }

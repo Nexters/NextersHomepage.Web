@@ -24,4 +24,8 @@ public class RecordBooksColumnDAO {
 	public void deleteDateColumn(Object param){
 		sqlsession.delete("deleteDateColumn",param);
 	}
+	
+	public Object getAttendenceCount(){
+		return sqlsession.selectList("getAttendenceCount");
+	}
 }

@@ -309,6 +309,9 @@ public class MemberController {
 				booksValueDao.insertNewBooksValue(params);
 			}
 		}
+		else{
+			booksValueDao.deleteNewBooksValue(params);
+		}
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
 

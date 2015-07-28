@@ -1,5 +1,7 @@
 package com.teamnexters.dao;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.SqlSession;
@@ -27,5 +29,11 @@ public class RecordBooksValueDAO {
 	}
 	public void insertNewBooksValue(Object param){
 		sqlsession.insert("insertNewBooksValue",param);
+	}
+	public void deleteNewBooksValue(Object param){
+		sqlsession.delete("deleteNewBooksValue",param);
+	}
+	public Object getAttendenceCountList(Object param){
+		return sqlsession.selectList("getAttendenceCountList",param);
 	}
 }

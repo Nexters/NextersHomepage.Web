@@ -15,4 +15,8 @@
 		delete from recordbooks_column
 		where bookcolumnno=#{columnNo} and bookno=(select bookno from recordbooks where booknm=#{bookNm});
 	</delete>
+	
+	<select id="getAttendenceCount" resultType="com.teamnexters.dto.RecordBooksColumnDTO">
+		select bookcolumnno from recordbooks_column where bookno='1'
+	</select>
 </mapper>
