@@ -96,14 +96,20 @@ public class RecordBooksController {
 		Map<String,Object> params=new HashMap<String,Object>();
 		ArrayList<RecordBooksColumnDTO> list=(ArrayList<RecordBooksColumnDTO>)booksColumnDao.getAttendenceCount();
 		Map<String,Object> resultParam=new HashMap<String,Object>();
-		
+		ArrayList countList=new ArrayList();
 		for(int i=0;i<list.size();i++){
-			ArrayList tmp=(ArrayList)booksValueDao.getAttendenceCountList(list.get(i));
-			resultParam.put(list.get(i).getBookColumnNo(), tmp.get(0));
+			
+			ArrayList<Map<String,Object>> tmpList=(ArrayList<Map<String,Object>>)booksValueDao.getAttendenceCountList(list.get(i));
+			Map<String,Object> tmpMap=new HashMap<String,Object>();
+			tmpMap.put("date", list.get(i).getBookColumnNo());
+			tmpMap.put("attend", tmpList.get(0).get("attend"));
+			tmpMap.put("late", tmpList.get(0).get("late"));
+			tmpMap.put("absence", tmpList.get(0).get("absence"));
+			countList.add(tmpMap);
 			
 			
 		}
-		
+		resultParam.put("list", countList);
 		
 		return JsonUtil.putSuccessJsonContainer(resultParam);
 	}
