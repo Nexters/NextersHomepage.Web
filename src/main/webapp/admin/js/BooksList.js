@@ -32,8 +32,6 @@ function BooksDetail(bookNo, itsme) {
 	$("#BookListDiv").fadeOut(function(){
 		$("#BookDetailDiv").fadeIn();
 		$("#booksName").html($(itsme).html());
-		$("#dateList").html("");
-		$("#activityList").html("");
 		$(".custom-table").css("width", '0px');
 		requestJsonData("api/admin/getDateList.do", {
 			bookNm : thisName
