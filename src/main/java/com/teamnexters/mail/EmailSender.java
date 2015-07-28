@@ -26,9 +26,9 @@ public class EmailSender implements SendMailService {
 	@Autowired
 	private JavaMailSender mailSender;
 
-	@Value("#{emailconfig['email']}")
+	@Value("${emailconfig.email}")
 	private String id;
-	@Value("#{emailconfig['password']}")
+	@Value("${emailconfig.password}")
 	private String pass;
 
 	@Override
