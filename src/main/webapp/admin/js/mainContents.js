@@ -36,7 +36,7 @@ function memberCount(data) {
 		//<span style='font-size: 7px; color: #32dfca'>개발자</span><br>
 		//<span style='font-size: 7px'>디자이너</span>
 
-		var label = "<span style='font-size: 7px; color: #32dcfa;'>개발자</span><br> <span style='font-size: 7px; color: #ccff00; '>디자이너</span>";
+		var label = "<span style='font-size: 13px; color: #32dcfa;'>개발자</span><br> <span style='font-size: 13px; color: #ccff00; '>디자이너</span>";
 		var myPieChart = new Chart(ctx).Pie(chartData);
 		$("#labelArea").html(label);
 	} else {
@@ -63,14 +63,15 @@ function getMemberAttendenceCount(data) {
 			
 			var listData=data.resData[0].list[i];
 			
-			dataLabel.push(listData.date);
+			var date=listData.date.split('-');
+			var monthDay=date[1]+"-"+date[2];
+			
+			dataLabel.push(monthDay);
 			
 			/// attend late absence date
 			
-			
 			//attend 
 			attendCount.push(listData.attend);
-			
 			//absence
 			lateCount.push(listData.late);
 			//late
