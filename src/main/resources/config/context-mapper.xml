@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+  <bean id="customuserDetailsService" class="com.teamnexters.security.customuserDetailsService">
+    <property name="LoginDAO" ref="LoginDAO"/>
+  </bean>
+
+  <bean id="LoginDAO" class="com.teamnexters.dao.LoginDAO">
+    <property name="sqlSession" ref="sqlSessionTemplate"/>
+  </bean>
+
+  <bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="myDataSource1"/>
+    <property name="mapperLocations" value="classpath:/mapper/**/*.xml"/>
+  </bean>
+
+  <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+    <constructor-arg index="0" ref="sqlSession"/>
+  </bean>
+  <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+  </bean>
+</beans>

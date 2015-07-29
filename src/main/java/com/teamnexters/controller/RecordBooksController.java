@@ -30,7 +30,6 @@ public class RecordBooksController {
 	@Autowired
 	private RecordBooksValueDAO booksValueDao;
 
-
 	@RequestMapping("api/admin/userActivityList.do")
 	public @ResponseBody Map<String,Object> userActivityList(){
 		ArrayList<MemberDTO> list=(ArrayList<MemberDTO>)memDao.getActivityMemberList();
