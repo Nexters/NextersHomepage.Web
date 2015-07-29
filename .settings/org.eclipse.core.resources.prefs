@@ -3,5 +3,6 @@ encoding//src/main/java=utf-8
 encoding//src/main/webapp/admin/service/attendenceManagement.html=UTF-8
 encoding//src/main/webapp/admin/service/mainContents.html=UTF-8
 encoding//src/main/webapp/admin/service/memberManagement.html=UTF-8
+encoding//src/main/webapp/admin/service/productManagement.html=UTF-8
 encoding//src/test/java=utf-8
 encoding/<project>=UTF-8
