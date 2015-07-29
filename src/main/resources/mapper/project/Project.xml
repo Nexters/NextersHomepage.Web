@@ -3,6 +3,10 @@
           "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
 <mapper namespace="com.teamnexters.mapper">   
 
+	<insert id="insertProject" parameterType="com.teamnexters.dto.ProjectDTO">
+		insert into project(projectNm,projectDesc,projectImg,projectLink)
+		values (#{projectNm},#{projectDesc},#{projectImg},#{projectLink})
+	</insert>
 	
 
 </mapper>
