@@ -1,6 +1,7 @@
 package com.teamnexters.dto;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class ProjectDTO {
@@ -9,6 +10,7 @@ public class ProjectDTO {
 	private String projectDesc;
 	private String projectImg;
 	private String projectLink;
+	private MultipartFile uploadFile;
 	
 	public void setProjectNo(int projectNo){
 		this.projectNo=projectNo;
@@ -39,5 +41,11 @@ public class ProjectDTO {
 	}
 	public String getProjectLink(){
 		return projectLink;
+	}
+	public void setUploadFile(MultipartFile uploadFile){
+		this.uploadFile=uploadFile;
+	}
+	public MultipartFile getUploadFile(){
+		return uploadFile;
 	}
 }

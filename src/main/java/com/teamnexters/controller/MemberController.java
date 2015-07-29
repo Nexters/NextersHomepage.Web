@@ -168,7 +168,7 @@ public class MemberController {
 			tmp+="D";
 		}
 		else{
-			tmp+="O";
+			tmp+="E";
 		}
 		mapReqParam.put("userId", userId);
 		mapReqParam.put("userNm", userNm);

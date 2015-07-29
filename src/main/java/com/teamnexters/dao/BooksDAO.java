@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProjectDAO {
-	 protected Log log = LogFactory.getLog(LoginDAO.class);
+public class BooksDAO {
 
-	 	@Autowired
-	    private SqlSession sqlSession;
-	    
-	    public void insertProject(Object param){
-	    	sqlSession.insert("insertProject",param);
-	    }
+	protected Log log = LogFactory.getLog(BooksDAO.class);
+
+	@Autowired
+	private SqlSession sqlsession;
+
+	public Object getBooksList(){
+		return sqlsession.selectList("getBooksList");
+	}
 }

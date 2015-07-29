@@ -9,9 +9,9 @@
     <init-param>
       <param-name>contextConfigLocation</param-name>
       <param-value>
-				/WEB-INF/mvc-quick-start.xml
-				classpath*:config/spring/context-*.xml
-			</param-value>
+        /WEB-INF/mvc-quick-start.xml
+        classpath*:config/context-*.xml
+      </param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
