@@ -17,4 +17,8 @@ public class BooksDAO {
 	public Object getBooksList(){
 		return sqlsession.selectList("getBooksList");
 	}
+	
+	public Object getBooksUserList(int intBooksNumber){
+		return sqlsession.selectList("getBooksUserList", intBooksNumber);
+	}
 }

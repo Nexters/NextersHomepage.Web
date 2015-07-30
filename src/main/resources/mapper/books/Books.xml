@@ -2,7 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
           "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
 <mapper namespace="com.teamnexters.mapper">   
-
+	<select id="getBooksList" resultType="HashMap">
+		SELECT
+			"bookNo"
+			, MAX("bookNm") as "bookNm"
+			, COUNT("bookNm") as "total"
+		FROM (
+			SELECT 
+				bs."bookNo"
+				, bs."bookNm"
+			FROM
+				books bs
+			LEFT JOIN books_user bu ON bu."bookNo" = bs."bookNo" 
+		) as vTable1
+		GROUP BY "bookNo"
+		ORDER BY "bookNo" desc
+	</select>
 	
-
+	<select id="getBooksUserList" resultType="HashMap">
+		SELECT
+			bu."bookNo"
+			,bu."userNo"
+			,mb."userId"
+			,mb."userNm"
+		FROM 
+			books_user bu 
+		LEFT JOIN 
+			member mb 
+		ON 
+			mb."userNo" = bu."userNo" 
+		WHERE "bookNo" = #{bookNumber}
+	</select>
 </mapper>
