@@ -26,6 +26,7 @@ public class AccessdeniedHandler implements AccessDeniedHandler {
 			response.getWriter().write(jsonStr);
 		} else {
 			try {
+				
 				response.sendRedirect(request.getContextPath()+"/");
 			} catch(Exception e) {}
 		}

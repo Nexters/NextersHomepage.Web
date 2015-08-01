@@ -1,5 +1,7 @@
 package com.teamnexters.security;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -7,8 +9,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 import com.teamnexters.security.handler.AccessdeniedHandler;
+import com.teamnexters.security.handler.AuthenticationEntryPointHandler;
 import com.teamnexters.security.handler.FailureHandler;
 import com.teamnexters.security.handler.LogoutHandler;
 import com.teamnexters.security.handler.SuccessHandler;
@@ -22,6 +26,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private FailureHandler failurehandler = new FailureHandler();
 	private AccessdeniedHandler accessdeniedhandler = new AccessdeniedHandler();
 	private LogoutHandler logouthandler = new LogoutHandler();
+	private AuthenticationEntryPoint authenticationEntryPoint=new AuthenticationEntryPointHandler();
+	
+	
 	
 	@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -31,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
 		http
 			.authorizeRequests()
 				.antMatchers("/api/main/**").permitAll()
@@ -45,13 +53,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.logoutUrl("/logout")
 		.and()
 			.exceptionHandling()
+				.authenticationEntryPoint(authenticationEntryPoint)
 				.accessDeniedHandler(accessdeniedhandler)
+				
+				
 		.and()
 			.formLogin()
 				.loginPage("/needlogin.do")
 				.loginProcessingUrl("/login")
 				.successHandler(successhandler)
 				.failureHandler(failurehandler)
+				
+				
 		.and()
 			.csrf()
 				.disable();
