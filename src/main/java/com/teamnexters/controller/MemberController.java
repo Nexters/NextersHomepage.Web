@@ -382,7 +382,6 @@ public class MemberController {
 	
 	@RequestMapping("api/admin/memberCount.do")
 	public @ResponseBody Map<String, Object> getMemberCount(@RequestParam(value="gener", required=false) String gener){
-		System.out.println(gener);
 		Map<String,String> reqParam=new HashMap<String,String>();
 		reqParam.put("gener", gener);
 		Map<String,Object> resultParam=new HashMap<String,Object>();
@@ -392,5 +391,10 @@ public class MemberController {
 		return  JsonUtil.putSuccessJsonContainer(resultParam);
 	}
 	
-	
+	@RequestMapping("api/admin/getMemberListForBooks.do")
+	public @ResponseBody Map<String, Object> getMemberListForBooks() {
+		Map<String,Object> reqParam =new HashMap<String,Object>();
+		reqParam.put("list", memDao.getMemberListForBooks());
+		return JsonUtil.putSuccessJsonContainer(reqParam);
+	}
 }

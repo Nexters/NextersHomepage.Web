@@ -57,7 +57,7 @@ public class ProjectController {
 				uploadFile.transferTo(file);
 
 				fileDto.setProjectImg(fileName);
-				System.out.println(fileDto);
+				
 				projectDao.insertProject(fileDto);
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -26,10 +26,12 @@ public class LoginController {
 	
 	@RequestMapping("/needlogin.do")
 	public @ResponseBody Map<String, Object> showNeedLogin(HttpServletRequest request, HttpServletResponse response){
+		
 		if(HttpUtil.isAjax(request)) {
 			return JsonUtil.putFailJsonContainer("LoginControllerERR0001", "로그인이 필요합니다.");
 		} else {
 			try {
+				
 				response.sendRedirect(request.getContextPath()+"/");
 			} catch(Exception e) {}
 			return null;
@@ -69,4 +71,6 @@ public class LoginController {
 		}
 		return mapRsltData;
 	}
+	
+	
 }

@@ -20,12 +20,18 @@ function getBooksList(data) {
 			listSet += "<th scope='row'>"+listData.bookNo+"</th>";
 			listSet += "<td onclick='BooksDetail("+listData.bookNo+",this)' style='cursor:pointer;'>"+listData.bookNm+"</td>";
 			listSet += "<td>"+listData.total+"</td>";
-			listSet += "<td><a class='btn btn-default btn-sm' href='#' role='button'>사용자 관리</a>&nbsp;<a class='btn btn-default btn-sm' href='#' role='button'>수정</a>&nbsp;<a class='btn btn-default btn-sm' href='#' role='button'>삭제</a></td>"
+			listSet += "<td><a class='btn btn-default btn-sm' onclick='mngBooksUser(this);' role='button'>사용자 관리</a>&nbsp;<a class='btn btn-default btn-sm' href='#' role='button'>수정</a>&nbsp;<a class='btn btn-default btn-sm' href='#' role='button'>삭제</a></td>"
 			listSet += "</tr>";
 		});
 		
 		$("#BookListTable tbody").html(listSet);
 	}
+}
+
+function mngBooksUser(target) {
+	var tempData = $(target).parent().parent().find("td")[0];
+	$("#booksName").html($(tempData).html());
+	$("#BooksUserManagementDiv").fadeIn();
 }
 
 function BooksDetail(bookNo, itsme) {

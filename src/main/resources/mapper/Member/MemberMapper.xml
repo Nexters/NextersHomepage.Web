@@ -115,4 +115,17 @@
 			and substring("userNo",2,2)=#{gener}
 		</if>
 	</select>
+	
+	<select id="getMemberListForBooks" resultType="com.teamnexters.dto.MemberDTO">
+		SELECT 
+			"userNo"
+			, "userId"
+			, "userNm"
+			, "userStatus"
+			, "userRole"
+		FROM
+			member
+		ORDER BY
+			"userNo" DESC
+	</select>
 </mapper>
