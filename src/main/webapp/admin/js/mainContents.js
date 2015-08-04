@@ -128,7 +128,7 @@ function getMemberAttendenceCount(data) {
 }
 $(document).ready(function() {
 
-//	requestJsonData("api/admin/memberCount.do", {}, memberCount);
+	requestJsonData("api/admin/memberCount.do", {}, memberCount);
 	requestJsonData("api/admin/attendenceCountList.do", {}, getMemberAttendenceCount);
 
 });
