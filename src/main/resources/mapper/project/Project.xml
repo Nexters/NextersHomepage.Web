@@ -8,5 +8,9 @@
 		values (#{projectNm},#{projectDesc},#{projectImg},#{projectLink})
 	</insert>
 	
+	<select id="getProjectList" resultType="com.teamnexters.dto.ProjectDTO">
+		select * from project
+	</select>
+	
 
 </mapper>

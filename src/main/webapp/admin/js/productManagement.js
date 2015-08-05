@@ -1,6 +1,35 @@
 
 $(document).ready(function() {
 
+	requestJsonData("api/admin/getProjectList.do", {
+		
+	}, getProjectList);
+	
+	function getProjectList(data){
+		if (data.result == "success") {
+			var list=data.resData[0].list;
+			var productList="<tr>";
+			for(i=0;i<list.length;i++){
+				if(i%4==0 && i>0){
+					productList+="</tr><br><tr>";
+				}
+				productList+="<td>"+list[i].projectNm+"<br>";
+				productList+="<a href='"+list[i].projectLink+"'><img width='100px' height='50px' src='img/"+list[i].projectImg+"'></a><br>";
+				productList+=list[i].projectDesc+"</td>";
+				
+				
+			}
+			productList+="</tr>";
+			
+			$('#productTable').html(productList);
+		}
+		else {
+			alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+		}
+		
+
+	}
+	
 	var files;
 	var fileName='';
 	$('#productModal input[name=projectImg]').on('change',function(event){
@@ -57,6 +86,9 @@ $(document).ready(function() {
 	          success : function(result) {
 	           
 	        	  alert('success');
+	        	  $("#productModal").modal('hide');
+	      		  $("#productModal .form-control").val('');
+	      		  
 	          },
 	          beforeSend:function(){
 	  	        $('.wrap-loading').removeClass('display-none');
@@ -68,14 +100,8 @@ $(document).ready(function() {
 					alert("인터넷 연결 상태를 확인해주세요.");
 			  }
 	      });
-		requestJsonData("api/admin/projectAdd.do", {
-
-			grade : $("#memberListPage li.active a").attr("gener"),
-			position : $("#productModal input[type='checkbox']").val(),
-			userId : $("#productModal input[name=userId]").val(),
-			userNm : $("#productModal input[name=userNm]").val(),
-			userCellNum : $("#productModal input[name=userCellNum]").val()
-
-		}, SmemberAdd);
+		
 	})
+	
+	
 });

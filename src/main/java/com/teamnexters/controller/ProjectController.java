@@ -2,10 +2,16 @@ package com.teamnexters.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,11 +25,13 @@ import com.teamnexters.util.JsonUtil;
 public class ProjectController {
 
 	@Autowired
-	ProjectDAO projectDao;
+	private ProjectDAO projectDao;
+	@Value("#{imgpath['path']}")
+	private String realPath;
 
 	@RequestMapping("api/admin/projectAdd.do")
 	@Autowired
-	public @ResponseBody Map<String,Object> projectAdd(ProjectDTO fileDto) {
+	public @ResponseBody Map<String,Object> projectAdd(ProjectDTO fileDto,HttpServletRequest request) {
 
 		MultipartFile uploadFile = fileDto.getUploadFile();
 
@@ -43,14 +51,15 @@ public class ProjectController {
 			int comma=fileName.lastIndexOf(".");
 			String pre=fileName.substring(0,comma);
 			String end=fileName.substring(comma+1,fileName.length());
-			fileName=pre+"_"+time+"."+end;
+			fileName=pre+time+"."+end;
 
 
 
 
 			try {
-
-				File file = new File("C:/images/" + fileName);
+				
+				System.out.println(realPath);
+				File file = new File(realPath + fileName);
 
 
 
@@ -66,5 +75,16 @@ public class ProjectController {
 
 		return  JsonUtil.putSuccessJsonContainer(null);
 
+	}
+	
+	@RequestMapping("api/admin/getProjectList.do")
+	public @ResponseBody Map<String,Object> getProjectList(){
+		
+		List<ProjectDTO> list=(ArrayList<ProjectDTO>)projectDao.getProjectList();
+		
+		Map<String,Object> map=new HashMap<String,Object>();
+		map.put("list", list);
+		
+		return  JsonUtil.putSuccessJsonContainer(map);
 	}
 }

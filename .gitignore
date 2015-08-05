@@ -22,3 +22,4 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 src/main/webapp/WEB-INF/email.properties
+src/main/webapp/WEB-INF/imgpath.properties
