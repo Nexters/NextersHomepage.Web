@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +29,8 @@ public class ProjectController {
 	private ProjectDAO projectDao;
 	@Value("#{imgpath['path']}")
 	private String realPath;
+	@Autowired
+	private ProjectDTO projectDto;
 
 	@RequestMapping("api/admin/projectAdd.do")
 	@Autowired
@@ -53,6 +56,9 @@ public class ProjectController {
 			String end=fileName.substring(comma+1,fileName.length());
 			fileName=pre+time+"."+end;
 
+			String projectDesc=fileDto.getProjectDesc();
+			fileDto.setProjectDesc(projectDesc.replaceAll("\n", "<br>"));
+			
 
 
 
@@ -86,5 +92,13 @@ public class ProjectController {
 		map.put("list", list);
 		
 		return  JsonUtil.putSuccessJsonContainer(map);
+	}
+	
+	@RequestMapping("api/admin/deleteProject.do")
+	public @ResponseBody Map<String,Object> deleteProject(@RequestParam(value="projectNo") int projectNo){
+		projectDto.setProjectNo(projectNo);
+		projectDao.deleteProject(projectDto);
+		
+		return  JsonUtil.putSuccessJsonContainer(null);
 	}
 }

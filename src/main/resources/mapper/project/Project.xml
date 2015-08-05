@@ -12,5 +12,9 @@
 		select * from project
 	</select>
 	
+	<delete id="deleteProject">
+		delete from project where projectNo=#{projectNo}
+	</delete>
+	
 
 </mapper>

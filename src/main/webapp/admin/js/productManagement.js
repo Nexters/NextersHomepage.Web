@@ -1,34 +1,49 @@
 
+function getProjectList(data){
+	
+	if (data.result == "success") {
+		
+		var list=data.resData[0].list;
+		var productList="<tr>";
+		for(i=0;i<list.length;i++){
+			if(i%4==0 && i>0){
+				productList+="</tr><br><tr>";
+			}
+			productList+="<td align='center' ><div align='right' status="+list[i].projectNo+"><input type='button' class='btn btn-default btn-xs' value='수정'>&nbsp;<input type='button' class='btn btn-danger btn-xs productRemove' value='삭제' ></div><br>"+list[i].projectNm+"<br>";
+			productList+="<a href='"+list[i].projectLink+"'><img width='200px' height='100px' alt='"+list[i].projectImg+"' src='img/"+list[i].projectImg+"'></a><br>";
+			productList+=list[i].projectDesc+"</td>";
+			
+			
+		}
+		productList+="</tr>";
+		
+		$('#productTable').html(productList);
+		
+		$('.productRemove').click(function(){
+			if(!confirm("정말 삭제하시겠습니까?")){
+				return;
+			}
+			var projectNo=$(this).parent().attr("status");
+			requestJsonData("api/admin/deleteProject.do",{projectNo:projectNo},requestJsonData("api/admin/getProjectList.do", {
+      			
+      		}, getProjectList));
+		})
+	}
+	else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+	
+
+}
 $(document).ready(function() {
 
+	
+	
 	requestJsonData("api/admin/getProjectList.do", {
 		
 	}, getProjectList);
 	
-	function getProjectList(data){
-		if (data.result == "success") {
-			var list=data.resData[0].list;
-			var productList="<tr>";
-			for(i=0;i<list.length;i++){
-				if(i%4==0 && i>0){
-					productList+="</tr><br><tr>";
-				}
-				productList+="<td>"+list[i].projectNm+"<br>";
-				productList+="<a href='"+list[i].projectLink+"'><img width='100px' height='50px' src='img/"+list[i].projectImg+"'></a><br>";
-				productList+=list[i].projectDesc+"</td>";
-				
-				
-			}
-			productList+="</tr>";
-			
-			$('#productTable').html(productList);
-		}
-		else {
-			alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
-		}
-		
-
-	}
+	
 	
 	var files;
 	var fileName='';
@@ -47,16 +62,12 @@ $(document).ready(function() {
 	})
 	$("#addProductButton").click(function() {
 		
-		var projectNm=$('#productModal input[name=projectNm').val().trim();
+		var projectNm=$('#productModal input[name=projectNm]').val().trim();
 		if(projectNm==''){
 			alert('이름을 입력하세요!');
 			return;
 		}		
-		var projectDesc=$('#productModal input[name=projectDesc').val().trim();
-		if(projectDesc==''){
-			alert('설명을 입력하세요!');
-			return;
-		}
+		
 		
 		
 		if(fileName==''){
@@ -69,7 +80,12 @@ $(document).ready(function() {
 			alert('링크를 넣어주세요!');
 			return;
 		}
-		
+		var projectDesc=$('#productModal textarea[name=projectDesc]').val().trim();
+		if(projectDesc==''){
+			alert('설명을 입력하세요!');
+			return;
+		}
+		alert(1)
 		var myForm = new FormData();
 	    myForm.append("uploadFile", files);
 	    myForm.append("projectNm",projectNm);
@@ -85,9 +101,12 @@ $(document).ready(function() {
 	          contentType:false,
 	          success : function(result) {
 	           
-	        	  alert('success');
+	        	  
 	        	  $("#productModal").modal('hide');
 	      		  $("#productModal .form-control").val('');
+	      		requestJsonData("api/admin/getProjectList.do", {
+	      			
+	      		}, getProjectList);
 	      		  
 	          },
 	          beforeSend:function(){

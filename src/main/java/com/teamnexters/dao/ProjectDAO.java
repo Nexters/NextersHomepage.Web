@@ -21,4 +21,8 @@ public class ProjectDAO {
 	    public Object getProjectList(){
 	    	return sqlSession.selectList("getProjectList");
 	    }
+	    
+	    public void deleteProject(Object param){
+	    	sqlSession.delete("deleteProject",param);
+	    }
 }
