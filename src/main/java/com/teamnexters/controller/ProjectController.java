@@ -21,7 +21,7 @@ public class ProjectController {
 	@Autowired
 	ProjectDAO projectDao;
 
-	@RequestMapping("projectAdd.do")
+	@RequestMapping("api/admin/projectAdd.do")
 	@Autowired
 	public @ResponseBody Map<String,Object> projectAdd(ProjectDTO fileDto) {
 
