@@ -37,7 +37,9 @@ function memberCount(data) {
 		//<span style='font-size: 7px'>디자이너</span>
 
 		var label = "<span style='font-size: 13px; color: #32dcfa;'>개발자</span><br> <span style='font-size: 13px; color: #ccff00; '>디자이너</span>";
-		var myPieChart = new Chart(ctx).Pie(chartData);
+		var myPieChart = new Chart(ctx).Pie(chartData,{
+			responsive: true
+		});
 		$("#labelArea").html(label);
 	} else {
 
@@ -113,7 +115,9 @@ function getMemberAttendenceCount(data) {
 			} ]
 		};
 
-		var myBarChart = new Chart(ctx).Bar(Bardata);
+		var myBarChart = new Chart(ctx).Bar(Bardata,{
+			responsive: true
+		});
 
 	} else {
 	

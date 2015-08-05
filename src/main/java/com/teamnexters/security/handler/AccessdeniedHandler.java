@@ -14,7 +14,7 @@ import com.teamnexters.util.HttpUtil;
 import com.teamnexters.util.JsonUtil;
 
 public class AccessdeniedHandler implements AccessDeniedHandler {
-
+	
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
@@ -26,6 +26,7 @@ public class AccessdeniedHandler implements AccessDeniedHandler {
 			response.getWriter().write(jsonStr);
 		} else {
 			try {
+				
 				response.sendRedirect(request.getContextPath()+"/");
 			} catch(Exception e) {}
 		}

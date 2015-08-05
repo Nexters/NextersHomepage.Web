@@ -2,12 +2,19 @@ package com.teamnexters.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,11 +26,15 @@ import com.teamnexters.util.JsonUtil;
 public class ProjectController {
 
 	@Autowired
-	ProjectDAO projectDao;
-
-	@RequestMapping("projectAdd.do")
+	private ProjectDAO projectDao;
+	@Value("#{imgpath['path']}")
+	private String realPath;
 	@Autowired
-	public @ResponseBody Map<String,Object> projectAdd(ProjectDTO fileDto) {
+	private ProjectDTO projectDto;
+
+	@RequestMapping("api/admin/projectAdd.do")
+	@Autowired
+	public @ResponseBody Map<String,Object> projectAdd(ProjectDTO fileDto,HttpServletRequest request) {
 
 		MultipartFile uploadFile = fileDto.getUploadFile();
 
@@ -43,21 +54,25 @@ public class ProjectController {
 			int comma=fileName.lastIndexOf(".");
 			String pre=fileName.substring(0,comma);
 			String end=fileName.substring(comma+1,fileName.length());
-			fileName=pre+"_"+time+"."+end;
+			fileName=pre+time+"."+end;
 
+			String projectDesc=fileDto.getProjectDesc();
+			fileDto.setProjectDesc(projectDesc.replaceAll("\n", "<br>"));
+			
 
 
 
 			try {
-
-				File file = new File("C:/images/" + fileName);
+				
+				System.out.println(realPath);
+				File file = new File(realPath + fileName);
 
 
 
 				uploadFile.transferTo(file);
 
 				fileDto.setProjectImg(fileName);
-				System.out.println(fileDto);
+				
 				projectDao.insertProject(fileDto);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -66,5 +81,24 @@ public class ProjectController {
 
 		return  JsonUtil.putSuccessJsonContainer(null);
 
+	}
+	
+	@RequestMapping("api/admin/getProjectList.do")
+	public @ResponseBody Map<String,Object> getProjectList(){
+		
+		List<ProjectDTO> list=(ArrayList<ProjectDTO>)projectDao.getProjectList();
+		
+		Map<String,Object> map=new HashMap<String,Object>();
+		map.put("list", list);
+		
+		return  JsonUtil.putSuccessJsonContainer(map);
+	}
+	
+	@RequestMapping("api/admin/deleteProject.do")
+	public @ResponseBody Map<String,Object> deleteProject(@RequestParam(value="projectNo") int projectNo){
+		projectDto.setProjectNo(projectNo);
+		projectDao.deleteProject(projectDto);
+		
+		return  JsonUtil.putSuccessJsonContainer(null);
 	}
 }

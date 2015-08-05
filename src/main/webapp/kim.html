@@ -43,6 +43,7 @@ $(function() {
 		  });
 		
 		$("#subbutton").click(function(){
+			
 	          processFileUpload();
 	  });
 		$("#loader1").on('change',prepareLoad);
@@ -52,6 +53,8 @@ $(function() {
 });
 function prepareLoad(event)
 {
+	
+	alert(event.target);
     console.log(' event fired'+event.target.files[0].name);
     files=event.target.files;
 }

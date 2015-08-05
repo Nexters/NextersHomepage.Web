@@ -8,5 +8,13 @@
 		values (#{projectNm},#{projectDesc},#{projectImg},#{projectLink})
 	</insert>
 	
+	<select id="getProjectList" resultType="com.teamnexters.dto.ProjectDTO">
+		select * from project
+	</select>
+	
+	<delete id="deleteProject">
+		delete from project where projectNo=#{projectNo}
+	</delete>
+	
 
 </mapper>
