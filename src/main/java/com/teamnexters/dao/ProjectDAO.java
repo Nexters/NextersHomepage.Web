@@ -25,4 +25,8 @@ public class ProjectDAO {
 	    public void deleteProject(Object param){
 	    	sqlSession.delete("deleteProject",param);
 	    }
+	    
+	    public void updateProject(Object param){
+	    	sqlSession.update("updateProject",param);
+	    }
 }

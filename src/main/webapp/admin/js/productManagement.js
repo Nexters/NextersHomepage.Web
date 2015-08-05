@@ -1,4 +1,17 @@
-
+var projectNmChanged=false;
+var projectImgChanged=false;
+var projectLinkChanged=false;
+var projectDescChanged=false;
+function deleteFunction(data){
+	if(data.result=="success"){
+		requestJsonData("api/admin/getProjectList.do", {
+  			
+  		}, getProjectList)
+	}
+	else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+}
 function getProjectList(data){
 	
 	if (data.result == "success") {
@@ -9,9 +22,9 @@ function getProjectList(data){
 			if(i%4==0 && i>0){
 				productList+="</tr><br><tr>";
 			}
-			productList+="<td align='center' ><div align='right' status="+list[i].projectNo+"><input type='button' class='btn btn-default btn-xs' value='수정'>&nbsp;<input type='button' class='btn btn-danger btn-xs productRemove' value='삭제' ></div><br>"+list[i].projectNm+"<br>";
-			productList+="<a href='"+list[i].projectLink+"'><img width='200px' height='100px' alt='"+list[i].projectImg+"' src='img/"+list[i].projectImg+"'></a><br>";
-			productList+=list[i].projectDesc+"</td>";
+			productList+="<td align='center' ><div align='right' status="+list[i].projectNo+"><input type='button' class='btn btn-default btn-xs productModify' value='수정' data-toggle='modal' href='#productModifyModal'>&nbsp;<input type='button' class='btn btn-danger btn-xs productRemove' value='삭제' ></div><br><span class='projectNm'>"+list[i].projectNm+"</span><br>";
+			productList+="<a class='projectLink' href='"+list[i].projectLink+"'><img class='projectImg' width='200px' height='100px' alt='"+list[i].projectImg+"' src='img/"+list[i].projectImg+"'></a><br>";
+			productList+="<span class='projectDesc'>"+list[i].projectDesc+"</span></td>";
 			
 			
 		}
@@ -24,10 +37,33 @@ function getProjectList(data){
 				return;
 			}
 			var projectNo=$(this).parent().attr("status");
-			requestJsonData("api/admin/deleteProject.do",{projectNo:projectNo},requestJsonData("api/admin/getProjectList.do", {
-      			
-      		}, getProjectList));
+			var projectImg=$(this).parent().parent().find('.projectImg').attr('alt');
+			
+			requestJsonData("api/admin/deleteProject.do",{projectNo:projectNo,projectImg:projectImg},deleteFunction)
 		})
+		
+		
+		$('.productModify').click(function(){
+			projectNmChanged=false;
+			projectImgChanged=false;
+			projectLinkChanged=false;
+			projectLinkChanged=false;
+			var projectNo=$(this).parent().attr("status");
+			var projectNm=$(this).parent().parent().find('.projectNm').html();
+			var projectLink=$(this).parent().parent().find('.projectLink').attr("href");
+			var originProjectImg=$(this).parent().parent().find('.projectImg').attr("alt");
+			var projectDesc=$(this).parent().parent().find('.projectDesc').html();
+			projectDesc=projectDesc.split("<br>").join("");
+			
+			$('#productModifyModal input[name=projectNo]').val(projectNo);
+			$('#productModifyModal input[name=projectNm]').val(projectNm);
+			$('#productModifyModal input[name=originProjectImg]').val(originProjectImg);
+			$('#productModifyModal input[name=projectLink]').val(projectLink);
+			$('#productModifyModal textarea[name=projectDesc]').val(projectDesc);
+			
+		})
+		
+		
 	}
 	else {
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
@@ -37,7 +73,13 @@ function getProjectList(data){
 }
 $(document).ready(function() {
 
-	
+	$('.addProduct').click(function(){
+		projectNmChanged=false;
+		projectImgChanged=false;
+		projectLinkChanged=false;
+		projectLinkChanged=false;
+		$("#productModal .form-control").val('');
+	})
 	
 	requestJsonData("api/admin/getProjectList.do", {
 		
@@ -47,7 +89,8 @@ $(document).ready(function() {
 	
 	var files;
 	var fileName='';
-	$('#productModal input[name=projectImg]').on('change',function(event){
+	$('#productModal input[name=projectImg],#productModifyModal input[name=projectImg]').on('change',function(event){
+		projectImgChanged=true;
 		files=event.target.files[0];
 		fileName=files.name;
 		var comma=fileName.lastIndexOf('.');
@@ -58,6 +101,89 @@ $(document).ready(function() {
 			$(this).val('');
 			return;
 		}
+		
+	})
+	$('#productModifyModal input[name=projectNm]').on('change',function(){
+		
+		projectNmChanged=true;
+	})
+	$('#productModifyModal input[name=projectLink]').on('change',function(){
+		projectLinkChanged=true;
+	})
+	$('#productModifyModal textarea[name=projectDesc]').on('change',function(){
+		projectDescChanged=true;
+	})
+	$("#modifyProductButton").click(function() {
+		
+		var projectNm=$('#productModifyModal input[name=projectNm]').val().trim();
+		if(projectNm==''){
+			alert('이름을 입력하세요!');
+			return;
+		}		
+		
+		
+		
+		
+		
+		var projectLink=$('#productModifyModal input[name=projectLink]').val().trim();
+		if(projectLink==''){
+			alert('링크를 넣어주세요!');
+			return;
+		}
+		var projectDesc=$('#productModifyModal textarea[name=projectDesc]').val().trim();
+		if(projectDesc==''){
+			alert('설명을 입력하세요!');
+			return;
+		}
+		
+		var myForm = new FormData();
+		var originProjectImg=$('#productModifyModal input[name=originProjectImg]').val();
+		myForm.append("projectNo",$('#productModifyModal input[name=projectNo]').val());
+		
+		if(projectImgChanged)
+			myForm.append("uploadFile", files);
+		if(projectNmChanged)
+			myForm.append("projectNm",projectNm);
+		if(projectDescChanged)
+			myForm.append("projectDesc",projectDesc);
+		if(projectLinkChanged)
+			myForm.append("projectLink",projectLink);
+		if(!projectLinkChanged && !projectDescChanged && !projectNmChanged && !projectImgChanged){
+			alert('수정되었습니다!');
+			 $("#productModifyModal").modal('hide');
+     		 $("#productModifyModal .form-control").val('');
+			return;
+		}
+	    myForm.append("originProjectImg",originProjectImg);
+	    
+	    $.ajax({dataType : 'json',
+	          url : "../api/admin/updateProject.do",
+	          data : myForm,
+	          type : "POST",
+	          enctype: 'multipart/form-data',
+	          processData: false, 
+	          contentType:false,
+	          success : function(result) {
+	           
+	        	  
+	        	  alert('수정되었습니다!');
+	        	  $("#productModifyModal").modal('hide');
+	      		  $("#productModifyModal .form-control").val('');
+	      		requestJsonData("api/admin/getProjectList.do", {
+	      			
+	      		}, getProjectList);
+	      		  
+	          },
+	          beforeSend:function(){
+	  	        $('.wrap-loading').removeClass('display-none');
+	  	      },
+	  	      complete:function(){
+		        $('.wrap-loading').addClass('display-none');
+		      },
+		      fail : function() {
+					alert("인터넷 연결 상태를 확인해주세요.");
+			  }
+	      });
 		
 	})
 	$("#addProductButton").click(function() {
@@ -85,7 +211,7 @@ $(document).ready(function() {
 			alert('설명을 입력하세요!');
 			return;
 		}
-		alert(1)
+		
 		var myForm = new FormData();
 	    myForm.append("uploadFile", files);
 	    myForm.append("projectNm",projectNm);
@@ -102,6 +228,7 @@ $(document).ready(function() {
 	          success : function(result) {
 	           
 	        	  
+	        	  alert('등록되었습니다!');
 	        	  $("#productModal").modal('hide');
 	      		  $("#productModal .form-control").val('');
 	      		requestJsonData("api/admin/getProjectList.do", {

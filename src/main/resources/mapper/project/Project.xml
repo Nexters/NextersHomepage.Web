@@ -16,5 +16,24 @@
 		delete from project where projectNo=#{projectNo}
 	</delete>
 	
+	<update id="updateProject" parameterType="com.teamnexters.dto.ProjectDTO">
+		update project
+		<trim prefix="set" suffixOverrides=",">
+  			<if test="projectNm !=null">
+  				projectNm=#{projectNm},
+  			</if>
+  			<if test="projectImg !=null">
+  				projectImg=#{projectImg},
+  			</if>
+  			<if test="projectLink !=null">
+  				projectLink=#{projectLink},
+  			</if>
+  			<if test="projectDesc !=null">
+  				projectDesc=#{projectDesc}
+  			</if>
+		</trim>
+		where projectNo=#{projectNo}
+	</update>
+	
 
 </mapper>

@@ -9,6 +9,7 @@ public class ProjectDTO {
 	private String projectNm;
 	private String projectDesc;
 	private String projectImg;
+	private String originProjectImg;
 	private String projectLink;
 	private MultipartFile uploadFile;
 	
@@ -47,5 +48,11 @@ public class ProjectDTO {
 	}
 	public MultipartFile getUploadFile(){
 		return uploadFile;
+	}
+	public void setOriginProjectImg(String orignProjectImg){
+		this.originProjectImg=originProjectImg;
+	}
+	public String getOriginProjectImg(){
+		return originProjectImg;
 	}
 }

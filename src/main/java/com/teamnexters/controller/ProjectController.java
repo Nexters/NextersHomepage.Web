@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +34,7 @@ public class ProjectController {
 
 	@RequestMapping("api/admin/projectAdd.do")
 	@Autowired
-	public @ResponseBody Map<String,Object> projectAdd(ProjectDTO fileDto,HttpServletRequest request) {
+	public @ResponseBody Map<String,Object> projectAdd(ProjectDTO fileDto) {
 
 		MultipartFile uploadFile = fileDto.getUploadFile();
 
@@ -95,10 +95,81 @@ public class ProjectController {
 	}
 	
 	@RequestMapping("api/admin/deleteProject.do")
-	public @ResponseBody Map<String,Object> deleteProject(@RequestParam(value="projectNo") int projectNo){
+	public @ResponseBody Map<String,Object> deleteProject(@RequestParam(value="projectNo") int projectNo,
+														  @RequestParam(value="projectImg") String projectImg){
+		System.out.println("dkfdf"+projectImg);
 		projectDto.setProjectNo(projectNo);
 		projectDao.deleteProject(projectDto);
 		
+		File file=new File(realPath + projectImg);
+		
+		if(file.exists()){
+			
+			file.delete();
+		}
+		
+		
 		return  JsonUtil.putSuccessJsonContainer(null);
+	}
+	
+	@RequestMapping("api/admin/updateProject.do")
+	public @ResponseBody Map<String,Object> updateProject(ProjectDTO fileDto){
+		System.out.println(fileDto.getProjectDesc());
+		System.out.println(fileDto.getProjectNm());
+		MultipartFile uploadFile = fileDto.getUploadFile();
+		if(fileDto.getProjectDesc()!=null){
+			String projectDesc=fileDto.getProjectDesc();
+			fileDto.setProjectDesc(projectDesc.replaceAll("\n", "<br>"));
+		}
+		
+
+		if (uploadFile != null) {
+
+			String fileName = uploadFile.getOriginalFilename();
+
+			Date date=new Date();
+			int year=date.getYear()-100;
+			int month=date.getMonth()+1;
+			int day=date.getDate();
+			int hour=date.getHours();
+			int minute=date.getMinutes();
+			int second=date.getSeconds();
+			String time=year+""+month+""+day+""+hour+""+minute+""+second;
+			int comma=fileName.lastIndexOf(".");
+			String pre=fileName.substring(0,comma);
+			String end=fileName.substring(comma+1,fileName.length());
+			fileName=pre+time+"."+end;
+
+			
+			
+
+
+
+			try {
+				
+				System.out.println(realPath);
+				File file = new File(realPath + fileName);
+
+				System.out.println(fileDto.getOriginProjectImg());
+				File originFile=new File(realPath+fileDto.getOriginProjectImg());
+				if(originFile.exists()){
+					originFile.delete();
+				}
+
+				uploadFile.transferTo(file);
+
+				fileDto.setProjectImg(fileName);
+				
+				projectDao.updateProject(fileDto);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} // try - catch
+		} // if
+		else{
+			projectDao.updateProject(fileDto);
+		}
+		
+		return  JsonUtil.putSuccessJsonContainer(null);
+		
 	}
 }
