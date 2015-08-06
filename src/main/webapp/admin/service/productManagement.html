@@ -1,4 +1,17 @@
-
+<style>
+	.productList{
+		
+		padding:10px;
+	}
+	.productList .inner{
+		border:1px solid black;
+	}
+	.productList .inner:hover{
+		background-color:#EEEEEE;
+		cursor:pointer;
+		cursor:cursor;
+	}
+</style>
 <div class="container-fluid">
 
 	<div class="col-lg-12">
@@ -14,12 +27,8 @@
 	</div>
 	
 	<div class="container-fluid">
-		<div class="col-lg-12">
-			<div class="table-responsive">
-				<table class="table table-bordered" id="productTable">
-					
-				</table>
-			</div>
+		<div class="col-lg-12" id="productTable">
+			
 		</div>
 	</div>
 
@@ -162,11 +171,7 @@
 <br />
 <br />
 <br />
-<!-- jQuery -->
-<script src="../js/jquery-1.11.3.min.js" type="text/javascript"></script>
 
-<!-- Bootstrap Core JavaScript -->
-<script src="../js/bootstrap.min.js"></script>
 
 <script src="js/productManagement.js"></script>
 

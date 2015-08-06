@@ -17,18 +17,16 @@ function getProjectList(data){
 	if (data.result == "success") {
 		
 		var list=data.resData[0].list;
-		var productList="<tr>";
+		var productList="";
 		for(i=0;i<list.length;i++){
-			if(i%4==0 && i>0){
-				productList+="</tr><br><tr>";
-			}
-			productList+="<td align='center' ><div align='right' status="+list[i].projectNo+"><input type='button' class='btn btn-default btn-xs productModify' value='수정' data-toggle='modal' href='#productModifyModal'>&nbsp;<input type='button' class='btn btn-danger btn-xs productRemove' value='삭제' ></div><br><span class='projectNm'>"+list[i].projectNm+"</span><br>";
-			productList+="<a class='projectLink' href='"+list[i].projectLink+"'><img class='projectImg' width='200px' height='100px' alt='"+list[i].projectImg+"' src='img/"+list[i].projectImg+"'></a><br>";
-			productList+="<span class='projectDesc'>"+list[i].projectDesc+"</span></td>";
+			
+			productList+="<div class='col-lg-3 productList' align='center'><div class='inner'><div style='margin:5px;' align='right' status="+list[i].projectNo+"><input type='button' class='btn btn-default btn-xs productModify' value='수정' data-toggle='modal' href='#productModifyModal'>&nbsp;<input type='button' class='btn btn-danger btn-xs productRemove' value='삭제' ></div><span class='projectNm' style='font-weight:bold;'>"+list[i].projectNm+"</span><br>";
+			productList+="<a class='projectLink' href='"+list[i].projectLink+"'><img class='projectImg' width='200px' height='100px' style='margin-top:15px;' alt='"+list[i].projectImg+"' src='img/"+list[i].projectImg+"'></a><br>";
+			productList+="<span class='projectDesc'>"+list[i].projectDesc+"</span></div></div>";
 			
 			
 		}
-		productList+="</tr>";
+		productList+="";
 		
 		$('#productTable').html(productList);
 		
@@ -37,7 +35,7 @@ function getProjectList(data){
 				return;
 			}
 			var projectNo=$(this).parent().attr("status");
-			var projectImg=$(this).parent().parent().find('.projectImg').attr('alt');
+			var projectImg=$(this).parent().parent().parent().find('.projectImg').attr('alt');
 			
 			requestJsonData("api/admin/deleteProject.do",{projectNo:projectNo,projectImg:projectImg},deleteFunction)
 		})
@@ -49,10 +47,10 @@ function getProjectList(data){
 			projectLinkChanged=false;
 			projectLinkChanged=false;
 			var projectNo=$(this).parent().attr("status");
-			var projectNm=$(this).parent().parent().find('.projectNm').html();
-			var projectLink=$(this).parent().parent().find('.projectLink').attr("href");
-			var originProjectImg=$(this).parent().parent().find('.projectImg').attr("alt");
-			var projectDesc=$(this).parent().parent().find('.projectDesc').html();
+			var projectNm=$(this).parent().parent().parent().find('.projectNm').html();
+			var projectLink=$(this).parent().parent().parent().find('.projectLink').attr("href");
+			var originProjectImg=$(this).parent().parent().parent().find('.projectImg').attr("alt");
+			var projectDesc=$(this).parent().parent().parent().find('.projectDesc').html();
 			projectDesc=projectDesc.split("<br>").join("");
 			
 			$('#productModifyModal input[name=projectNo]').val(projectNo);
