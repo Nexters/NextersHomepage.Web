@@ -5,5 +5,9 @@
 	<insert id="boardAdd" parameterType="com.teamnexters.dto.BoardDTO">
 		insert into board(boardname) values(#{boardName});
 	</insert>
+	
+	<select id="boardList" resultType="com.teamnexters.dto.BoardDTO">
+		select * from board
+	</select>
 
 </mapper>

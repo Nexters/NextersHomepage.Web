@@ -3,4 +3,7 @@
           "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
 <mapper namespace="com.teamnexters.mapper">   
 
+	<insert id="postInsert" parameterType="com.teamnexters.dto.BoardInfoDTO">
+		insert into board_info(boardno,posttitle,postcontent) values(#{boardNo},#{postTitle},#{postContent});
+	</insert>
 </mapper>
