@@ -103,9 +103,9 @@ public class BoardController {
 	@RequestMapping("api/admin/getPost.do")
 	public @ResponseBody Map<String,Object> getPost(BoardInfoDTO infoDto){
 		Map<String,Object> param=new HashMap<String,Object>();
-		System.out.println(infoDto.getPostNo());
-		param.put("list",  (BoardInfoDTO)infoDao.getPost(infoDto));
 		
+		param.put("list",  (BoardInfoDTO)infoDao.getPost(infoDto));
+		infoDao.increasePostHits(infoDto);
 		return JsonUtil.putSuccessJsonContainer(param);
 	}
 }

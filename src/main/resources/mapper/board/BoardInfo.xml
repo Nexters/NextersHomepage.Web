@@ -14,4 +14,8 @@
 	<select id="getPost" parameterType="com.teamnexters.dto.BoardInfoDTO" resultType="com.teamnexters.dto.BoardInfoDTO">
 	select postno,boardno,(select "userNm" from member where "userNo"=userno) username,userno,posttitle,postcontent,postdate,posthits from board_info where postno=#{postNo};
 	</select>
+	
+	<update id="increasePostHits" parameterType="com.teamnexters.dto.BoardInfoDTO">
+		update board_info set posthits=posthits+1 where postno=#{postNo};
+	</update>
 </mapper>
