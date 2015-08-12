@@ -27,4 +27,10 @@ protected Log log = LogFactory.getLog(BooksDAO.class);
 	public void increasePostHits(Object param){
 		sqlsession.update("increasePostHits",param);
 	}
+	public void removePost(Object param){
+		sqlsession.delete("removePost",param);
+	}
+	public void modifyPost(Object param){
+		sqlsession.update("modifyPost",param);
+	}
 }

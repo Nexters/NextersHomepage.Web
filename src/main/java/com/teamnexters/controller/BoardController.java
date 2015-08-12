@@ -108,4 +108,19 @@ public class BoardController {
 		infoDao.increasePostHits(infoDto);
 		return JsonUtil.putSuccessJsonContainer(param);
 	}
+	
+	@RequestMapping("api/admin/removePost.do")
+	public @ResponseBody Map<String,Object> removePost(BoardInfoDTO infoDto){
+		infoDao.removePost(infoDto);
+		
+		return JsonUtil.putSuccessJsonContainer(null);
+	}
+	
+	@RequestMapping("api/admin/modifyPost.do")
+	public @ResponseBody Map<String,Object> modifyPost(BoardInfoDTO infoDto){
+		System.out.println(infoDto.getPostTitle()+" "+infoDto.getPostContent());
+		infoDao.modifyPost(infoDto);
+		
+		return JsonUtil.putSuccessJsonContainer(null);
+	}
 }

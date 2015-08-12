@@ -18,4 +18,21 @@
 	<update id="increasePostHits" parameterType="com.teamnexters.dto.BoardInfoDTO">
 		update board_info set posthits=posthits+1 where postno=#{postNo};
 	</update>
+	
+	<delete id="removePost" parameterType="com.teamnexters.dto.BoardInfoDTO">
+		delete from board_info where postno=#{postNo};
+	</delete>
+	
+	<update id="modifyPost" parameterType="com.teamnexters.dto.BoardInfoDTO">
+		update board_info
+		<trim prefix="set" suffixOverrides=",">
+			<if test="postTitle !=null">
+				posttitle=#{postTitle},
+			</if>
+			<if test="postContent !=null">
+				postcontent=#{postContent}
+			</if>
+		</trim>
+		where postNo=#{postNo}
+	</update>
 </mapper>
