@@ -8,6 +8,7 @@ public class BoardInfoDTO {
 	private int postNo;
 	private int boardNo;
 	private String userNo;
+	private String userName;
 	private String postTitle;
 	private String postContent;
 	private String postDate;
@@ -30,6 +31,12 @@ public class BoardInfoDTO {
 	}
 	public String getUserNo(){
 		return userNo;
+	}
+	public void setUserName(String userName){
+		this.userName=userName;
+	}
+	public String getUserName(){
+		return userName;
 	}
 	public void setPostTitle(String postTitle){
 		this.postTitle=postTitle;

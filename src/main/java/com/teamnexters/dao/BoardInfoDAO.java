@@ -17,4 +17,11 @@ protected Log log = LogFactory.getLog(BooksDAO.class);
 	public void postInsert(Object param){
 		sqlsession.insert("postInsert",param);
 	}
+	
+	public Object postList(Object param){
+		return sqlsession.selectList("postList",param);
+	}
+	public Object getPost(Object param){
+		return sqlsession.selectOne("getPost",param);
+	}
 }

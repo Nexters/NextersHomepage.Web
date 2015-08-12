@@ -1,0 +1,4 @@
+#boardTable tr:hover{
+	cursor:hand;
+	cursor:pointer;
+}

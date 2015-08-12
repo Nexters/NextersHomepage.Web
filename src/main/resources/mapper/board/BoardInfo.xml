@@ -4,6 +4,14 @@
 <mapper namespace="com.teamnexters.mapper">   
 
 	<insert id="postInsert" parameterType="com.teamnexters.dto.BoardInfoDTO">
-		insert into board_info(boardno,posttitle,postcontent) values(#{boardNo},#{postTitle},#{postContent});
+		insert into board_info(boardno,userno,posttitle,postcontent,postdate) values(#{boardNo},#{userNo},#{postTitle},#{postContent},#{postDate});
 	</insert>
+	
+	<select id="postList" parameterType="com.teamnexters.dto.BoardInfoDTO" resultType="com.teamnexters.dto.BoardInfoDTO">
+		select postno,boardno,(select "userNm" from member where "userNo"=userno) username,userno,posttitle,postcontent,postdate,posthits from board_info where boardno=#{boardNo} order by postno desc;
+	</select>
+	
+	<select id="getPost" parameterType="com.teamnexters.dto.BoardInfoDTO" resultType="com.teamnexters.dto.BoardInfoDTO">
+	select postno,boardno,(select "userNm" from member where "userNo"=userno) username,userno,posttitle,postcontent,postdate,posthits from board_info where postno=#{postNo};
+	</select>
 </mapper>
