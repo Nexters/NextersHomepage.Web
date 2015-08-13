@@ -75,5 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.maximumSessions(1)
 				.maxSessionsPreventsLogin(false)
 				.expiredUrl("/expiredSession.do");
+		
+		http.headers().frameOptions().sameOrigin();
 	}
 }
