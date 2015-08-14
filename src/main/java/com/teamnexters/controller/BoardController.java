@@ -48,6 +48,9 @@ public class BoardController {
 	@Value("#{imgpath['path']}")
 	private String imageRealPath;
 
+	@Value("#{imgpath['url']}")
+	private String serverUrl;
+	
 	@RequestMapping("api/admin/boardAdd.do")
 	public @ResponseBody Map<String,Object> boardAdd(@RequestParam(value="boardName") String boardName ){
 		boardDto.setBoardName(boardName);
@@ -230,10 +233,10 @@ public class BoardController {
 				}
 				os.flush();
 				os.close();
-				
 				sFileInfo+="&bNewLine=true";
 				sFileInfo+="&sFileName="+fileName;
-				sFileInfo+="&sFileURL="+URLEncoder.encode(imageRealPath,"UTF-8")+"upload/"+realFileName;
+				//서버 URL를 설정하는 환경 설정 값이 필요
+				sFileInfo+="&sFileURL="+serverUrl+"upload/"+realFileName;
 				PrintWriter print=response.getWriter();
 				print.print(sFileInfo);
 				print.flush();
