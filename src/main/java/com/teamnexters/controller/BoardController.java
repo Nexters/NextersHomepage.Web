@@ -233,17 +233,21 @@ public class BoardController {
 				}
 				os.flush();
 				os.close();
+				
 				sFileInfo+="&bNewLine=true";
 				sFileInfo+="&sFileName="+fileName;
 				//서버 URL를 설정하는 환경 설정 값이 필요
-				sFileInfo+="&sFileURL="+serverUrl+"upload/"+realFileName;
+				sFileInfo+="&sFileURL="+serverUrl+"admin/img/upload/"+realFileName;
 				PrintWriter print=response.getWriter();
 				print.print(sFileInfo);
 				print.flush();
 				print.close();
+				Thread.sleep(1000);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		
+		
 	}
 }

@@ -341,6 +341,7 @@
     		tempFile = htImageInfo['img'+j];
     		try{
 	    		if(!!tempFile){
+	    			
 	    			//Ajax통신하는 부분. 파일과 업로더할 url을 전달한다.
 	    			callAjaxForHTML5(tempFile,sUploadURL);
 	    			k += 1;
@@ -372,6 +373,7 @@
 			timeout : 3,
 			onerror :  jindo.$Fn(onAjaxError, this).bind()
 		});
+    	
 		oAjax.header("contentType","multipart/form-data");
 		oAjax.header("file-name",encodeURIComponent(tempFile.name));
 		oAjax.header("file-size",tempFile.size);

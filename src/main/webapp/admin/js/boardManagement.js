@@ -2,6 +2,10 @@ var boardNo="";
 var postViewTitleFlag=false;
 var postViewContentFlag=false;
 
+var setPostViewContentFlag=function(value){
+	postViewContentFlag=value;
+	
+}
 var modifyPost=function(data){
 	if(data.result=="success"){
 		alert('수정되었습니다!');
@@ -45,6 +49,8 @@ var postView=function(data){
 		
 		$('#modifyRemovePost').attr('postNo',data.resData[0].list.postNo);
 		$('#modifyPost').attr('postNo',data.resData[0].list.postNo);
+		
+		
 		
 	
 	}else {
@@ -230,7 +236,7 @@ $(document).ready(function(){
 		$('#postViewModal textarea[name=postViewContent]').removeAttr('readonly');
 		
 		sHTML=$('#viewContentDiv').html();
-		
+		postViewContentConfirm=sHTML;
 		oEditors.getById["ir2"].exec("PASTE_HTML", [sHTML]);
 		$('#viewContentDiv').hide();
 		$('iframe').show();
@@ -242,7 +248,7 @@ $(document).ready(function(){
 		$('#postViewModal input[name=postViewTitle]').attr('readonly','true');
 		$('#postViewModal textarea[name=postViewContent]').attr('readonly','true');
 		$('iframe').hide();
-		$('#viewContentDiv').hide();
+		$('#viewContentDiv').show();
 	})
 	
 	$('#modifyPostButton').click(function(){
@@ -253,8 +259,12 @@ $(document).ready(function(){
 			alert('제목을 입력하세요!')
 			return;
 		}
+		
 		oEditors.getById["ir2"].exec("UPDATE_CONTENTS_FIELD", []);
+	
 		postContent=$('#postViewModal textarea[name=postViewContent]').val();
+		
+		
 		if(postContent.trim()==""){
 			alert('내용을 입력하세요!')
 			return;
@@ -264,14 +274,18 @@ $(document).ready(function(){
 		}
 		else if(postViewTitleFlag==false && postViewContentFlag==false){
 			alert('수정되었습니다!');
+			$("#postViewModal").modal('hide');
+			$("#postViewModal .form-control").val('');
 			return;
 		}
+		
 		else if(postViewTitleFlag==true){
 			data={postTitle:postTitle,postNo:postNo};
 		}
 		else if(postViewContentFlag=true){
 			data={postContent:postContent,postNo:postNo};
 		}
+		
 		
 		requestJsonData("api/admin/modifyPost.do", data, modifyPost);
 		
@@ -281,9 +295,10 @@ $(document).ready(function(){
 	$('#postViewModal input[name=postViewTitle]').keyup(function(){
 		postViewTitleFlag=true;
 	})
-	$('#postViewModal textarea[name=postViewContent]').keyup(function(){
-		postViewContentFlag=true;
+	$('#se2_iframe').click(function(){
+		alert(1)
 	})
+	
 	
 	
 	
