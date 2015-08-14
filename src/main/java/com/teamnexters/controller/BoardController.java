@@ -1,11 +1,24 @@
 package com.teamnexters.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,6 +30,7 @@ import com.teamnexters.dao.BoardDAO;
 import com.teamnexters.dao.BoardInfoDAO;
 import com.teamnexters.dto.BoardDTO;
 import com.teamnexters.dto.BoardInfoDTO;
+import com.teamnexters.dto.ImageFileDTO;
 import com.teamnexters.util.JsonUtil;
 
 @Controller
@@ -30,6 +44,9 @@ public class BoardController {
 	private BoardInfoDAO infoDao;
 	@Autowired
 	private BoardInfoDTO infoDto;
+	
+	@Value("#{imgpath['path']}")
+	private String imageRealPath;
 
 	@RequestMapping("api/admin/boardAdd.do")
 	public @ResponseBody Map<String,Object> boardAdd(@RequestParam(value="boardName") String boardName ){
@@ -122,5 +139,108 @@ public class BoardController {
 		infoDao.modifyPost(infoDto);
 		
 		return JsonUtil.putSuccessJsonContainer(null);
+	}
+	@RequestMapping("api/user/imageUpload.do")
+	public @ResponseBody Map<String,Object>  imageUpload(HttpServletRequest request,HttpServletResponse response,ImageFileDTO imageFile){
+		String return1=request.getParameter("callback");
+		String return2="?callback_func="+request.getParameter("callback_func");
+		String return3="";
+		String name="";
+		try{
+			if(imageFile.getFileData() !=null && imageFile.getFileData().getOriginalFilename()!=null && !imageFile.getFileData().getOriginalFilename().equals("")){
+				name=imageFile.getFileData().getOriginalFilename().substring(imageFile.getFileData().getOriginalFilename().lastIndexOf(File.separator)+1);
+				String filename_ext=name.substring(name.lastIndexOf(".")+1);
+				filename_ext=filename_ext.toLowerCase();
+				String[] allow_file={"jpg","png","bmp","gif"};
+				int cnt=0;
+				for(int i=0;i<allow_file.length;i++){
+					if(filename_ext.equals(allow_file[i])){
+						cnt++;
+					}
+				}
+				if(cnt==0){
+					return3="&errstr="+name;
+				}else{
+					String filePath=imageRealPath+"upload"+File.separator;
+					String realFileName="";
+					SimpleDateFormat formatter=new SimpleDateFormat("yyyyMMddHHmmss");
+					String today=formatter.format(new Date());
+					realFileName=today+UUID.randomUUID().toString()+name.substring(name.lastIndexOf("."));
+					String rFileName=filePath+realFileName;
+					
+					imageFile.getFileData().transferTo(new File(rFileName));
+					
+					return3+="&bNewLine=true";
+					return3+="&sFileName="+name;
+					return3+="&sFileURL=../img/upload/"+realFileName;
+				}
+			}else{
+				return3+="&errstr=error";
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		Map<String,Object> map=new HashMap<String,Object>();
+		map.put("redirect", return1+return2+return3);
+		
+		return map;
+	}
+	
+	@RequestMapping("api/user/imageUploadHTML5.do")
+	public void imageUploadHTML5(HttpServletRequest request,HttpServletResponse response){
+		try{
+			String sFileInfo="";
+			String fileName=request.getHeader("file-name");
+			
+			String filename_ext=fileName.substring(fileName.lastIndexOf(".")+1);
+			filename_ext=filename_ext.toLowerCase();
+			
+			String allow_file[]={"jpg","png","bmp","gif"};
+			
+			int cnt=0;
+			for(int i=0;i<allow_file.length;i++){
+				if(filename_ext.equals(allow_file[i])){
+					cnt++;
+				}
+			}
+			if(cnt==0){
+				PrintWriter print=response.getWriter();
+				print.print("NOTALLOW_"+fileName);
+				print.flush();
+				print.close();
+			}else{
+				String filePath=imageRealPath+"upload"+File.separator;
+				String realFileName="";
+				SimpleDateFormat formatter=new SimpleDateFormat("yyyyMMddHHmmss");
+				String today=formatter.format(new Date());
+				realFileName=today+UUID.randomUUID().toString()+fileName.substring(fileName.lastIndexOf("."));
+				String rFileName=filePath+realFileName;
+				
+				InputStream is=request.getInputStream();
+				OutputStream os=new FileOutputStream(rFileName);
+				int numRead;
+				byte b[]=new byte[Integer.parseInt(request.getHeader("file-size"))];
+				while((numRead=is.read(b,0,b.length))!=-1){
+					os.write(b,0,numRead);
+				}
+				if(is!=null){
+					is.close();
+				}
+				os.flush();
+				os.close();
+				
+				sFileInfo+="&bNewLine=true";
+				sFileInfo+="&sFileName="+fileName;
+				sFileInfo+="&sFileURL="+URLEncoder.encode(imageRealPath,"UTF-8")+"upload/"+realFileName;
+				PrintWriter print=response.getWriter();
+				print.print(sFileInfo);
+				print.flush();
+				print.close();
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 }

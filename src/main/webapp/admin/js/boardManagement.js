@@ -39,8 +39,13 @@ var postView=function(data){
 		$('#postViewModal input[name=postViewTitle]').val(data.resData[0].list.postTitle);
 		postContent=data.resData[0].list.postContent.split("<br>").join("\n");
 		$('#postViewModal textarea[name=postViewContent').html(postContent);
+		$('#viewContentDiv').html(postContent);
+		
+		oEditors.getById["ir2"].exec("SET_CONTENTS", [""]); 
+		
 		$('#modifyRemovePost').attr('postNo',data.resData[0].list.postNo);
 		$('#modifyPost').attr('postNo',data.resData[0].list.postNo);
+		
 	
 	}else {
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
@@ -112,7 +117,8 @@ var postList=function(data){
 				postViewTitleFlag=false;
 				postViewContentFlag=false;
 				postNo=$(this).attr("postNo");
-				
+				$('#viewContentDiv').show();
+				$('iframe').hide();
 				requestJsonData("api/admin/getPost.do", {
 					
 					postNo:postNo
@@ -149,6 +155,7 @@ $(document).ready(function(){
 	$('#modifyPost').hide();
 	
 	$('#addBoardButton').click(function(){
+		
 		var boardName=$('input[name=boardNm]').val().trim();
 		
 		if(boardName==""){
@@ -171,6 +178,8 @@ $(document).ready(function(){
 			alert("게시판을 선택해주세요!");
 			return false;
 		}
+		oEditors.getById["ir1"].exec("SET_CONTENTS", [""]); 
+		$('iframe').show();
 		
 	})
 	$('#addPostButton').click(function(){
@@ -181,6 +190,7 @@ $(document).ready(function(){
 			alert("제목을 입력하세요!");
 			return;
 		}
+		oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
 		var postContent=$('textarea[name=postContent]').val().trim();
 		if(postContent==""){
 			alert("내용을 입력하세요!");
@@ -218,6 +228,12 @@ $(document).ready(function(){
 		postViewContentFlag=false;
 		$('#postViewModal input[name=postViewTitle]').removeAttr('readonly');
 		$('#postViewModal textarea[name=postViewContent]').removeAttr('readonly');
+		
+		sHTML=$('#viewContentDiv').html();
+		
+		oEditors.getById["ir2"].exec("PASTE_HTML", [sHTML]);
+		$('#viewContentDiv').hide();
+		$('iframe').show();
 	})
 	
 	$('#resetButton').click(function(){
@@ -225,6 +241,8 @@ $(document).ready(function(){
 		$('#modifyPost').hide();
 		$('#postViewModal input[name=postViewTitle]').attr('readonly','true');
 		$('#postViewModal textarea[name=postViewContent]').attr('readonly','true');
+		$('iframe').hide();
+		$('#viewContentDiv').hide();
 	})
 	
 	$('#modifyPostButton').click(function(){
@@ -235,6 +253,7 @@ $(document).ready(function(){
 			alert('제목을 입력하세요!')
 			return;
 		}
+		oEditors.getById["ir2"].exec("UPDATE_CONTENTS_FIELD", []);
 		postContent=$('#postViewModal textarea[name=postViewContent]').val();
 		if(postContent.trim()==""){
 			alert('내용을 입력하세요!')
