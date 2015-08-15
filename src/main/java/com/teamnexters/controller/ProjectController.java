@@ -27,7 +27,7 @@ public class ProjectController {
 
 	@Autowired
 	private ProjectDAO projectDao;
-	@Value("#{imgpath['path']}")
+	@Value("#{uploadPath['path']}")
 	private String realPath;
 	@Autowired
 	private ProjectDTO projectDto;

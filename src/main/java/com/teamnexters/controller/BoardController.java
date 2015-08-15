@@ -45,10 +45,10 @@ public class BoardController {
 	@Autowired
 	private BoardInfoDTO infoDto;
 	
-	@Value("#{imgpath['path']}")
+	@Value("#{uploadPath['path']}")
 	private String imageRealPath;
 
-	@Value("#{imgpath['url']}")
+	@Value("#{uploadPath['url']}")
 	private String serverUrl;
 	
 	@RequestMapping("api/admin/boardAdd.do")
