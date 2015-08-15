@@ -45,15 +45,25 @@ public class BoardController {
 	@Autowired
 	private BoardInfoDTO infoDto;
 	
-	@Value("#{uploadPath['path']}")
+	@Value("#{uploadPath['imgpath']}")
 	private String imageRealPath;
 
 	@Value("#{uploadPath['url']}")
 	private String serverUrl;
 	
+	@Value("#{uploadPath['boardpath']}")
+	private String boardPath;
+	
 	@RequestMapping("api/admin/boardAdd.do")
-	public @ResponseBody Map<String,Object> boardAdd(@RequestParam(value="boardName") String boardName ){
+	public @ResponseBody Map<String,Object> boardAdd(@RequestParam(value="boardName") String boardName,@RequestParam(value="boardDir") String boardDir ){
+		
+		File dir=new File(boardPath+boardDir);
+		System.out.println(boardPath+boardDir);
+		if(!dir.exists()){
+			dir.mkdirs();
+		}
 		boardDto.setBoardName(boardName);
+		boardDto.setBoardDir(boardDir);
 		boardDao.boardAdd(boardDto);
 		
 		return JsonUtil.putSuccessJsonContainer(null);
@@ -72,6 +82,13 @@ public class BoardController {
 		
 		
 		return JsonUtil.putSuccessJsonContainer(param);
+	}
+	
+	@RequestMapping("api/admin/boardDelete.do")
+	public @ResponseBody Map<String,Object> boardDelete(BoardDTO boardDto){
+		boardDao.boardDelete(boardDto);
+		
+		return JsonUtil.putSuccessJsonContainer(null);
 	}
 	
 	@RequestMapping("api/admin/postInsert.do")
