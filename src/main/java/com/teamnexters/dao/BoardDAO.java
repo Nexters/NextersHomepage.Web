@@ -20,4 +20,8 @@ public class BoardDAO {
 	public Object boardList(){
 		return sqlsession.selectList("boardList");
 	}
+	
+	public void boardDelete(Object param){
+		sqlsession.delete("boardDelete",param);
+	}
 }

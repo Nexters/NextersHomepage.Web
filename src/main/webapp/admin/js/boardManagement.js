@@ -1,6 +1,16 @@
 var boardNo="";
 var postViewTitleFlag=false;
 var postViewContentFlag=false;
+function share(){
+    var share = {
+        method: 'stream.share',
+        u: 'nh.maden.kr',
+        t:'test123123'
+    };
+ 
+    FB.ui(share, function(response) { console.log(response); });
+}
+
 
 var setPostViewContentFlag=function(value){
 	postViewContentFlag=value;
@@ -57,6 +67,18 @@ var postView=function(data){
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
 	}
 }
+var boardDelete=function(data){
+	if(data.result=="success"){
+		alert("삭제되었습니다!");
+		requestJsonData("api/admin/boardList.do", {
+			
+			
+			
+		}, boardList);
+	}else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+}
 var boardList=function(data){
 	
 	if(data.result=="success"){
@@ -67,10 +89,10 @@ var boardList=function(data){
 			var str="";
 			for(i=0;i<list.length;i++){
 				if(i==0){
-					str+="<li><a href='#' boardNo= "+list[i].boardNo+">"+list[i].boardName+"</a></li>";
+					str+="<li><a href='#' boardNo= "+list[i].boardNo+">"+list[i].boardName+"<span>&nbsp;&nbsp;&nbsp;x</span></a></li>";
 				}
 				else{
-					str+="<li><a href='#' boardNo= "+list[i].boardNo+">"+list[i].boardName+"</a></li>";
+					str+="<li><a href='#' boardNo= "+list[i].boardNo+">"+list[i].boardName+"<span>&nbsp;&nbsp;&nbsp;x</span></a></li>";
 				}
 				
 			}
@@ -78,8 +100,8 @@ var boardList=function(data){
 			$('#boardListPage').html(str);
 		}
 		
-		$('#boardListPage li').click(function(){
-			boardNo=$(this).find('a').attr('boardNo');
+		$('#boardListPage li a').click(function(){
+			boardNo=$(this).attr('boardNo');
 			
 			requestJsonData("api/admin/postList.do", {
 				
@@ -88,7 +110,21 @@ var boardList=function(data){
 			}, postList);
 			
 			$('#boardListPage li').removeClass('active');
-			$(this).addClass('active');
+			$(this).parent().addClass('active');
+		})
+		
+		$('#boardListPage li a span').click(function(){
+			if(confirm('정말 삭제하시겠습니까?')){
+				boardNoParam=$(this).parent().attr('boardNo');
+				requestJsonData("api/admin/boardDelete.do", {
+					
+					boardNo:boardNoParam
+					
+				}, boardDelete);
+				
+				return false;
+			}
+			return false;
 		})
 		
 		
@@ -163,14 +199,25 @@ $(document).ready(function(){
 	$('#addBoardButton').click(function(){
 		
 		var boardName=$('input[name=boardNm]').val().trim();
-		
+		var boardDir=$('input[name=boardDir').val().trim();
+		var regType = /^[A-Za-z0-9+]*$/; 
 		if(boardName==""){
-			alert("한 글자 이상 입력하세요!");
+			alert("이름을 한 글자 이상 입력하세요!");
+			return;
+		}
+		else if(boardDir==""){
+			alert("폴더를 한 글자 이상 입력하세요!");
+			return;
+		}
+		else if(!regType.test(boardDir)){
+			alert("폴더 이름은 영어와 숫자만 입력하세요!");
+			return;
 		}
 		else{
 			requestJsonData("api/admin/boardAdd.do", {
 				
-				boardName:boardName
+				boardName:boardName,
+				boardDir:boardDir
 				
 			}, boardAdd);
 			
@@ -310,6 +357,12 @@ var boardAdd=function(data){
 		
 		$("#boardAddModal").modal('hide');
 		$("#boardAddModal .form-control").val('');
+		
+		requestJsonData("api/admin/boardList.do", {
+			
+			
+			
+		}, boardList);
 		
 	}else {
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);

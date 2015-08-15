@@ -7,6 +7,7 @@ public class BoardDTO {
 
 	private int boardNo;
 	private String boardName;
+	private String boardDir;
 	
 	public void setBoardNo(int boardNo){
 		this.boardNo=boardNo;
@@ -19,5 +20,11 @@ public class BoardDTO {
 	}
 	public String getBoardName(){
 		return boardName;
+	}
+	public void setBoardDir(String boardDir){
+		this.boardDir=boardDir;
+	}
+	public String getBoardDir(){
+		return boardDir;
 	}
 }

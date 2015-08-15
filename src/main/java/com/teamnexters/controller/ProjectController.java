@@ -27,7 +27,7 @@ public class ProjectController {
 
 	@Autowired
 	private ProjectDAO projectDao;
-	@Value("#{imgpath['path']}")
+	@Value("#{uploadPath['imgpath']}")
 	private String realPath;
 	@Autowired
 	private ProjectDTO projectDto;
@@ -64,8 +64,8 @@ public class ProjectController {
 
 			try {
 				
-				System.out.println(realPath);
-				File file = new File(realPath + fileName);
+				
+				File file = new File(realPath + "product/"+fileName);
 
 
 
@@ -148,7 +148,7 @@ public class ProjectController {
 			try {
 				
 				System.out.println(realPath);
-				File file = new File(realPath + fileName);
+				File file = new File(realPath + "product/"+fileName);
 
 				System.out.println(fileDto.getOriginProjectImg());
 				File originFile=new File(realPath+fileDto.getOriginProjectImg());
