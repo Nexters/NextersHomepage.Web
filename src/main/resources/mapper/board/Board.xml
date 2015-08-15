@@ -3,11 +3,15 @@
           "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
 <mapper namespace="com.teamnexters.mapper">   
 	<insert id="boardAdd" parameterType="com.teamnexters.dto.BoardDTO">
-		insert into board(boardname) values(#{boardName});
+		insert into board(boardname,boarddir) values(#{boardName},#{boardDir});
 	</insert>
 	
 	<select id="boardList" resultType="com.teamnexters.dto.BoardDTO">
 		select * from board
 	</select>
+	
+	<delete id="boardDelete" parameterType="com.teamnexters.dto.BoardDTO">
+		delete from board where boardno=#{boardNo}
+	</delete>
 
 </mapper>
