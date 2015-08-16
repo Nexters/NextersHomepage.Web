@@ -43,6 +43,16 @@ function isLogin() {
 
 $(document).ready(function() {
 	$("#signin").click(function() {
+		if($("input[name=username]").val()==""){
+			$("input[name=username]").focus();
+			alert("아이디를 입력해주세요.");
+			return;
+		} else if ($("input[name=password]").val()=="") {
+			$("input[name=password]").focus();
+			alert("비밀번호를 입력해주세요.");
+			return;
+		}
+		
 		requestJsonData("login", {
 			username : $("input[name=username]").val()
 			, password : $("input[name=password]").val()
