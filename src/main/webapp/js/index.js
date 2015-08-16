@@ -58,4 +58,6 @@ $(document).ready(function() {
 			, password : $("input[name=password]").val()
 		}, onSubmit);
 	});
+	
+	requestJsonData("logout");
 });
