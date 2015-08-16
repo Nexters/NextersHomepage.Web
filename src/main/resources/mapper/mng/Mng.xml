@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.teamnexters.mapper">   
+
+	<select id="getManageList" resultType="com.teamnexters.dto.MngDTO">
+		SELECT 
+			mngno
+			, mngdate
+			, mngtitle
+			, mngremark
+			, (SELECT COUNT(*) AS CNT FROM mng_user WHERE mngno=m.mngno)as mngcnt
+		FROM mng m
+		ORDER BY mngdate DESC
+	</select>
+	<select id="getManageCnt" resultType="Map">
+		SELECT COUNT(*) as cnt FROM mng WHERE mngdate = #{mngdate}
+	</select>
+	<insert id="insertManager" parameterType="com.teamnexters.dto.MngDTO">
+		INSERT INTO mng(mngno, mngdate, mngtitle, mngremark)
+	    VALUES (nextval('mng_seq'), #{mngdate}, #{mngtitle}, #{mngremark});
+	</insert>
+</mapper>
