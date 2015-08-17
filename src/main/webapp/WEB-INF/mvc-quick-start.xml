@@ -36,6 +36,8 @@
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"></bean>
 	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver"></bean>
+	
+	
     <util:properties id="uploadPath" location="/WEB-INF/uploadPath.properties"/>
     <util:properties id="emailconfig" location="/WEB-INF/email.properties"/>
     

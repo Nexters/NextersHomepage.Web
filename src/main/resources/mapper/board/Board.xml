@@ -13,5 +13,9 @@
 	<delete id="boardDelete" parameterType="com.teamnexters.dto.BoardDTO">
 		delete from board where boardno=#{boardNo}
 	</delete>
+	
+	<select id="getUploadPath" parameterType="com.teamnexters.dto.BoardInfoDTO" resultType="com.teamnexters.dto.BoardDTO">
+		select boarddir from board where boardno=#{boardNo}
+	</select>
 
 </mapper>

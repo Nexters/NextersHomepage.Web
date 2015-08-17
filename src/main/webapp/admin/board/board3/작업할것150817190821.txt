@@ -1,0 +1,14 @@
+create table recodeBook(
+	recodeNo serial primary key,
+	recodeNm varchar(30)
+)
+
+books
+books_column
+books_value
+books_user
+
+
+2015-07-26
+year : 2015
+

@@ -1,6 +1,8 @@
 var boardNo="";
 var postViewTitleFlag=false;
 var postViewContentFlag=false;
+var postViewFilesFlag=false;
+
 function share(){
     var share = {
         method: 'stream.share',
@@ -11,7 +13,13 @@ function share(){
     FB.ui(share, function(response) { console.log(response); });
 }
 
-
+var fileDownload=function(data){
+	if(data.result=="success"){
+		
+	}else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+}
 var setPostViewContentFlag=function(value){
 	postViewContentFlag=value;
 	
@@ -50,15 +58,21 @@ var removePost=function(data){
 }
 var postView=function(data){
 	if(data.result=="success"){
+		$('#fileName').show();
+		$('#fileModify').hide();
 		$('#postViewModal input[name=postViewTitle]').val(data.resData[0].list.postTitle);
 		postContent=data.resData[0].list.postContent.split("<br>").join("\n");
 		$('#postViewModal textarea[name=postViewContent').html(postContent);
 		$('#viewContentDiv').html(postContent);
+		temp=data.resData[0].list.file;
+		$('#fileName').html(temp.substring(temp.indexOf("/")+1,temp.length));
+		$('#fileName').attr('file',data.resData[0].list.file);
 		
 		oEditors.getById["ir2"].exec("SET_CONTENTS", [""]); 
 		
 		$('#modifyRemovePost').attr('postNo',data.resData[0].list.postNo);
 		$('#modifyPost').attr('postNo',data.resData[0].list.postNo);
+		
 		
 		
 		
@@ -187,6 +201,24 @@ var postInsert=function(data){
 	
 }
 $(document).ready(function(){
+	$('#fileModify').hide();
+	$('#fileName').click(function(){
+		if($(this).html().trim()!=""){
+			location.href="../api/admin/fileDownload.do?fileName="+$(this).attr('file');
+		}
+	})
+	var files;
+	var fileName='';
+	$('#postAddModal input[name=postFiles],#postViewModal input[name=fileModify]').on('change',function(event){
+		postViewFilesFlag=true;
+		files=event.target.files[0];
+		fileName=files.name;
+		var comma=fileName.lastIndexOf('.');
+		var format=fileName.substring(comma+1);
+		
+		
+		
+	})
 	
 	requestJsonData("api/admin/boardList.do", {
 		
@@ -249,16 +281,16 @@ $(document).ready(function(){
 			alert("내용을 입력하세요!");
 			return;
 		}
-		postContent=postContent.split("\n").join("<br>");
 		
-		requestJsonData("api/admin/postInsert.do", {
-			
-			boardNo:boardNo,
-			userNo:loginUserNo,
-			postTitle:postTitle,
-			postContent:postContent
-			
-		}, postInsert);
+		postContent=postContent.split("\n").join("<br>");
+		var myForm = new FormData();
+		myForm.append("uploadFile", files);
+	    myForm.append("boardNo",boardNo);
+	    myForm.append("userNo",loginUserNo);
+	    myForm.append("postTitle",postTitle);
+	    myForm.append("postContent",postContent);
+	    requestJsonDataMultipart("api/admin/postInsert.do",myForm,postInsert);
+		
 		
 	})
 	$('#removePostButton').click(function(){
@@ -277,8 +309,11 @@ $(document).ready(function(){
 	$('#modifyButton').click(function(){
 		$('#modifyRemovePost').hide();
 		$('#modifyPost').show();
+		$('#fileName').hide();
+		$('#fileModify').show();
 		postViewTitleFlag=false;
 		postViewContentFlag=false;
+		postViewFilesFlag=false;
 		$('#postViewModal input[name=postViewTitle]').removeAttr('readonly');
 		$('#postViewModal textarea[name=postViewContent]').removeAttr('readonly');
 		
@@ -292,6 +327,8 @@ $(document).ready(function(){
 	$('#resetButton').click(function(){
 		$('#modifyRemovePost').show();
 		$('#modifyPost').hide();
+		$('#fileName').show();
+		$('#fileModify').hide();
 		$('#postViewModal input[name=postViewTitle]').attr('readonly','true');
 		$('#postViewModal textarea[name=postViewContent]').attr('readonly','true');
 		$('iframe').hide();
@@ -316,25 +353,28 @@ $(document).ready(function(){
 			alert('내용을 입력하세요!')
 			return;
 		}
-		if(postViewTitleFlag==true && postViewContentFlag==true){
-			data={postTitle:postTitle,postContent:postContent,postNo:postNo};
-		}
-		else if(postViewTitleFlag==false && postViewContentFlag==false){
+		
+		else if(postViewTitleFlag==false && postViewContentFlag==false &&postViewFilesFlag==false){
 			alert('수정되었습니다!');
 			$("#postViewModal").modal('hide');
 			$("#postViewModal .form-control").val('');
 			return;
 		}
-		
-		else if(postViewTitleFlag==true){
-			data={postTitle:postTitle,postNo:postNo};
+		var myForm = new FormData();
+		var boardNo=$('#boardListPage').find('.active a').attr("boardNo");
+		myForm.append("uploadFile", files);
+	    myForm.append("boardNo",boardNo);
+	    myForm.append("postNo",postNo);
+	   
+		if(postViewTitleFlag==true){
+			myForm.append("postTitle",postTitle);
 		}
-		else if(postViewContentFlag=true){
-			data={postContent:postContent,postNo:postNo};
+		if(postViewContentFlag=true){
+			myForm.append("postContent",postContent);
 		}
 		
 		
-		requestJsonData("api/admin/modifyPost.do", data, modifyPost);
+		requestJsonDataMultipart("api/admin/modifyPost.do", myForm, modifyPost);
 		
 		
 	})

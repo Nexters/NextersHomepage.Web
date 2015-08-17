@@ -1,6 +1,7 @@
 package com.teamnexters.dto;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class BoardInfoDTO {
@@ -13,6 +14,8 @@ public class BoardInfoDTO {
 	private String postContent;
 	private String postDate;
 	private int postHits;
+	private MultipartFile uploadFile;
+	private String file;
 	
 	public void setPostNo(int postNo){
 		this.postNo=postNo;
@@ -62,5 +65,18 @@ public class BoardInfoDTO {
 	public int getPostHits(){
 		return postHits;
 	}
+	public void setUploadFile(MultipartFile uploadFile){
+		this.uploadFile=uploadFile;
+	}
+	public MultipartFile getUploadFile(){
+		return uploadFile;
+	}
+	public void setFile(String file){
+		this.file=file;
+	}
+	public String getFile(){
+		return file;
+	}
+	
 	
 }

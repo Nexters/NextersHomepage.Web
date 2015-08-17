@@ -4,7 +4,13 @@
 <mapper namespace="com.teamnexters.mapper">   
 
 	<insert id="postInsert" parameterType="com.teamnexters.dto.BoardInfoDTO">
-		insert into board_info(boardno,userno,posttitle,postcontent,postdate) values(#{boardNo},#{userNo},#{postTitle},#{postContent},#{postDate});
+		<if test="file==null">
+			insert into board_info(boardno,userno,posttitle,postcontent,postdate) values(#{boardNo},#{userNo},#{postTitle},#{postContent},#{postDate});
+		</if>
+		<if test="file!=null">
+			insert into board_info(boardno,userno,posttitle,postcontent,postdate,file) values(#{boardNo},#{userNo},#{postTitle},#{postContent},#{postDate},#{file});
+		</if>
+		
 	</insert>
 	
 	<select id="postList" parameterType="com.teamnexters.dto.BoardInfoDTO" resultType="com.teamnexters.dto.BoardInfoDTO">
@@ -12,7 +18,7 @@
 	</select>
 	
 	<select id="getPost" parameterType="com.teamnexters.dto.BoardInfoDTO" resultType="com.teamnexters.dto.BoardInfoDTO">
-	select postno,boardno,(select "userNm" from member where "userNo"=userno) username,userno,posttitle,postcontent,postdate,posthits from board_info where postno=#{postNo};
+	select postno,boardno,(select "userNm" from member where "userNo"=userno) username,userno,posttitle,postcontent,postdate,posthits,file from board_info where postno=#{postNo};
 	</select>
 	
 	<update id="increasePostHits" parameterType="com.teamnexters.dto.BoardInfoDTO">
@@ -30,7 +36,10 @@
 				posttitle=#{postTitle},
 			</if>
 			<if test="postContent !=null">
-				postcontent=#{postContent}
+				postcontent=#{postContent},
+			</if>
+			<if test="file!=null">
+				file=#{file}
 			</if>
 		</trim>
 		where postNo=#{postNo}

@@ -1,7 +1,9 @@
 package com.teamnexters.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -14,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.teamnexters.dao.BoardDAO;
 import com.teamnexters.dao.BoardInfoDAO;
@@ -53,6 +57,8 @@ public class BoardController {
 	
 	@Value("#{uploadPath['boardpath']}")
 	private String boardPath;
+	
+	private static final int BUFFER_SIZE = 4096;
 	
 	@RequestMapping("api/admin/boardAdd.do")
 	public @ResponseBody Map<String,Object> boardAdd(@RequestParam(value="boardName") String boardName,@RequestParam(value="boardDir") String boardDir ){
@@ -93,6 +99,7 @@ public class BoardController {
 	
 	@RequestMapping("api/admin/postInsert.do")
 	public @ResponseBody Map<String,Object> postInsert(BoardInfoDTO infoDto){
+		MultipartFile uploadFile = infoDto.getUploadFile();
 		
 		Date date=new Date();
 		String year=String.valueOf(date.getYear()-100);
@@ -121,11 +128,82 @@ public class BoardController {
 		infoDto.setPostDate(time);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		System.out.println(auth.getCredentials());
+		
+		if(uploadFile!=null){
+			String fileName = uploadFile.getOriginalFilename();
+			BoardDTO temp=(BoardDTO)boardDao.getUploadPath(infoDto);
+			String uploadPath=temp.getBoardDir();
+			int comma=fileName.lastIndexOf(".");
+			String pre=fileName.substring(0,comma);
+			String end=fileName.substring(comma+1,fileName.length());
+			fileName=pre+time+"."+end;
+			
+			try {
+				
+				
+				File file = new File(boardPath + uploadPath+"/"+fileName);
+				
+
+
+				uploadFile.transferTo(file);
+				infoDto.setFile(uploadPath+"/"+fileName);
+			}catch(IOException e){
+				e.printStackTrace();
+			}
+		}
 		infoDao.postInsert(infoDto);
 		
 		
 		
+		
 		return JsonUtil.putSuccessJsonContainer(null);
+	}
+	@RequestMapping("api/admin/fileDownload.do")
+	public void fileDownload(HttpServletRequest request,HttpServletResponse response,@RequestParam(value="fileName")String fileName) throws IOException{
+		// get absolute path of the application
+		ServletContext context = request.getServletContext();
+ 
+        // construct the complete absolute path of the file
+        String fullPath = boardPath+fileName;         
+        File downloadFile = new File(fullPath);
+        FileInputStream inputStream = new FileInputStream(downloadFile);
+         
+        // get MIME type of the file
+        String mimeType = context.getMimeType(fullPath);
+        if (mimeType == null) {
+            // set to binary type if MIME mapping not found
+            mimeType = "application/octet-stream";
+        }
+        System.out.println("MIME type: " + mimeType);
+ 
+        // set content attributes for the response
+        response.setContentType(mimeType);
+        response.setContentLength((int) downloadFile.length());
+ 
+        // set headers for the response
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"",
+                URLEncoder.encode(downloadFile.getName(),"UTF-8"));
+        System.out.println(downloadFile.getName());
+        response.setHeader("Content-type","application/download");
+        response.setHeader(headerKey, headerValue);
+ 
+        // get output stream of the response
+        OutputStream outStream = response.getOutputStream();
+ 
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int bytesRead = -1;
+ 
+        // write bytes read from the input stream into the output stream
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, bytesRead);
+        }
+ 
+        inputStream.close();
+        outStream.close();
+        
+        
+       
 	}
 	
 	@RequestMapping("api/admin/postList.do")
@@ -155,7 +233,55 @@ public class BoardController {
 	
 	@RequestMapping("api/admin/modifyPost.do")
 	public @ResponseBody Map<String,Object> modifyPost(BoardInfoDTO infoDto){
-		System.out.println(infoDto.getPostTitle()+" "+infoDto.getPostContent());
+		MultipartFile uploadFile = infoDto.getUploadFile();
+		
+		Date date=new Date();
+		String year=String.valueOf(date.getYear()-100);
+		String month="";
+		if(date.getMonth()+1<10)
+			month="0";
+		month+=date.getMonth()+1;
+		String day="";
+		if(date.getDate()<10)
+			day="0";
+		day+=date.getDate();
+		String hour="";
+		if(date.getHours()<10)
+			hour="0";
+		hour+=date.getHours();
+		String minute="";
+		if(date.getMinutes()<10)
+			minute="0";
+		minute+=date.getMinutes();
+		String second="";
+		if(date.getSeconds()<10)
+			second="0";
+		second+=date.getSeconds();
+		
+		String time=year+month+day+hour+minute+second;
+		
+		if(uploadFile!=null){
+			String fileName = uploadFile.getOriginalFilename();
+			BoardDTO temp=(BoardDTO)boardDao.getUploadPath(infoDto);
+			String uploadPath=temp.getBoardDir();
+			int comma=fileName.lastIndexOf(".");
+			String pre=fileName.substring(0,comma);
+			String end=fileName.substring(comma+1,fileName.length());
+			fileName=pre+time+"."+end;
+			
+			try {
+				
+				
+				File file = new File(boardPath + uploadPath+"/"+fileName);
+				
+
+
+				uploadFile.transferTo(file);
+				infoDto.setFile(uploadPath+"/"+fileName);
+			}catch(IOException e){
+				e.printStackTrace();
+			}
+		}
 		infoDao.modifyPost(infoDto);
 		
 		return JsonUtil.putSuccessJsonContainer(null);

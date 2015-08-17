@@ -24,4 +24,8 @@ public class BoardDAO {
 	public void boardDelete(Object param){
 		sqlsession.delete("boardDelete",param);
 	}
+	
+	public Object getUploadPath(Object param){
+		return sqlsession.selectOne("getUploadPath",param);
+	}
 }
