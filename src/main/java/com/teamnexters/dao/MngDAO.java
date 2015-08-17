@@ -37,4 +37,20 @@ public class MngDAO {
 	public int insertAttendance(Object objParam){
 		return sqlsession.insert("insertAttendance", objParam);
 	}
+	
+	public int insertBooks(Object objParam){
+		return sqlsession.insert("insertBooks", objParam);
+	}
+	
+	public Object getBooksList(int mngno){
+		return sqlsession.selectList("getBooksList", mngno);
+	}
+	
+	public int insertBooksVal(Object objParam) {
+		return sqlsession.insert("insertBooksVal", objParam);
+	}
+	
+	public Object getBooksValByBooksNoAndMngNo(Object paramObj){
+		return sqlsession.selectList("getBooksValByBooksNo", paramObj);
+	}
 }
