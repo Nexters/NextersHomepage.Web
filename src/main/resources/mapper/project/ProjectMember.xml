@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.teamnexters.mapper">
+
+	<insert id="projectMemberAdd">
+		insert into project_member(projectno,userno) values
+		<foreach item="info" index="index" collection="list" separator=",">
+			((select currval('project_projectno_seq')),#{info})
+		</foreach>
+	</insert>
+	
+	<select id="projectMemberList" parameterType="com.teamnexters.dto.ProjectMemberDTO" resultType="com.teamnexters.dto.MemberDTO">
+		select "userNo","userNm" from member where "userNo" in (select userno from project_member where projectno=#{projectNo})
+	</select>
+	
+	<delete id="projectMemberDelete" parameterType="com.teamnexters.dto.ProjectDTO">
+		delete from project_member where projectno=#{projectNo}
+	</delete>
+	
+	<insert id="projectMemberUpdate">
+		insert into project_member(projectno,userno) values
+		<foreach item="info" index="index" collection="list" separator=",">
+			(#{projectNo},#{info})
+		</foreach>
+	</insert>
+</mapper>

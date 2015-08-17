@@ -4,7 +4,7 @@ var postViewContentFlag=false;
 function share(){
     var share = {
         method: 'stream.share',
-        u: 'nh.maden.kr',
+        u: 'nh.maden.kr/admin/index.html',
         t:'test123123'
     };
  

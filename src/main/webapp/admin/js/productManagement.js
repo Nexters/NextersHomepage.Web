@@ -2,6 +2,49 @@ var projectNmChanged=false;
 var projectImgChanged=false;
 var projectLinkChanged=false;
 var projectDescChanged=false;
+var projectMemberChanged=false;
+var projectMemberIndex=-1;
+
+var projectMemberList=function(data){
+	if(data.result=="success"){
+		memberList=data.resData[0].memberList;
+		str="";
+		for(i=0;i<memberList.length;i++){
+			
+			str+="<li style='list-style:none;' userNo="+memberList[i].userNo+" userNm="+memberList[i].userNm+">"+memberList[i].userNo+"&nbsp;&nbsp;"+memberList[i].userNm+" <span style='float:right;margin-right:5px;cursor:pointer;cursor:hand;' class='userListRemove'>x</span></li>";
+			
+		}
+		$('#userListResultModify').html(str);
+	}else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+}
+var getMemberList=function(data){
+	
+	if(data.result=="success"){
+		userList=data.resData[0].tagList;
+		str="";
+		for(i=0;i<userList.length;i++){
+			str+="<li userNo="+userList[i].userNo+" userNm="+userList[i].userNm+" style='list-style:none;border-bottom:1px solid black;'>"+userList[i].userNo+"&nbsp;&nbsp;"+userList[i].userNm+"</li>";
+		}
+		
+		$('.receiveUserList').html(str);
+		
+		$('.receiveUserList li').hover(function(){
+			
+			$('.receiveUserList').find('.projectMemberList').removeClass('projectMemberList');
+			$(this).addClass('projectMemberList');
+			
+		},function(){
+			$('.receiveUserList').find('.projectMemberList').removeClass('projectMemberList');
+		})
+		
+		
+	}else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+}
+
 function deleteFunction(data){
 	if(data.result=="success"){
 		requestJsonData("api/admin/getProjectList.do", {
@@ -41,6 +84,8 @@ function getProjectList(data){
 		})
 		
 		
+		
+		
 		$('.productModify').click(function(){
 			projectNmChanged=false;
 			projectImgChanged=false;
@@ -58,7 +103,10 @@ function getProjectList(data){
 			$('#productModifyModal input[name=originProjectImg]').val(originProjectImg);
 			$('#productModifyModal input[name=projectLink]').val(projectLink);
 			$('#productModifyModal textarea[name=projectDesc]').val(projectDesc);
-			
+			$('.receiveUserList').html('');
+			$('#userListResultModify').html('');
+			projectMemberChanged=false;
+			requestJsonData("api/admin/projectMemberList.do",{projectNo:projectNo},projectMemberList)
 		})
 		
 		
@@ -70,7 +118,123 @@ function getProjectList(data){
 
 }
 $(document).ready(function() {
-
+	
+	$(document).on('click','.projectMemberList',function(){
+		
+		userNo=$(this).attr('userNo');
+		userNm=$(this).attr('userNm');
+		$('#userListResult,#userListResultModify').html(function(index,html){
+			return html+"<li style='list-style:none;' userNo="+userNo+" userNm="+userNm+">"+userNo+"&nbsp;&nbsp;"+userNm+" <span style='float:right;margin-right:5px;cursor:pointer;cursor:hand;' class='userListRemove'>x</span></li>";
+		})
+		$('.receiveUserList').html('');
+		$('#projectMember').val('');
+		$('#projectMemberModify').val('');
+		$('#projectMember').focus();
+		projectMemberChanged=true;
+	})
+	
+	$(document).on('click','.userListRemove',function(){
+		$(this).parent().remove();
+		projectMemberChanged=true;
+	})
+	$('#projectMember').keyup(function(){
+		if(event.keyCode==40){
+			if(projectMemberIndex<($('.receiveUserList li').length-1)){
+				projectMemberIndex++;
+				$('.receiveUserList').find('.projectMemberList').removeClass('projectMemberList');
+				$('.receiveUserList li').eq(projectMemberIndex).addClass('projectMemberList');
+			}
+			return;
+		}else if(event.keyCode==38){
+			if(projectMemberIndex>=0){
+				projectMemberIndex--;
+				$('.receiveUserList').find('.projectMemberList').removeClass('projectMemberList');
+				$('.receiveUserList li').eq(projectMemberIndex).addClass('projectMemberList');
+				return;
+			}
+		}else{
+			projectMemberIndex=-1;
+		}
+		
+		if(event.keyCode==13){
+			var target=$('.receiveUserList').find('.projectMemberList');
+			if(target.get(0)==undefined){
+				return;
+			}
+			
+			userNo=target.attr('userNo');
+			userNm=target.attr('userNm');
+			$('#userListResult').html(function(index,html){
+				return html+"<li style='list-style:none;' userNo="+userNo+" userNm="+userNm+">"+userNo+"&nbsp;&nbsp;"+userNm+" <span style='float:right;margin-right:5px;cursor:pointer;cursor:hand;' class='userListRemove'>x</span></li>";
+			})
+			$('.receiveUserList').html('');
+			$('#projectMember').val('');
+			$('#projectMember').focus();
+		}
+		
+		userName=$(this).val();
+		if(userName.trim()!=""){
+			requestJsonDataNoLoading("userTag.do", {
+				str:userName
+			}, getMemberList);
+		}
+		else{
+			$('.receiveUserList').html('');
+		}
+		
+		
+	})
+	
+	$('#projectMemberModify').keyup(function(){
+		if(event.keyCode==40){
+			if(projectMemberIndex<($('.receiveUserList li').length-1)){
+				
+				projectMemberIndex++;
+				$('.receiveUserList').eq(1).find('.projectMemberList').removeClass('projectMemberList');
+				$('.receiveUserList:eq(1) li').eq(projectMemberIndex).addClass('projectMemberList');
+			}
+			return;
+		}else if(event.keyCode==38){
+			if(projectMemberIndex>=0){
+				projectMemberIndex--;
+				$('.receiveUserList').eq(1).find('.projectMemberList').removeClass('projectMemberList');
+				$('.receiveUserList:eq(1) li').eq(projectMemberIndex).addClass('projectMemberList');
+				return;
+			}
+		}else{
+			projectMemberIndex=-1;
+		}
+		
+		if(event.keyCode==13){
+			var target=$('.receiveUserList').eq(1).find('.projectMemberList');
+			if(target.get(0)==undefined){
+				return;
+			}
+			
+			userNo=target.attr('userNo');
+			userNm=target.attr('userNm');
+			$('#userListResultModify').html(function(index,html){
+				return html+"<li style='list-style:none;' userNo="+userNo+" userNm="+userNm+">"+userNo+"&nbsp;&nbsp;"+userNm+" <span style='float:right;margin-right:5px;cursor:pointer;cursor:hand;' class='userListRemove'>x</span></li>";
+			})
+			$('.receiveUserList').eq(1).html('');
+			$('#projectMemberModify').val('');
+			$('#projectMemberModify').focus();
+			projectMemberChanged=true;
+		}
+		
+		userName=$(this).val();
+		
+		if(userName.trim()!=""){
+			requestJsonDataNoLoading("userTag.do", {
+				str:userName
+			}, getMemberList);
+		}
+		else{
+			$('.receiveUserList').html('');
+		}
+		
+		
+	})
 	$('.addProduct').click(function(){
 		projectNmChanged=false;
 		projectImgChanged=false;
@@ -112,6 +276,10 @@ $(document).ready(function() {
 		projectDescChanged=true;
 	})
 	$("#modifyProductButton").click(function() {
+		var memberList=[];
+		$('#userListResultModify li').each(function(){
+			memberList.push({userNo:$(this).attr('userNo'),userNm:$(this).attr('userNm')})
+		})
 		
 		var projectNm=$('#productModifyModal input[name=projectNm]').val().trim();
 		if(projectNm==''){
@@ -146,7 +314,9 @@ $(document).ready(function() {
 			myForm.append("projectDesc",projectDesc);
 		if(projectLinkChanged)
 			myForm.append("projectLink",projectLink);
-		if(!projectLinkChanged && !projectDescChanged && !projectNmChanged && !projectImgChanged){
+		if(projectMemberChanged)
+			myForm.append("memberList",JSON.stringify(memberList))
+		if(!projectLinkChanged && !projectDescChanged && !projectNmChanged && !projectImgChanged &&!projectMemberChanged){
 			alert('수정되었습니다!');
 			 $("#productModifyModal").modal('hide');
      		 $("#productModifyModal .form-control").val('');
@@ -185,6 +355,10 @@ $(document).ready(function() {
 		
 	})
 	$("#addProductButton").click(function() {
+		var memberList=[];
+		$('#userListResult li').each(function(){
+			memberList.push({userNo:$(this).attr('userNo'),userNm:$(this).attr('userNm')})
+		})
 		
 		var projectNm=$('#productModal input[name=projectNm]').val().trim();
 		if(projectNm==''){
@@ -215,6 +389,7 @@ $(document).ready(function() {
 	    myForm.append("projectNm",projectNm);
 	    myForm.append("projectDesc",projectDesc);
 	    myForm.append("projectLink",projectLink);
+	    myForm.append("memberList",JSON.stringify(memberList));
 	    
 	    $.ajax({dataType : 'json',
 	          url : "../api/admin/projectAdd.do",
