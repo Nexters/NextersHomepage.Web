@@ -43,9 +43,6 @@ function BooksDetail(bookNo, itsme) {
 			bookNm : thisName
 		}, getDateList);
 	});
-	
-	
-	
 }
 
 function returnList() {

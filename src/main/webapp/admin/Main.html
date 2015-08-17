@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
 
@@ -26,10 +26,7 @@
 <!-- Custom Fonts -->
 <link href="../font-awesome/css/font-awesome.min.css" rel="stylesheet"
 	type="text/css">
-	
-<!-- Bootstrap Tree CSS -->
-<link href="../css/bootstrap-treeview.css" rel="stylesheet"
-	type="text/css">
+
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -50,8 +47,8 @@
 <!-- Bootstrap Tab JavaScript -->
 <script src="../js/tab.js"></script>
 
-<!-- Bootstrap Tree JavaScript -->
-<script src="../js/bootstrap-treeview.js"></script>
+<!-- Bootstrap Popover JavaScript -->
+<script src="../js/popover.js"></script>
 
 <!-- Config File -->
 <script src="../js/config.js"></script>
@@ -112,15 +109,18 @@
 							
                         </ul>
                     </li>
-					
-						
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#management"><i class="fa fa-fw"></i>운영<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="management" class="collapse">
+                        	<li><a href="#" onclick="getPageContents('service/nextersManagement.html');">관리</a></li>
+                            <li><a href="#">통계</a></li>
+							<li><a href="#">설정</a></li>
 							
-						
-					
+                        </ul>
+                    </li>
 					<li><a href="#" onclick="getPageContents('service/boardManagement.html');"><i class="fa fa-fw"></i>게시판 관리</a></li>
 					<li><a href="#"><i class="fa fa-fw"></i>푸쉬 메세지 관리</a></li>
 					<li><a href="#" onclick="getPageContents('service/productManagement.html');"><i class="fa fa-fw"></i>Product 관리</a></li>
-					s
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
