@@ -67,7 +67,7 @@ function getBooksList(data){
 		$(booksColList).each(function(idx, listData) {
 			rsltTheadHtml += "<th>"+listData.title+"<br><small>"+commify(listData.amount)+"</small></th>";
 			$(listData.val).each(function(ia, data) {
-				$("tr[userNo="+commify(data.userno)+"] > td:last").after("<td>"+data.attval+"</td>");
+				$("tr[userNo="+data.userno+"] > td:last").after("<td>"+commify(data.attval)+"</td>");
 			});
 		});
 		
