@@ -39,6 +39,7 @@ public class ManagementController {
 														, @RequestParam(value="title") String strMngTitle
 														, @RequestParam(value="remark",required=false) String strMngRemark) {
 		
+		@SuppressWarnings("unchecked")
 		Map<String, Object> mapCheckDate = (Map<String, Object>)mngDao.getManageCnt(strMngDate);
 		if((Long)mapCheckDate.get("cnt")>0){
 			return JsonUtil.putFailJsonContainer("ManagementControllerERR0001", "중복된 날짜 등록을 시도함");
@@ -52,6 +53,19 @@ public class ManagementController {
 		mapRslt.put("result", mngDao.insertManager(mngDto));
 		
 		return JsonUtil.putSuccessJsonContainer(mapRslt);
+	}
+	
+	@RequestMapping("api/admin/getAttendanceListByMngNo.do")
+	public @ResponseBody Map<String, Object> getAttendanceListByMngNo(@RequestParam(value="mngno") String strMngNo){
+		int intMngNo;
+		try {
+			intMngNo = Integer.parseInt(strMngNo);
+		} catch (Exception e) {
+			return JsonUtil.putFailJsonContainer("ManagementControllerERR0002", "운영 관리 번호는 숫자만 가능합니다.");
+		}
+		Map<String, Object> mapRsltData = new HashMap<String, Object>();
+		mapRsltData.put("list", mngDao.getAttendanceListByMngNo(intMngNo));
+		return JsonUtil.putSuccessJsonContainer(mapRsltData);
 	}
 	
 }

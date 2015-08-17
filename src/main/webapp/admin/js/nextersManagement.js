@@ -1,5 +1,5 @@
 var isNotOk = true;
-
+var mngNo;
 // 장부 리스트 화면
 function getBooksList(data) {
 	var columnSet = "";
@@ -32,6 +32,8 @@ function getBooksList(data) {
 		
 		$("#BookListTable tbody").html(listSet);
 		$("[data-toggle='popover']").popover();
+	} else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
 	}
 }
 
@@ -41,8 +43,11 @@ function ManageDetatil(bookNo, me) {
 	$("#BookListDiv").fadeOut(function(){
 		$("#ManageDetailDiv").fadeIn();
 		$("#manageName").html("<h2>"+$(tds[1]).html()+"</h2><h5>"+$(tds[0]).html()+"</h5>");
+		mngNo=bookNo;
+		requestJsonData("api/admin/getAttendanceListByMngNo.do", {mngno:bookNo}, getAttendanceList);
 	});
 }
+
 
 function returnList() {
 	$("#ManageDetailDiv").fadeOut(function(){
@@ -51,6 +56,74 @@ function returnList() {
 	});
 }
 
+function getAttendanceList(data){
+	$("#attendanceList").html("");
+	if(data.result=="success") {
+		var attendList = data.resData[0].list;
+		var rsltHtml;
+		$(attendList).each(function(idx, listData) {
+			var attendRslt = listData.eleId;
+			rsltHtml +="<tr userNo='"+listData.userNo+"'>";
+			rsltHtml += "<td>"+listData.userNm+"("+listData.userNo+")";
+			if(attendRslt=="attend"){
+				rsltHtml += "<td  style='text-align:center;'> <button class='btn btn-success btn-xs attendenceButton'>출석</button></td>";
+			}else if(attendRslt=="late"){
+				rsltHtml += "<td  style='text-align:center;'> <button class='btn btn-warning btn-xs attendenceButton'>지각</button></td>";
+			}else if(attendRslt=="absence"){
+				rsltHtml += "<td  style='text-align:center;'> <button class='btn btn-danger btn-xs attendenceButton'>결석</button></td>";
+			}else{
+				rsltHtml += "<td  style='text-align:center;'> <button class='btn btn-xs attendenceButton'>n/a</button></td>";
+			}
+			rsltHtml += "</tr>";
+		});
+		$("#attendanceList").html(rsltHtml);
+		$('.attendenceButton').click(function(){
+			var status="";
+			if($(this).html()=='n/a'){
+				status="attend";
+			}else if($(this).html()=='attend'){
+				status="late";
+			}else if($(this).html()=='late'){
+				status="absence";
+			} else if($(this).html()=='absence') {
+				status="attend";
+			}
+						
+			requestJsonData("api/admin/modifyAttendance.do", {
+				mngNo : mngNo,
+				value : status,
+				userNo : $(this).parent().parent().attr("userNo"),
+			}, modifyAttendance);
+		})
+	} else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+}
+function modifyAttendance(data){
+	if (data.result == "success") {
+		switch(thisValue){
+		
+		case "출석":
+			thisComponent.removeClass("btn-danger");
+			thisComponent.addClass("btn-success");
+			break;
+			
+		case "지각":
+			thisComponent.removeClass("btn-success");
+			thisComponent.addClass("btn-warning");
+			break;
+			
+		case "결석":
+			thisComponent.removeClass("btn-warning");
+			thisComponent.addClass("btn-danger");
+			break;
+			
+		}
+		thisComponent.html(thisValue);
+	} else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+}
 
 function checkDate(data) {
 	var isCnt = data.resData[0].cnt;

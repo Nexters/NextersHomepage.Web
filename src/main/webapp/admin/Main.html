@@ -109,11 +109,15 @@
 							
                         </ul>
                     </li>
-					<li><a href="#" onclick="getPageContents('service/nextersManagement.html');"><i class="fa fa-fw"></i>운영</a></li>
-						
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#management"><i class="fa fa-fw"></i>운영<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="management" class="collapse">
+                        	<li><a href="#" onclick="getPageContents('service/nextersManagement.html');">관리</a></li>
+                            <li><a href="#">통계</a></li>
+							<li><a href="#">설정</a></li>
 							
-						
-					
+                        </ul>
+                    </li>
 					<li><a href="#" onclick="getPageContents('service/boardManagement.html');"><i class="fa fa-fw"></i>게시판 관리</a></li>
 					<li><a href="#"><i class="fa fa-fw"></i>푸쉬 메세지 관리</a></li>
 					<li><a href="#" onclick="getPageContents('service/productManagement.html');"><i class="fa fa-fw"></i>Product 관리</a></li>

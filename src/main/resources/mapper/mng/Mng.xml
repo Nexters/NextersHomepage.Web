@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
           "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
 <mapper namespace="com.teamnexters.mapper">   
-
 	<select id="getManageList" resultType="com.teamnexters.dto.MngDTO">
 		SELECT 
 			mngno
@@ -20,4 +19,23 @@
 		INSERT INTO mng(mngno, mngdate, mngtitle, mngremark)
 	    VALUES (nextval('mng_seq'), #{mngdate}, #{mngtitle}, #{mngremark});
 	</insert>
+	<select id="getAttendanceListByMngNo" resultType="com.teamnexters.dto.AttendanceDTO">
+	SELECT m."userNm", vTable3.* FROM (
+		SELECT userno, eleid, eleval FROM (
+			SELECT 
+				mu.userno
+				, ma.attval 
+			FROM mng_user mu 
+			LEFT JOIN mng_attendance ma 
+			ON mu.userno = ma.userno
+			WHERE mu.mngno = #{mngno}
+		) as vTable1
+		LEFT JOIN (
+			SELECT eleid, eleval FROM div_ele WHERE grpid='attendance'
+		) as vTable2
+		ON vTable1.attval = vTable2.eleid
+	) as vTable3
+	LEFT JOIN member m ON m."userNo" = vTable3.userno
+	ORDER BY userno ASC
+	</select>
 </mapper>

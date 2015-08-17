@@ -40,25 +40,31 @@
 		  <div class="col-md-4"></div>
 		</div>
 		<ul class="nav nav-tabs" role="BookTabMenu">
-			<li role="presentation" class="active"><a href=#attendence aria-controls="attendence" role="tab" data-toggle="tab">출석</a></li>
-			<li role="presentation"><a href="#money" aria-controls="money" role="tab" data-toggle="tab">회비</a></li>
+			<li role="presentation" class="active"><a href="#mamng" aria-controls="mamng" role="tab" data-toggle="tab">출석/장부</a></li>
 			<li role="presentation"><a href="#survey" aria-controls="survey" role="tab" data-toggle="tab">설문조사</a></li>
 		</ul>
 		
 		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane active" id="attendence">
-				<div class="table-responsive" id="attendenceTable">
-					<table class="table table-bordered table-hover custom-table">
-						<thead id="dateList">
-							
-						</thead>
-						<tbody id="activityList">
-	
-						</tbody>
-					</table>
+			<div role="tabpanel" class="tab-pane active" id="mamng">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="table-responsive">
+							<table class="table table-striped" style="width:0px">
+								<thead>
+									<tr>
+										<th class="text-center" width="15%">이름(번호)</th>
+										<th class="text-center" width="10%">출석</th>
+										<th class="text-center">뒷풀이<br>(20,000원)</th>
+									</tr>
+								</thead>
+								<tbody id="attendanceList">
+			
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div role="tabpanel" class="tab-pane" id="money">회비</div>
 			<div role="tabpanel" class="tab-pane" id="survey">설문조사</div>
 		</div>
 	

@@ -25,4 +25,8 @@ public class MngDAO {
 	public int insertManager(Object objParam){
 		return sqlsession.insert("insertManager", objParam);
 	}
+	
+	public Object getAttendanceListByMngNo(int intMngNo) {
+		return sqlsession.selectList("getAttendanceListByMngNo", intMngNo);
+	}
 }
