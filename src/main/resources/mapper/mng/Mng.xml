@@ -19,11 +19,19 @@
 		INSERT INTO mng(mngno, mngdate, mngtitle, mngremark)
 	    VALUES (nextval('mng_seq'), #{mngdate}, #{mngtitle}, #{mngremark});
 	</insert>
+	<delete id="deleteAttendance" parameterType="com.teamnexters.dto.AttendanceDTO">
+		delete from mng_attendance where mngno=#{mngNo} and userno=#{userNo}
+	</delete>
+	<insert id="insertAttendance" parameterType="com.teamnexters.dto.AttendanceDTO">
+		INSERT INTO mng_attendance(mngno, userno, attval)
+    	VALUES (#{mngNo}, #{userNo}, #{eleId});
+	</insert>
 	<select id="getAttendanceListByMngNo" resultType="com.teamnexters.dto.AttendanceDTO">
 	SELECT m."userNm", vTable3.* FROM (
-		SELECT userno, eleid, eleval FROM (
-			SELECT 
-				mu.userno
+		SELECT mngno, userno, eleid, eleval FROM (
+			SELECT
+				mu.mngno 
+				, mu.userno
 				, ma.attval 
 			FROM mng_user mu 
 			LEFT JOIN mng_attendance ma 

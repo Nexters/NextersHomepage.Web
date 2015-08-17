@@ -3,6 +3,7 @@ package com.teamnexters.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,11 +11,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teamnexters.dao.MngDAO;
+import com.teamnexters.dto.AttendanceDTO;
 import com.teamnexters.dto.MngDTO;
 import com.teamnexters.util.JsonUtil;
 
 @Controller
 public class ManagementController {
+	
+	private static final Logger logger =  Logger.getLogger(ManagementController.class);
+
 	
 	@Autowired
 	MngDAO mngDao;
@@ -65,6 +70,29 @@ public class ManagementController {
 		}
 		Map<String, Object> mapRsltData = new HashMap<String, Object>();
 		mapRsltData.put("list", mngDao.getAttendanceListByMngNo(intMngNo));
+		return JsonUtil.putSuccessJsonContainer(mapRsltData);
+	}
+	
+	@RequestMapping("api/admin/insertAttendance.do")
+	public @ResponseBody Map<String, Object> getAttendanceListByMngNo(@RequestParam(value="mngno") String strMngNo
+																	, @RequestParam(value="userno") String strUserNo
+																	, @RequestParam(value="value") String strValue){
+		AttendanceDTO attendanceDto = new AttendanceDTO();
+		attendanceDto.setUserNo(strUserNo);
+		attendanceDto.setMngNo(Integer.parseInt(strMngNo));
+		attendanceDto.setEleId(strValue);
+		
+		logger.debug("attendanceDto::"+attendanceDto.toString());
+		
+		int rsltDlt = mngDao.deleteAttendanceByMngNoAndUserNo(attendanceDto);
+		logger.debug("Delete Cnt ::"+rsltDlt);
+		
+		int rsltIns = mngDao.insertAttendance(attendanceDto);
+		logger.debug("Insert Cnt ::"+rsltIns);
+		
+		Map<String, Object> mapRsltData = new HashMap<String, Object>();
+		mapRsltData.put("rslt", rsltIns);
+		
 		return JsonUtil.putSuccessJsonContainer(mapRsltData);
 	}
 	

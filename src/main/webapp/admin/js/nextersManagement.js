@@ -1,5 +1,7 @@
 var isNotOk = true;
 var mngNo;
+var nowTarget;
+var nowValue;
 // 장부 리스트 화면
 function getBooksList(data) {
 	var columnSet = "";
@@ -68,9 +70,11 @@ function getAttendanceList(data){
 			if(attendRslt=="attend"){
 				rsltHtml += "<td  style='text-align:center;'> <button class='btn btn-success btn-xs attendenceButton'>출석</button></td>";
 			}else if(attendRslt=="late"){
-				rsltHtml += "<td  style='text-align:center;'> <button class='btn btn-warning btn-xs attendenceButton'>지각</button></td>";
+				rsltHtml += "<td  style='text-align:center;'> <button class='btn btn-info btn-xs attendenceButton'>지각</button></td>";
 			}else if(attendRslt=="absence"){
-				rsltHtml += "<td  style='text-align:center;'> <button class='btn btn-danger btn-xs attendenceButton'>결석</button></td>";
+				rsltHtml += "<td  style='text-align:center;'> <button class='btn btn-warning btn-xs attendenceButton'>결석</button></td>";
+			}else if(attendRslt=="nonotice"){
+				rsltHtml += "<td  style='text-align:center;'> <button class='btn btn-danger btn-xs attendenceButton'>무단</button></td>";
 			}else{
 				rsltHtml += "<td  style='text-align:center;'> <button class='btn btn-xs attendenceButton'>n/a</button></td>";
 			}
@@ -81,18 +85,21 @@ function getAttendanceList(data){
 			var status="";
 			if($(this).html()=='n/a'){
 				status="attend";
-			}else if($(this).html()=='attend'){
+			}else if($(this).html()=='출석'){
 				status="late";
-			}else if($(this).html()=='late'){
+			}else if($(this).html()=='지각'){
 				status="absence";
-			} else if($(this).html()=='absence') {
+			} else if($(this).html()=='결석') {
+				status="nonotice";
+			} else if($(this).html()=='무단') {
 				status="attend";
 			}
-						
-			requestJsonData("api/admin/modifyAttendance.do", {
-				mngNo : mngNo,
+			nowTarget = $(this);
+			nowValue=status;
+			requestJsonData("api/admin/insertAttendance.do", {
+				mngno : mngNo,
 				value : status,
-				userNo : $(this).parent().parent().attr("userNo"),
+				userno : $(this).parent().parent().attr("userNo"),
 			}, modifyAttendance);
 		})
 	} else {
@@ -101,25 +108,33 @@ function getAttendanceList(data){
 }
 function modifyAttendance(data){
 	if (data.result == "success") {
-		switch(thisValue){
+		var rsltValue;
+		switch(nowValue){
 		
-		case "출석":
-			thisComponent.removeClass("btn-danger");
-			thisComponent.addClass("btn-success");
+		case "attend":
+			nowTarget.removeClass("btn-danger");
+			nowTarget.addClass("btn-success");
+			rsltValue="출석";
 			break;
 			
-		case "지각":
-			thisComponent.removeClass("btn-success");
-			thisComponent.addClass("btn-warning");
+		case "late":
+			nowTarget.removeClass("btn-success");
+			nowTarget.addClass("btn-info");
+			rsltValue="지각";
 			break;
 			
-		case "결석":
-			thisComponent.removeClass("btn-warning");
-			thisComponent.addClass("btn-danger");
+		case "absence":
+			nowTarget.removeClass("btn-info");
+			nowTarget.addClass("btn-warning");
+			rsltValue="결석";
 			break;
-			
+		case "nonotice":
+			nowTarget.removeClass("btn-warning");
+			nowTarget.addClass("btn-danger");
+			rsltValue="무단";
+			break;
 		}
-		thisComponent.html(thisValue);
+		nowTarget.html(rsltValue);
 	} else {
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
 	}

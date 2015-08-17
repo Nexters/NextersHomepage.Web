@@ -29,4 +29,12 @@ public class MngDAO {
 	public Object getAttendanceListByMngNo(int intMngNo) {
 		return sqlsession.selectList("getAttendanceListByMngNo", intMngNo);
 	}
+	
+	public int deleteAttendanceByMngNoAndUserNo(Object objParam) {
+		return sqlsession.delete("deleteAttendance", objParam);
+	}
+	
+	public int insertAttendance(Object objParam){
+		return sqlsession.insert("insertAttendance", objParam);
+	}
 }
