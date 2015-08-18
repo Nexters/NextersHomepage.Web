@@ -12,14 +12,13 @@ function share(){
  
     FB.ui(share, function(response) { console.log(response); });
 }
-
-var fileDownload=function(data){
-	if(data.result=="success"){
-		
-	}else {
-		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
-	}
+var addMarkerHTML=function(lat,lng,title){
+	
+	var sHTML = "<iframe src='http://localhost:8080/NextersHomepage/admin/service/mapFrame.html?lat="+lat+"&lng="+lng+"&title="+title+"' width='300px' height='300px' style='overflow:hidden' scrolling='no'></iframe>"
+	oEditors.getById["ir1"].exec("PASTE_HTML", [sHTML]);
+	oEditors.getById["ir2"].exec("PASTE_HTML", [sHTML]);
 }
+
 var setPostViewContentFlag=function(value){
 	postViewContentFlag=value;
 	
@@ -284,7 +283,10 @@ $(document).ready(function(){
 		
 		postContent=postContent.split("\n").join("<br>");
 		var myForm = new FormData();
-		myForm.append("uploadFile", files);
+		if(files!=undefined){
+			myForm.append("uploadFile", files);
+		}
+		
 	    myForm.append("boardNo",boardNo);
 	    myForm.append("userNo",loginUserNo);
 	    myForm.append("postTitle",postTitle);
