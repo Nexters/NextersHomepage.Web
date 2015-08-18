@@ -14,7 +14,7 @@ function share(){
 }
 var addMarkerHTML=function(lat,lng,title){
 	
-	var sHTML = "<iframe src='http://localhost:8080/NextersHomepage/admin/service/mapFrame.html?lat="+lat+"&lng="+lng+"&title="+title+"' width='300px' height='300px' style='overflow:hidden' scrolling='no'></iframe>"
+	var sHTML = "<iframe src='http://localhost:8080/NextersHomepage/admin/service/mapFrame.html?lat="+lat+"&lng="+lng+"&title="+title+"' width='300px' height='300px' style='overflow:hidden;' frameborder='0' scrolling='no'></iframe>"
 	oEditors.getById["ir1"].exec("PASTE_HTML", [sHTML]);
 	oEditors.getById["ir2"].exec("PASTE_HTML", [sHTML]);
 }
@@ -57,6 +57,7 @@ var removePost=function(data){
 }
 var postView=function(data){
 	if(data.result=="success"){
+		
 		$('#fileName').show();
 		$('#fileModify').hide();
 		$('#postViewModal input[name=postViewTitle]').val(data.resData[0].list.postTitle);
@@ -64,12 +65,16 @@ var postView=function(data){
 		$('#postViewModal textarea[name=postViewContent').html(postContent);
 		$('#viewContentDiv').html(postContent);
 		temp=data.resData[0].list.file;
-		$('#fileName').html(temp.substring(temp.indexOf("/")+1,temp.length));
+		if(temp!=null){
+			$('#fileName').html(temp.substring(temp.indexOf("/")+1,temp.length));
+		}
+		
 		$('#fileName').attr('file',data.resData[0].list.file);
 		
 		oEditors.getById["ir2"].exec("SET_CONTENTS", [""]); 
 		
 		$('#modifyRemovePost').attr('postNo',data.resData[0].list.postNo);
+		
 		$('#modifyPost').attr('postNo',data.resData[0].list.postNo);
 		
 		
@@ -194,6 +199,12 @@ var postInsert=function(data){
 		alert("완료되었습니다!");
 		$("#postAddModal").modal('hide');
 		$("#postAddModal .form-control").val('');
+		
+		requestJsonData("api/admin/postList.do", {
+			
+			boardNo:boardNo
+			
+		}, postList);
 	}else {
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
 	}
@@ -309,6 +320,7 @@ $(document).ready(function(){
 	})
 	
 	$('#modifyButton').click(function(){
+		oEditors.getById["ir2"].exec("UPDATE_CONTENTS_FIELD", []);
 		$('#modifyRemovePost').hide();
 		$('#modifyPost').show();
 		$('#fileName').hide();
@@ -362,9 +374,13 @@ $(document).ready(function(){
 			$("#postViewModal .form-control").val('');
 			return;
 		}
+		
 		var myForm = new FormData();
 		var boardNo=$('#boardListPage').find('.active a').attr("boardNo");
-		myForm.append("uploadFile", files);
+		if(files!=undefined){
+			myForm.append("uploadFile", files);
+		}
+		
 	    myForm.append("boardNo",boardNo);
 	    myForm.append("postNo",postNo);
 	   
