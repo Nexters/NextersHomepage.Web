@@ -61,7 +61,7 @@
 		SELECT
 			mu.mngno 
 			, mu.userno
-			, mbv.attval 
+			, coalesce(mbv.attval, -2) as attval
 		FROM mng_user mu 
 		LEFT JOIN (
 			SELECT * FROM mng_books_val WHERE booksno = #{booksno}
