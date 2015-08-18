@@ -67,7 +67,50 @@ function getBooksList(data){
 		$(booksColList).each(function(idx, listData) {
 			rsltTheadHtml += "<th>"+listData.title+"<br><small>"+commify(listData.amount)+"</small></th>";
 			$(listData.val).each(function(ia, data) {
-				$("tr[userNo="+data.userno+"] > td:last").after("<td>"+commify(data.attval)+"</td>");
+				var booksData = data.attval;
+				var rsltBooks;
+				if(booksData>=0){
+					rsltBooks = commify(booksData);
+				} else {
+					var rsltMsg;
+					if(booksData==-1) {
+						rsltMsg = "불참";
+					} else if(booksData==-3) {
+						rsltMsg = "면제";
+					}else if(booksData==-2) {
+						rsltMsg = "n/a";
+					}
+					rsltBooks=rsltMsg;
+				}
+				
+				$("tr[userNo="+data.userno+"] > td:last").after("<td books=true>"+rsltBooks+"</td>");
+				$("td[books=true]").click(function() {
+					var nowVal = GetNumString($(this).html());
+					console.log("nowVal="+nowVal);
+					console.log("nowval>=0::"+(nowVal>=0));
+					var rsltModifyHtml;
+					rsltModifyHtml="<div class='btn-group btn-group-xs' role='group' aria-label='selectBooks'>";
+					rsltModifyHtml+="<button type='button' class='btn btn-default ";
+					if(nowVal>=0) {
+						rsltModifyHtml+="active";
+					}
+					rsltModifyHtml+="'>참석</button>";
+					rsltModifyHtml+="<button type='button' class='btn btn-default ";
+					if(nowVal=='불참') {
+						rsltModifyHtml+="active";
+					}
+					rsltModifyHtml+="'>불참</button>";
+					rsltModifyHtml+="<button type='button' class='btn btn-default ";
+					if(nowVal=='면제') {
+						rsltModifyHtml+="active";
+					}
+					rsltModifyHtml+="'>면제</button></div>";
+					if(nowVal>=0) {
+						rsltModifyHtml +="<input type='email' class='form-control input-sm' value='"+nowVal+"' id='booksVal'>";
+					}
+					$(this).html(rsltModifyHtml);
+
+				});
 			});
 		});
 		
@@ -75,6 +118,17 @@ function getBooksList(data){
 	} else {
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
 	}
+}
+
+function GetNumString(s) {
+    var rtn = parseFloat(s.replace(/,/gi, ""));
+    console.log(rtn);
+    if (isNaN(rtn)) {
+        return s;
+    }
+    else {
+        return rtn;
+    }
 }
 
 function commify(n) {
@@ -87,6 +141,7 @@ function commify(n) {
 
 function getAttendanceList(data){
 	$("#attendanceList").html("");
+	$("#mamng > div > div > div > table > tbody").html("");
 	if(data.result=="success") {
 		var attendList = data.resData[0].list;
 		var rsltHtml;
