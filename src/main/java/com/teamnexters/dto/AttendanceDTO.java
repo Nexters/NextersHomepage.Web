@@ -1,10 +1,17 @@
 package com.teamnexters.dto;
 
 public class AttendanceDTO {
+	private int mngNo;
 	private String userNm;
 	private String userNo;
 	private String eleId;
 	private String eleVal;
+	public int getMngNo() {
+		return mngNo;
+	}
+	public void setMngNo(int mngNo) {
+		this.mngNo = mngNo;
+	}
 	public String getUserNm() {
 		return userNm;
 	}

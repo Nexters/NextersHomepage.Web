@@ -19,11 +19,19 @@
 		INSERT INTO mng(mngno, mngdate, mngtitle, mngremark)
 	    VALUES (nextval('mng_seq'), #{mngdate}, #{mngtitle}, #{mngremark});
 	</insert>
+	<delete id="deleteAttendance" parameterType="com.teamnexters.dto.AttendanceDTO">
+		delete from mng_attendance where mngno=#{mngNo} and userno=#{userNo}
+	</delete>
+	<insert id="insertAttendance" parameterType="com.teamnexters.dto.AttendanceDTO">
+		INSERT INTO mng_attendance(mngno, userno, attval)
+    	VALUES (#{mngNo}, #{userNo}, #{eleId});
+	</insert>
 	<select id="getAttendanceListByMngNo" resultType="com.teamnexters.dto.AttendanceDTO">
 	SELECT m."userNm", vTable3.* FROM (
-		SELECT userno, eleid, eleval FROM (
-			SELECT 
-				mu.userno
+		SELECT mngno, userno, eleid, eleval FROM (
+			SELECT
+				mu.mngno 
+				, mu.userno
 				, ma.attval 
 			FROM mng_user mu 
 			LEFT JOIN mng_attendance ma 
@@ -37,5 +45,28 @@
 	) as vTable3
 	LEFT JOIN member m ON m."userNo" = vTable3.userno
 	ORDER BY userno ASC
+	</select>
+	<insert id="insertBooks" parameterType="com.teamnexters.dto.BooksDTO">
+		INSERT INTO mng_books(mngno, booksno, title, amount)
+		VALUES (#{mngno}, nextval('mng_books_seq'), #{title}, #{amount});
+	</insert>
+	<insert id="insertBooksVal" parameterType="com.teamnexters.dto.BooksValDTO">
+		INSERT INTO mng_books_val(booksno, userno, attval)
+		VALUES (#{booksno}, #{userno}, #{attval});
+	</insert>
+	<select id="getBooksList" resultType="com.teamnexters.dto.BooksDTO">
+		SELECT * FROM mng_books WHERE mngno = #{mngno} ORDER BY booksno ASC
+	</select>
+	<select id="getBooksValByBooksNo" resultType="com.teamnexters.dto.BooksValDTO">
+		SELECT
+			mu.mngno 
+			, mu.userno
+			, mbv.attval 
+		FROM mng_user mu 
+		LEFT JOIN (
+			SELECT * FROM mng_books_val WHERE booksno = #{booksno}
+		 ) as mbv
+		ON mu.userno = mbv.userno
+		WHERE mu.mngno = #{mngno}
 	</select>
 </mapper>

@@ -18,7 +18,7 @@ public class BooksController {
 	@Autowired
 	BooksDAO booksDAO;
 
-	@RequestMapping("api/admin/getBooksList.do")
+	@RequestMapping("api/admin/getBooksList_old.do")
 	public @ResponseBody Map<String, Object> getBooksList() {
 		Map<String, Object> mapRslt = new HashMap<String, Object>();
 		mapRslt.put("list", booksDAO.getBooksList());
