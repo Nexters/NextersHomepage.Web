@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.teamnexters.mapper">   
+
+	<insert id="addPostComment" parameterType="com.teamnexters.dto.BoardCommentDTO">
+		insert into board_comment(postno,userno,postcomment,commentdate) values(#{postNo},#{userNo},#{postComment},#{commentDate})
+	</insert>
+	
+	<select id="getCommentList" parameterType="com.teamnexters.dto.BoardCommentDTO" resultType="com.teamnexters.dto.BoardCommentDTO">
+		select commentno,postno,userno,(select "userNm" from member where "userNo"=userno) usernm,postcomment,commentdate
+		from board_comment
+		where postno=#{postNo}
+		order by commentno desc;
+	</select>
+	
+	<delete id="commentRemove" parameterType="com.teamnexters.dto.BoardCommentDTO">
+		delete from board_comment
+		where commentno=#{commentNo}
+	</delete>
+</mapper>

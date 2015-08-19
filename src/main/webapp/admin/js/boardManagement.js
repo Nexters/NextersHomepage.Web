@@ -12,6 +12,39 @@ function share(){
  
     FB.ui(share, function(response) { console.log(response); });
 }
+var commentRemove=function(data){
+	if(data.result=="success"){
+		requestJsonData("api/admin/getCommentList.do",{postNo:$('#postViewModal').attr("postNo")},getCommentList);
+	}else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+}
+var getCommentList=function(data){
+	if(data.result=="success"){
+		var commentList=data.resData[0].commentList;
+		str="";
+		for(i=0;i<commentList.length;i++){
+			str+="<li style='border-bottom:1px solid black;' commentNo="+commentList[i].commentNo+">"+commentList[i].userNm+"&nbsp;&nbsp;"+commentList[i].commentDate+"<br>"+commentList[i].postComment+"<span style='float:right;margin-right:5px;cursor:pointer;cursor:hand;' class='commentRemove'>x</span></li>"; 
+		}
+		$('#commentList').html(str);
+		
+		$('.commentRemove').click(function(){
+			requestJsonData("api/admin/commentRemove.do",{commentNo:$(this).parent().attr('commentNo')},commentRemove);
+			
+		})
+	}else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+}
+var addPostComment=function(data){
+	if(data.result=="success"){
+		$('#postViewModal textarea[name=postComment]').val('');
+		
+		requestJsonData("api/admin/getCommentList.do",{postNo:$('#postViewModal').attr("postNo")},getCommentList);
+	}else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+}
 var addMarkerHTML=function(lat,lng,title){
 	
 	var sHTML = "<iframe src='http://localhost:8080/NextersHomepage/admin/service/mapFrame.html?lat="+lat+"&lng="+lng+"&title="+title+"' width='300px' height='300px' style='overflow:hidden;' frameborder='0' scrolling='no'></iframe>"
@@ -74,11 +107,11 @@ var postView=function(data){
 		oEditors.getById["ir2"].exec("SET_CONTENTS", [""]); 
 		
 		$('#modifyRemovePost').attr('postNo',data.resData[0].list.postNo);
-		
+		$('#postViewModal').attr('postNo',data.resData[0].list.postNo);
 		$('#modifyPost').attr('postNo',data.resData[0].list.postNo);
 		
 		
-		
+		requestJsonData("api/admin/getCommentList.do",{postNo:$('#postViewModal').attr("postNo")},getCommentList);
 		
 	
 	}else {
@@ -400,8 +433,21 @@ $(document).ready(function(){
 	$('#postViewModal input[name=postViewTitle]').keyup(function(){
 		postViewTitleFlag=true;
 	})
-	$('#se2_iframe').click(function(){
-		alert(1)
+	
+	$('#postCommentWrite').click(function(){
+		var postComment=$('#postViewModal textarea[name=postComment]').val().trim();
+		
+		if(postComment==""){
+			alert('내용을 입력하세요!');
+			
+			return;
+		}
+		
+		requestJsonData("api/admin/addPostComment.do",{
+			postNo:$('#postViewModal').attr('postNo'),
+			userNo:loginUserNo,
+			postComment:postComment
+		},addPostComment);
 	})
 	
 	

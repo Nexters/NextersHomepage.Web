@@ -100,7 +100,7 @@ public class BoardController {
 	@RequestMapping("api/admin/postInsert.do")
 	public @ResponseBody Map<String,Object> postInsert(BoardInfoDTO infoDto){
 		MultipartFile uploadFile = infoDto.getUploadFile();
-		System.out.println(uploadFile);
+		
 		Date date=new Date();
 		String year=String.valueOf(date.getYear()-100);
 		String month="";

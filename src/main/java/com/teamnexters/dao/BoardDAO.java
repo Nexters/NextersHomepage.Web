@@ -28,4 +28,6 @@ public class BoardDAO {
 	public Object getUploadPath(Object param){
 		return sqlsession.selectOne("getUploadPath",param);
 	}
+	
+	
 }
