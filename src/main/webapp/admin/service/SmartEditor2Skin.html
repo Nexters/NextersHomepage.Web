@@ -19,6 +19,17 @@
 
 <script src='../js/editor/smarteditor2.min.js' charset='utf-8'></script>
 <script src='../../photo_uploader/plugin/hp_SE2M_AttachQuickPhoto.js' charset='utf-8'></script>
+<script>
+
+	var mapAdd=function(){
+		window.open('openMapSearch.html','','width=1200,height=500');
+	}
+	var addMarker=function(lat,lng,title){
+		
+		
+		parent.addMarkerHTML(lat,lng,title);
+	}
+</script>
 </head>
 <body>
 
@@ -553,6 +564,9 @@
 </ul>
 				<ul class="se2_multy">
 					<li class="se2_mn husky_seditor_ui_photo_attach"><button type="button" class="se2_photo ico_btn"><span class="se2_icon"></span><span class="se2_mntxt">사진<span class="se2_new"></span></span></button></li>
+				</ul>
+				<ul>
+					<li><input type="button" class="mapAdd" onclick="mapAdd()" value="지도"></li>
 				</ul>
 			</div>
 			<!-- //704이상 -->

@@ -65,16 +65,134 @@ function getBooksList(data){
 		var booksColList = data.resData[0].list;
 		var rsltTheadHtml;
 		$(booksColList).each(function(idx, listData) {
-			rsltTheadHtml += "<th>"+listData.title+"<br><small>"+commify(listData.amount)+"</small></th>";
+			rsltTheadHtml += "<th bookCol=true no='"+listData.booksno+"'>"+listData.title+"<br><small>"+commify(listData.amount)+"</small></th>";
 			$(listData.val).each(function(ia, data) {
-				$("tr[userNo="+data.userno+"] > td:last").after("<td>"+commify(data.attval)+"</td>");
+				var booksData = data.attval;
+				var rsltBooks;
+				if(booksData>=0){
+					rsltBooks = commify(booksData);
+				} else {
+					var rsltMsg;
+					if(booksData==-1) {
+						rsltMsg = "불참";
+					} else if(booksData==-3) {
+						rsltMsg = "면제";
+					}else if(booksData==-2) {
+						rsltMsg = "";
+					}
+					rsltBooks=rsltMsg;
+				}
+				
+				$("tr[userNo="+data.userno+"] > td:last").after("<td books=true mode=view>"+rsltBooks+"</td>");
+				$("td[books=true]").click(function() {
+					if($(this).attr("mode")=="view") {
+						var nowVal = GetNumString($(this).html());
+						var rsltModifyHtml;
+						nowTarget = $(this);
+						rsltModifyHtml="<div class='btn-group' role='group' aria-label='selectBooks'>";
+						rsltModifyHtml+="<button type='button' class='btn-xs-custom btn btn-default ";
+						if(nowVal>=0) {
+							rsltModifyHtml+="active";
+						}
+						rsltModifyHtml+="'>참석</button>";
+						rsltModifyHtml+="<button type='button' class='btn-xs-custom btn btn-default ";
+						if(nowVal=='불참') {
+							rsltModifyHtml+="active";
+						}
+						rsltModifyHtml+="'>불참</button>";
+						rsltModifyHtml+="<button type='button' class='btn-xs-custom btn btn-default ";
+						if(nowVal=='면제') {
+							rsltModifyHtml+="active";
+						}
+						rsltModifyHtml+="'>면제</button></div>";
+						if(nowVal>=0) {
+							rsltModifyHtml +="<br><input type='text' size='10' class='form-control input-sm-custom' value='"+nowVal+"' id='booksVal'>";
+						}
+						$(this).attr("mode", "modify");
+						$(this).html(rsltModifyHtml);
+						$(this).find("input").focus();
+						$(".btn-xs-custom").click(function() {
+							var selectData = $(this).html();
+							var Amount;
+							if(selectData=='참석') {
+								var parentsTarget = $(this).parents();
+								var parentTarget = $(parentsTarget)[0];
+								var parentNTarget = $(parentsTarget)[1];
+								$(parentNTarget).find(".btn-xs-custom").removeClass("active");
+								$(this).addClass("active");
+								if($(parentNTarget).find("input").size()==0){
+									$(parentTarget).after("<br><input type='text' size='10' class='form-control input-sm-custom' id='booksVal'>");
+									booksValInputEvent();
+								}
+								$(parentNTarget).find("input").focus();
+							} else if(selectData=='불참' || selectData=='면제'){
+								var parentsTarget = $(this).parent().parents();
+								var parentTarget = $(parentsTarget)[0];
+								var parentTrTarget = $(parentsTarget)[1];
+								var booksCol = $("th[bookCol=true]")[$(parentTarget).index()-2];
+								
+								$(parentTarget).html(selectData);
+								if(selectData=='불참')
+									Amount = -1;
+								else if(selectData='면제')
+									Amount = -3;
+								requestJsonData("api/admin/modifyBooksVal.do", {
+									userno : $(parentTrTarget).attr("userNo"),
+									booksno : $(booksCol).attr("no"),
+									amount : Amount
+								}, modifyBooksVal);
+							}
+						});
+						booksValInputEvent();
+					}
+				});
 			});
 		});
 		
 		$(startPosition).after(rsltTheadHtml);
+		
 	} else {
 		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
 	}
+}
+function booksValInputEvent(){
+	$(".input-sm-custom").keydown(function(key) {
+		if(key.keyCode == 13){
+			var selectData = $(this).val();
+			var parentsTarget = $(this).parents();
+			var parentTarget = $(parentsTarget)[0];
+			var parentTrTarget = $(parentsTarget)[1];
+			var booksCol = $("th[bookCol=true]")[$(parentTarget).index()-2];
+			if(isNaN(selectData)){
+				alert("숫자만 가능합니다.");
+				return;
+			}
+			$(parentTarget).html(commify(selectData));
+			
+			requestJsonData("api/admin/modifyBooksVal.do", {
+				userno : $(parentTrTarget).attr("userNo"),
+				booksno : $(booksCol).attr("no"),
+				amount : selectData
+			}, modifyBooksVal);
+		}
+	});
+}
+function modifyBooksVal(data) {
+	if(data.result=="success"){
+		
+	} else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+	$(nowTarget).attr("mode", "view");
+}
+function GetNumString(s) {
+    var rtn = parseFloat(s.replace(/,/gi, ""));
+    if (isNaN(rtn)) {
+        return s;
+    }
+    else {
+        return rtn;
+    }
 }
 
 function commify(n) {
@@ -87,6 +205,7 @@ function commify(n) {
 
 function getAttendanceList(data){
 	$("#attendanceList").html("");
+	$("#mamng > div > div > div > table > tbody").html("");
 	if(data.result=="success") {
 		var attendList = data.resData[0].list;
 		var rsltHtml;

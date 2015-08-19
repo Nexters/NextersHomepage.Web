@@ -17,6 +17,7 @@ import com.teamnexters.security.handler.FailureHandler;
 import com.teamnexters.security.handler.LogoutHandler;
 import com.teamnexters.security.handler.SuccessHandler;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -27,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private AccessdeniedHandler accessdeniedhandler = new AccessdeniedHandler();
 	private LogoutHandler logouthandler = new LogoutHandler();
 	private AuthenticationEntryPoint authenticationEntryPoint=new AuthenticationEntryPointHandler();
+	
 	
 	
 	
@@ -81,5 +83,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.expiredUrl("/expiredSession.do");
 		
 		http.headers().frameOptions().sameOrigin();
+		
 	}
 }

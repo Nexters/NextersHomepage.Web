@@ -54,14 +54,18 @@
 		INSERT INTO mng_books_val(booksno, userno, attval)
 		VALUES (#{booksno}, #{userno}, #{attval});
 	</insert>
+	<delete id="deleteBooksVal" parameterType="com.teamnexters.dto.BooksValDTO">
+		DELETE FROM mng_books_val WHERE booksno=#{booksno} and userno=#{userno}
+	</delete>
 	<select id="getBooksList" resultType="com.teamnexters.dto.BooksDTO">
 		SELECT * FROM mng_books WHERE mngno = #{mngno} ORDER BY booksno ASC
 	</select>
 	<select id="getBooksValByBooksNo" resultType="com.teamnexters.dto.BooksValDTO">
 		SELECT
 			mu.mngno 
+			, mbv.booksno
 			, mu.userno
-			, mbv.attval 
+			, coalesce(mbv.attval, -2) as attval
 		FROM mng_user mu 
 		LEFT JOIN (
 			SELECT * FROM mng_books_val WHERE booksno = #{booksno}

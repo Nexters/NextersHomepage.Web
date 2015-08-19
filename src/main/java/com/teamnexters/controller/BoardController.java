@@ -100,7 +100,7 @@ public class BoardController {
 	@RequestMapping("api/admin/postInsert.do")
 	public @ResponseBody Map<String,Object> postInsert(BoardInfoDTO infoDto){
 		MultipartFile uploadFile = infoDto.getUploadFile();
-		
+		System.out.println(uploadFile);
 		Date date=new Date();
 		String year=String.valueOf(date.getYear()-100);
 		String month="";
@@ -151,6 +151,7 @@ public class BoardController {
 				e.printStackTrace();
 			}
 		}
+		
 		infoDao.postInsert(infoDto);
 		
 		
@@ -185,7 +186,7 @@ public class BoardController {
         String headerValue = String.format("attachment; filename=\"%s\"",
                 URLEncoder.encode(downloadFile.getName(),"UTF-8"));
         System.out.println(downloadFile.getName());
-        response.setHeader("Content-type","application/download");
+        
         response.setHeader(headerKey, headerValue);
  
         // get output stream of the response

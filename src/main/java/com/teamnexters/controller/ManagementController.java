@@ -166,4 +166,32 @@ public class ManagementController {
 		
 		return JsonUtil.putSuccessJsonContainer(mapRsltData);
 	}
+	
+	@RequestMapping("api/admin/modifyBooksVal.do")
+	public @ResponseBody Map<String, Object> modifyBooksVal(@RequestParam(value="booksno") String strBooksNo
+																	, @RequestParam(value="userno") String strUserNo
+																	, @RequestParam(value="amount") String stramount){
+		int amount;
+		int booksno;
+		try {
+			amount = Integer.parseInt(stramount);
+			booksno = Integer.parseInt(strBooksNo);
+		} catch (Exception e) {
+			return JsonUtil.putFailJsonContainer("ManagementControllerERR0004", "금액이나 장부 번호는 숫자만 가능합니다.");
+		}
+		
+		BooksValDTO booksValDto = new BooksValDTO();
+		booksValDto.setAttval(amount);
+		booksValDto.setBooksno(booksno);
+		booksValDto.setUserno(strUserNo);
+		
+		mngDao.deleteBooksVal(booksValDto);
+		
+		int rsltIns = mngDao.insertBooksVal(booksValDto);
+		
+		Map<String, Object> mapRsltData = new HashMap<String, Object>();
+		mapRsltData.put("rslt", rsltIns);
+		
+		return JsonUtil.putSuccessJsonContainer(mapRsltData);
+	}
 }

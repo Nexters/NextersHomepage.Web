@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>마커 생성하기</title>
+    
+</head>
+<body>
+
+<div id="map" style="width:100%;height:350px;"></div>
+
+<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=dede77a117e326c5476b7841df69b91d"></script>
+
+<script src="../js/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script>
+var lat;
+var lng;
+var title;
+
+    // 파라미터가 담길 배열
+   var param = new Array();
+ 
+    // 현재 페이지의 url
+    var url = decodeURIComponent(location.href);
+    // url이 encodeURIComponent 로 인코딩 되었을때는 다시 디코딩 해준다.
+    url = decodeURIComponent(url);
+ 	
+    var params;
+    // url에서 '?' 문자 이후의 파라미터 문자열까지 자르기
+   params = url.substring( url.indexOf('?')+1, url.length );
+    // 파라미터 구분자("&") 로 분리
+   params = params.split("&");
+
+   // params 배열을 다시 "=" 구분자로 분리하여 param 배열에 key = value 로 담는다.
+    var size = params.length;
+    var key, value;
+    for(var i=0 ; i < size ; i++) {
+        key = params[i].split("=")[0];
+        value = params[i].split("=")[1];
+
+       param[key] = value;
+    }
+	lat=param["lat"];
+	lng=param["lng"];
+	title=param["title"];
+
+
+
+var infowindow = new daum.maps.InfoWindow({zIndex:1});
+
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: new daum.maps.LatLng(lat, lng), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+// 마커가 표시될 위치입니다 
+var markerPosition  = new daum.maps.LatLng(lat, lng); 
+
+// 마커를 생성합니다
+
+var marker=addMarker(markerPosition,title);
+
+
+
+	daum.maps.event.addListener(marker, 'mouseover', function() {
+		
+	    displayInfowindow(marker, title);
+	})
+	
+	daum.maps.event.addListener(marker, 'mouseout', function() {
+        infowindow.close();
+    });
+
+
+	
+
+	
+
+
+// 마커가 지도 위에 표시되도록 설정합니다
+//marker.setMap(map);
+
+// 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+// marker.setMap(null);  
+
+
+
+
+function displayInfowindow(marker, title) {
+	
+    var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+
+    infowindow.setContent(content);
+    infowindow.open(map, marker);
+    
+}
+
+function addMarker(position,title) {
+    var imageSrc = 'http://i1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+        imageSize = new daum.maps.Size(36, 37),  // 마커 이미지의 크기
+        imgOptions =  {
+            spriteSize : new daum.maps.Size(36, 691), // 스프라이트 이미지의 크기
+            spriteOrigin : new daum.maps.Point(0, (0*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+            offset: new daum.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+        },
+        markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+            marker = new daum.maps.Marker({
+            position: position, // 마커의 위치
+            image: markerImage 
+        });
+
+    marker.setMap(map); // 지도 위에 마커를 표출합니다
+   
+
+    
+    return marker;
+}
+</script>
+
+</body>
+</html>
