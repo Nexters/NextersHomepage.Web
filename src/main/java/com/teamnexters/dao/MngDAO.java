@@ -50,6 +50,10 @@ public class MngDAO {
 		return sqlsession.insert("insertBooksVal", objParam);
 	}
 	
+	public int deleteBooksVal(Object objParam) {
+		return sqlsession.insert("deleteBooksVal", objParam);
+	}
+	
 	public Object getBooksValByBooksNoAndMngNo(Object paramObj){
 		return sqlsession.selectList("getBooksValByBooksNo", paramObj);
 	}
