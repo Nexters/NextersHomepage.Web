@@ -24,7 +24,7 @@ var getCommentList=function(data){
 		var commentList=data.resData[0].commentList;
 		str="";
 		for(i=0;i<commentList.length;i++){
-			str+="<li style='border-bottom:1px solid black;' commentNo="+commentList[i].commentNo+">"+commentList[i].userNm+"&nbsp;&nbsp;"+commentList[i].commentDate+"<br>"+commentList[i].postComment+"<span style='float:right;margin-right:5px;cursor:pointer;cursor:hand;' class='commentRemove'>x</span></li>"; 
+			str+="<li style='border-bottom:1px solid black;list-style:none;' commentNo="+commentList[i].commentNo+">"+commentList[i].userNm+"&nbsp;&nbsp;"+commentList[i].commentDate+"<br>"+commentList[i].postComment+"<span style='float:right;margin-right:5px;cursor:pointer;cursor:hand;' class='commentRemove'>x</span></li>"; 
 		}
 		$('#commentList').html(str);
 		

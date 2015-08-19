@@ -45,38 +45,10 @@ public class MemberController {
 	@Autowired
 	RecordBooksValueDAO booksValueDao;
 
+
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/api/main/memberList.do")
-	public @ResponseBody Map<String, Object> getMemberListByGener(@RequestParam(value="gener") String strGener ){
-		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
-		Map<String, Object> mapMemberSqlReqData = new HashMap<String, Object>();
-
-		mapMemberSqlReqData.put("gener", strGener);
-		ArrayList<Map> memberList = (ArrayList<Map>) memDao.getMemberListByGener(mapMemberSqlReqData);
-		
-		ArrayList<String> memberArrayList = new ArrayList<String>();
-		
-		for (int i=0; i<memberList.size(); i++) {
-			memberList.get(i).put("userAddInfo", new ArrayList<Map>());
-			memberArrayList.add(memberList.get(i).get("userNo").toString());
-		}
-
-		ArrayList<Map> memberInfoValue = (ArrayList<Map>)memInfoDao.getMemberInfoValue(new HashMap<String, Object>().put("userNoArray", memberArrayList));
-		for(int i=0; i<memberInfoValue.size(); i++) {
-			String strInfoUserNo = memberInfoValue.get(i).get("userNo").toString();
-			for(int j=0; j<memberList.size(); j++){
-				if(memberList.get(j).get("userNo").equals(strInfoUserNo)) {
-					((ArrayList<Map>)memberList.get(j).get("userAddInfo")).add(memberInfoValue.get(i));
-				}
-			}
-		}
-
-		mapMemberReqData.put("userList", memberList);
-		return  JsonUtil.putSuccessJsonContainer(mapMemberReqData);
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping("/api/admin/memberList.do")
 	public @ResponseBody Map<String, Object> getMemberAdminListByGener(@RequestParam(value="gener") String strGener ){
 		Map<String, Object> mapMemberReqData = new HashMap<String, Object>();
 		Map<String, Object> mapMemberSqlReqData = new HashMap<String, Object>();
@@ -205,7 +177,7 @@ public class MemberController {
 
 	}
 
-	@RequestMapping("api/admin/memberDetail.do")
+	@RequestMapping("api/main/memberDetail.do")
 	public @ResponseBody Map<String, Object> memberDetail(@RequestParam(value ="userNo", required=false) String userNo){
 
 		ArrayList<MemberInfoDTO> list=(ArrayList<MemberInfoDTO>)memInfoDao.getMemberInfoAttr();

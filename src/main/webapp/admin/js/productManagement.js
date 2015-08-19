@@ -47,7 +47,7 @@ var getMemberList=function(data){
 
 function deleteFunction(data){
 	if(data.result=="success"){
-		requestJsonData("api/admin/getProjectList.do", {
+		requestJsonData("api/main/getProjectList.do", {
   			
   		}, getProjectList)
 	}
@@ -106,7 +106,7 @@ function getProjectList(data){
 			$('.receiveUserList').html('');
 			$('#userListResultModify').html('');
 			projectMemberChanged=false;
-			requestJsonData("api/admin/projectMemberList.do",{projectNo:projectNo},projectMemberList)
+			requestJsonData("api/main/projectMemberList.do",{projectNo:projectNo},projectMemberList)
 		})
 		
 		
@@ -243,7 +243,7 @@ $(document).ready(function() {
 		$("#productModal .form-control").val('');
 	})
 	
-	requestJsonData("api/admin/getProjectList.do", {
+	requestJsonData("api/main/getProjectList.do", {
 		
 	}, getProjectList);
 	
@@ -337,7 +337,7 @@ $(document).ready(function() {
 	        	  alert('수정되었습니다!');
 	        	  $("#productModifyModal").modal('hide');
 	      		  $("#productModifyModal .form-control").val('');
-	      		requestJsonData("api/admin/getProjectList.do", {
+	      		requestJsonData("api/main/getProjectList.do", {
 	      			
 	      		}, getProjectList);
 	      		  
@@ -404,7 +404,7 @@ $(document).ready(function() {
 	        	  alert('등록되었습니다!');
 	        	  $("#productModal").modal('hide');
 	      		  $("#productModal .form-control").val('');
-	      		requestJsonData("api/admin/getProjectList.do", {
+	      		requestJsonData("api/main/getProjectList.do", {
 	      			
 	      		}, getProjectList);
 	      		  

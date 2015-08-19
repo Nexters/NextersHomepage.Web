@@ -28,7 +28,7 @@ function SmemberAdd(data){
 		
 		alert("addmember");
 		
-		requestJsonData("api/admin/memberList.do", {
+		requestJsonData("api/main/memberList.do", {
 			gener : $("#memberListPage li.active a").attr("gener")
 		}, getMemberList);
 		
@@ -56,7 +56,7 @@ function deleteMember(data) {
 	
 	if (data.result == "success") {
 		alert("삭제 성공");
-		requestJsonData("api/admin/memberList.do", {
+		requestJsonData("api/main/memberList.do", {
 			gener : $("#memberListPage li.active a").attr("gener")
 		}, getMemberList);
 	} else {
@@ -225,7 +225,7 @@ function getGenerList(rsltData) {
 		if ($(this).attr("gener") == null) {
 
 		} else {
-			requestJsonData("api/admin/memberList.do", {
+			requestJsonData("api/main/memberList.do", {
 				gener : $(this).attr("gener")
 			}, getMemberList);
 		}
@@ -243,7 +243,7 @@ function getGenerList(rsltData) {
 			if ($(this).attr("gener") == null) {
 
 			} else {
-				requestJsonData("api/admin/memberList.do", {
+				requestJsonData("api/main/memberList.do", {
 					gener : $(this).attr("gener")
 				}, getMemberList);
 			}

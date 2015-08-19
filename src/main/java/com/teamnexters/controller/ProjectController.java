@@ -130,7 +130,7 @@ public class ProjectController {
 
 	}
 	
-	@RequestMapping("api/admin/getProjectList.do")
+	@RequestMapping("api/main/getProjectList.do")
 	public @ResponseBody Map<String,Object> getProjectList(){
 		
 		List<ProjectDTO> list=(ArrayList<ProjectDTO>)projectDao.getProjectList();
@@ -142,7 +142,7 @@ public class ProjectController {
 		return  JsonUtil.putSuccessJsonContainer(map);
 	}
 	
-	@RequestMapping("api/admin/projectMemberList.do")
+	@RequestMapping("api/main/projectMemberList.do")
 	public @ResponseBody Map<String,Object> projectMemberList(ProjectMemberDTO member){
 		
 		List<MemberDTO> list=(ArrayList<MemberDTO>)projectMemberDao.projectMemberList(member);
