@@ -6,14 +6,14 @@ $(document).ready(function(){
 		var listLength;
 		var word=/@([ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z|0-9]+)/ig;
 		var tagName;
-		$('#test').focus();
-		$('#test').keypress(function(){
+		$('#postComment').focus();
+		$('#postComment').keypress(function(){
 			
 			if(event.keyCode==13 && $('.tagHover').length==1){
 				
 				var name=$('.tagHover').text();
 				var userNo=$('.tagHover').children().val();
-				$('#test').html(function(index,html){
+				$('#postComment').html(function(index,html){
 						
 					html=html.replace(tagName,"<a class='tag' href='/abc.do?userNo="+userNo+"'>"+name+"</a>");
 						
@@ -26,16 +26,16 @@ $(document).ready(function(){
 				
 				liIndex=0;
 				tagName=null;
-				$('#list').html('');
+				$('#userTagList').html('');
 				
 				
-				elem = document.getElementById('test');
+				elem = document.getElementById('postComment');
 				setEndOfContenteditable(elem)
 				event.preventDefault();
 				
 			}
 		})
-		$('#test').keyup(function(){
+		$('#postComment').keyup(function(){
 			
 			tagName=$(this).text().match(word);
 			if(event.keyCode==40){
@@ -47,10 +47,10 @@ $(document).ready(function(){
 				
 				if(liIndex!=0){
 						
-					document.getElementById('test').nextSibling.nextSibling.children[liIndex-1].classList.remove('tagHover');
+					$('#postComment li').removeClass('tagHover');
 				}
 				
-				document.getElementById('test').nextSibling.nextSibling.children[liIndex].classList.add('tagHover');
+				$('#postComment li').eq([liIndex]).addClass('tagHover');
 								
 			}
 			else if(event.keyCode==38){
@@ -60,10 +60,10 @@ $(document).ready(function(){
 				}
 				
 				if(liIndex!=listLength-1){
-					document.getElementById('test').nextSibling.nextSibling.children[liIndex+1].classList.remove('tagHover');
+					$('#postComment li').removeClass('tagHover');
 				}
 					
-				document.getElementById('test').nextSibling.nextSibling.children[liIndex].classList.add('tagHover');
+				$('#postComment li').eq([liIndex]).addClass('tagHover');
 				
 			}
 			
@@ -86,7 +86,7 @@ $(document).ready(function(){
 				
 				
 				$.ajax({
-					"url":"userTag.do",
+					"url":"../userTag.do",
 					"type":"POST",
 					"data":"str="+insertTagName,
 					"dataType":"json",
@@ -100,11 +100,11 @@ $(document).ready(function(){
 								txt+="<li class='tagList' >"+this.userNm+" <input type='hidden' value='"+this.userNo+"'/> </li>";
 							
 						})
-						$('#list').html(txt);
+						$('#userTagList').html(txt);
 						
-						$('#list li').hover(function(){
+						$('#userTagList li').hover(function(){
 							if(liIndex!=-1)
-								document.getElementById('test').nextSibling.nextSibling.children[liIndex].classList.remove('tagHover');
+								$('#userTagList li').removeClass('tagHover');
 							$(this).addClass('tagHover');
 						},function(){
 							$(this).removeClass('tagHover');
@@ -112,7 +112,7 @@ $(document).ready(function(){
 					
 					},
 					"error":function(request,status,error){
-				        $('div').html("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+						alert("오류가 발생했습니다.\n재시도 또는 다시 접속해주세요.\n\n[오류정보]\ncode:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 				       }
 				})
 			}
@@ -128,7 +128,7 @@ $(document).ready(function(){
 		$(document).on("click", ".tagList", function(){
 			var name=$(this).text();
 			var userNo=$(this).children().val();
-			$('#test').html(function(index,html){
+			$('#postComment').html(function(index,html){
 				
 				
 				
@@ -148,16 +148,16 @@ $(document).ready(function(){
 			
 			liIndex=0;
 			tagName=null;
-			$('#list').html('');
+			$('#userTagList').html('');
 			
 			
-			elem = document.getElementById('test');
+			elem = document.getElementById('postComment');
 			setEndOfContenteditable(elem)
 			
 		});
 		
 		$(document).click(function(){
-			$('#list').html('');
+			$('#userTagList').html('');
 		})
 		
 		

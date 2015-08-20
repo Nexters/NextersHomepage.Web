@@ -435,7 +435,7 @@ $(document).ready(function(){
 	})
 	
 	$('#postCommentWrite').click(function(){
-		var postComment=$('#postViewModal textarea[name=postComment]').val().trim();
+		var postComment=$('#postViewModal div[name=postComment]').html().trim();
 		
 		if(postComment==""){
 			alert('내용을 입력하세요!');
