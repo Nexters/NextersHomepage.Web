@@ -38,7 +38,7 @@ var getCommentList=function(data){
 }
 var addPostComment=function(data){
 	if(data.result=="success"){
-		$('#postViewModal textarea[name=postComment]').val('');
+		$('#postComment').html('');
 		
 		requestJsonData("api/admin/getCommentList.do",{postNo:$('#postViewModal').attr("postNo")},getCommentList);
 	}else {

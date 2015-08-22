@@ -1,12 +1,12 @@
 <style>
-	.productList{
+	.achieveList{
 		
 		padding:10px;
 	}
-	.productList .inner{
+	.achieveList .inner{
 		border:1px solid black;
 	}
-	.productList .inner:hover{
+	.achieveList .inner:hover{
 		background-color:#EEEEEE;
 		cursor:pointer;
 		cursor:cursor;
@@ -17,7 +17,7 @@
 		cursor:pointer;
 		cursor:hand;
 	}
-	.projectMemberList{
+	.achieveMemberList{
 		background-color:blue;
 		color:white;
 	}
@@ -26,29 +26,29 @@
 
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Product Page 관리 <small>Nexters App</small>
+			Achieve Page 관리 <small>Nexters App</small>
 		</h1>
 	</div>
 
 	<div class="container-fluid col-lg-12 ">
 
-		<button class='btn btn-default btn-md addProduct' href="#productModal"
-			data-toggle="modal">Product Page 추가</button><br><br>
+		<button class='btn btn-default btn-md addAchieve' href="#achieveModal"
+			data-toggle="modal">Achieve Page 추가</button><br><br>
 	</div>
 	
 	<div class="container-fluid">
-		<div class="col-lg-12" id="productTable">
+		<div class="col-lg-12" id="achieveTable">
 			
 		</div>
 	</div>
 
-	<div id="productModal" class="modal fade" role="dialog">
+	<div id="achieveModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">x</button>
-					<h2>Product Page 추가</h2>
+					<h2>Achieve Page 추가</h2>
 				</div>
 				<div class="modal-body">
 					<div class="col-sm-offset-5 col-sm-10">
@@ -59,7 +59,7 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">제목</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="projectNm"
+								<input type="text" class="form-control" name="achieveNm"
 									placeholder="Name..">
 							</div>
 						</div>
@@ -68,14 +68,14 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">이미지</label>
 							<div class="col-sm-8">
-								<input type="file" class="form-control" name="projectImg">
+								<input type="file" class="form-control" name="achieveImg">
 							</div>
 						</div>
 						
 						<div class="form-group">
 							<label class="col-sm-3 control-label">링크</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="projectLink"
+								<input type="text" class="form-control" name="achieveLink"
 									placeholder="Link..">
 							</div>
 						</div>
@@ -83,7 +83,7 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">설명</label>
 							<div class="col-sm-8">
-								<textarea class="form-control" name="projectDesc"
+								<textarea class="form-control" name="achieveDesc"
 									></textarea>
 							</div>
 						</div>
@@ -91,7 +91,7 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">멤버 입력</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="projectMember" id="projectMember"
+								<input type="text" class="form-control" name="achieveMember" id="achieveMember"
 									>
 								<div class="col-sm-11 receiveUserList" style="position:absolute;"></div>
 							</div>
@@ -108,7 +108,7 @@
 
 						<div class="form-group">
 							<div class="col-sm-offset-5 col-sm-10">
-								<button type="button" class="btn btn-primary" id="addProductButton"
+								<button type="button" class="btn btn-primary" id="addAchieveButton"
 						>제품 등록</button>
 							</div>
 
@@ -119,13 +119,13 @@
 		</div>
 	</div>
 	
-	<div id="productModifyModal" class="modal fade" role="dialog">
+	<div id="achieveModifyModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">x</button>
-					<h2>Product Page 수정</h2>
+					<h2>Achieve Page 수정</h2>
 				</div>
 				<div class="modal-body">
 					<div class="col-sm-offset-5 col-sm-10">
@@ -137,19 +137,19 @@
 						<div class="form-group">
 							
 							<div class="col-sm-8">
-								<input type="hidden" class="form-control" name="projectNo">
+								<input type="hidden" class="form-control" name="achieveNo">
 							</div>
 						</div>
 						<div class="form-group">
 							
 							<div class="col-sm-8">
-								<input type="hidden" class="form-control" name="originProjectImg">
+								<input type="hidden" class="form-control" name="originAchieveImg">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-3 control-label">제목</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="projectNm"
+								<input type="text" class="form-control" name="achieveNm"
 									placeholder="Name..">
 							</div>
 						</div>
@@ -158,14 +158,14 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">이미지</label>
 							<div class="col-sm-8">
-								<input type="file" class="form-control" name="projectImg">
+								<input type="file" class="form-control" name="achieveImg">
 							</div>
 						</div>
 						
 						<div class="form-group">
 							<label class="col-sm-3 control-label">링크</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="projectLink"
+								<input type="text" class="form-control" name="achieveLink"
 									placeholder="Link..">
 							</div>
 						</div>
@@ -173,7 +173,7 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">설명</label>
 							<div class="col-sm-8">
-								<textarea class="form-control" name="projectDesc"
+								<textarea class="form-control" name="achieveDesc"
 									></textarea>
 							</div>
 						</div>
@@ -181,7 +181,7 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">멤버 입력</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="projectMember" id="projectMemberModify"
+								<input type="text" class="form-control" name="achieveMember" id="achieveMemberModify"
 									>
 								<div class="col-sm-11 receiveUserList" style="position:absolute;"></div>
 							</div>
@@ -197,7 +197,7 @@
 
 						<div class="form-group">
 							<div class="col-sm-offset-5 col-sm-10">
-								<button type="button" class="btn btn-primary" id="modifyProductButton"
+								<button type="button" class="btn btn-primary" id="modifyAchieveButton"
 						>제품 수정</button>
 							</div>
 
@@ -214,5 +214,4 @@
 <br />
 
 
-<script src="js/productManagement.js"></script>
-
+<script src="js/achieveManagement.js"></script>

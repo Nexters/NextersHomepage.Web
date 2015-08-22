@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.teamnexters.mapper">   
+
+	<insert id="insertAchieve" parameterType="com.teamnexters.dto.AchieveDTO">
+		insert into achieve(achievenm,achievedesc,achieveimg,achievelink)
+		values (#{achieveNm},#{achieveDesc},#{achieveImg},#{achieveLink})
+	</insert>
+	
+	<select id="getAchieveList" resultType="com.teamnexters.dto.AchieveDTO">
+		select * from achieve
+	</select>
+	
+	<delete id="deleteAchieve">
+		delete from achieve where achieveno=#{achieveNo}
+	</delete>
+	
+	<update id="updateAchieve" parameterType="com.teamnexters.dto.AchieveDTO">
+		update achieve
+		<trim prefix="set" suffixOverrides=",">
+  			<if test="achieveNm !=null">
+  				achievenm=#{achieveNm},
+  			</if>
+  			<if test="achieveImg !=null">
+  				achieveimg=#{achieveImg},
+  			</if>
+  			<if test="achieveLink !=null">
+  				achievelink=#{achieveLink},
+  			</if>
+  			<if test="achieveDesc !=null">
+  				achievedesc=#{achieveDesc}
+  			</if>
+		</trim>
+		where achieveno=#{achieveNo}
+	</update>
+	
+
+</mapper>

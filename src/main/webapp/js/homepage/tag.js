@@ -95,9 +95,9 @@ $(document).ready(function(){
 						listLength=obj.resData[0].tagList.length;
 						$.each(obj.resData[0].tagList,function(idx){
 							if(idx==liIndex)
-								txt+="<li class='tagList tagHover' >"+this.userNm+" <input type='hidden' value='"+this.userNo+"'/> </li>";
+								txt+="<li class='tagList tagHover' style='list-style:none;'>"+this.userNm+" <input type='hidden' value='"+this.userNo+"'/> </li>";
 							else
-								txt+="<li class='tagList' >"+this.userNm+" <input type='hidden' value='"+this.userNo+"'/> </li>";
+								txt+="<li class='tagList' style='list-style:none;'>"+this.userNm+" <input type='hidden' value='"+this.userNo+"'/> </li>";
 							
 						})
 						$('#userTagList').html(txt);

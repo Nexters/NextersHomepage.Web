@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.teamnexters.mapper">
+
+	<insert id="achieveMemberAdd">
+		insert into achieve_member(achieveno,userno) values
+		<foreach item="info" index="index" collection="list" separator=",">
+			((select currval('achieve_achieveno_seq')),#{info})
+		</foreach>
+	</insert>
+	
+	<select id="achieveMemberList" parameterType="com.teamnexters.dto.AchieveMemberDTO" resultType="com.teamnexters.dto.MemberDTO">
+		select "userNo","userNm" from member where "userNo" in (select userno from achieve_member where achieveno=#{achieveNo})
+	</select>
+	
+	<delete id="achieveMemberDelete" parameterType="com.teamnexters.dto.AchieveDTO">
+		delete from achieve_member where achieveno=#{achieveNo}
+	</delete>
+	
+	<insert id="achieveMemberUpdate">
+		insert into achieve_member(achieveno,userno) values
+		<foreach item="info" index="index" collection="list" separator=",">
+			(#{achieveNo},#{info})
+		</foreach>
+	</insert>
+</mapper>
