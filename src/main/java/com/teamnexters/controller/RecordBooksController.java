@@ -30,15 +30,7 @@ public class RecordBooksController {
 	@Autowired
 	private RecordBooksValueDAO booksValueDao;
 
-	@RequestMapping("api/admin/userActivityList.do")
-	public @ResponseBody Map<String,Object> userActivityList(){
-		ArrayList<MemberDTO> list=(ArrayList<MemberDTO>)memDao.getActivityMemberList();
-
-		Map<String,Object> resultData=new HashMap<String, Object>();
-		resultData.put("memberList", list);
-
-		return  JsonUtil.putSuccessJsonContainer(resultData);
-	}
+	
 	@RequestMapping("api/admin/getDateList.do")
 	public @ResponseBody Map<String,Object> getDateList(@RequestParam Map<String,String> params){
 		Map<String,Object> resultData=new HashMap<String, Object>();

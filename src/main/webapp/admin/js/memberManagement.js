@@ -9,19 +9,7 @@ function memberModify(data) {
 	}
 }
 
-function activitySet(data){
-	
-	if (data.result == "success") {
-		if(thisComponent.html()=="N"){
-			thisComponent.html("Y");
-		}else{
-			thisComponent.html("N");
-		}
-	} else {
-		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
-	}
-	
-}
+
 function SmemberAdd(data){
 	
 	if (data.result == "success") {
@@ -78,7 +66,7 @@ function getMemberColumn(data) {
 		}
 		memberInfoList += "<th>권한</th>";
 		memberInfoList += "<th>상태</th>";
-		memberInfoList += "<th>활동</th>";
+		memberInfoList += "<th>메일</th>";
 		memberInfoList += "<th>액션</th>";
 		memberInfoList += "</tr>";
 		$("#DataTable thead").html(memberInfoList);
@@ -112,31 +100,20 @@ function getMemberList(data) {
 			});
 			memberInfoList += "<td>" + getUserRole(data.resData[0].userList[i].userRole) + "</td>\n";
 			memberInfoList += "<td>" + getUserStatus(data.resData[0].userList[i].userStatus) + "</td>\n";
-			memberInfoList += "<td style='text-align:center;'>" + "<button class='btn btn-default btn-xs activitySet' status='"+data.resData[0].userList[i].activityyn+"'>"+data.resData[0].userList[i].activityyn+"</button>" + "</td>\n";
+			if(data.resData[0].userList[i].userStatus==3){
+				memberInfoList += "<td style='text-align:center;'>" + "<button class='btn btn-default btn-xs mailSend' userNo='"+data.resData[0].userList[i].userNo+"' userId='"+data.resData[0].userList[i].userId+"'>전송</button>" + "</td>\n";
+			}else{
+				memberInfoList += "<td style='text-align:center;'></td>\n";
+			}
+			
 			memberInfoList += "<td style='text-align:center;'><button status=\"modify\" class=\"btn btn-default btn-xs infoChange\" userNo=\"" + data.resData[0].userList[i].userNo + "\">수정</button>&nbsp;&nbsp;&nbsp;<button class=\" btn btn-default btn-xs delete\" userNo=\""
 					+ data.resData[0].userList[i].userNo + "\">삭제</button></td>\n";
 			memberInfoList += "<tr> \n";
 		}
 		$("#memberListInfo").html(memberInfoList);
 		
-		$(".activitySet").click(function(){
-			
-			thisComponent=$(this);
-			
-			if($(this).html()=="N"){
-				
-				requestJsonData("api/admin/activitySet.do", {
-					userNo : $(this).parent().parent().attr("id"),
-					activityYN : "Y"
-				}, activitySet);
-				
-			}else{
-				requestJsonData("api/admin/activitySet.do", {
-					userNo : $(this).parent().parent().attr("id"),
-					activityYN : "N"
-				}, activitySet);
-			}
-		})
+		
+		
 		
 		$(".delete").click(function() {
 			alert($(this).attr("userNo"));
@@ -203,7 +180,7 @@ function getUserStatus(userStatus) {
 	} else if (userStatus == "2") {
 		return "<span class='label label-warning'>계정 만료</span>";
 	} else if (userStatus == "3") {
-		return "<span class='label label-warning'>비밀번호 만료</span>";
+		return "<span class='label label-warning'>미가입</span>";
 	} else if (userStatus == "4") {
 		return "<span class='label label-danger'>계정 잠금</span>";
 	}

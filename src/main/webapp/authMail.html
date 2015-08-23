@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Nexters 가입 인증</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<style>
+.container{
+	width:40%;
+}
+</style>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/config.js"></script>
+<script>
+var passwordMatch=false;
+var returned=false;
+var param = new Array();
+
+// 현재 페이지의 url
+var url = decodeURIComponent(location.href);
+// url이 encodeURIComponent 로 인코딩 되었을때는 다시 디코딩 해준다.
+url = decodeURIComponent(url);
+	
+var params;
+// url에서 '?' 문자 이후의 파라미터 문자열까지 자르기
+params = url.substring( url.indexOf('?')+1, url.length );
+// 파라미터 구분자("&") 로 분리
+params = params.split("&");
+
+// params 배열을 다시 "=" 구분자로 분리하여 param 배열에 key = value 로 담는다.
+var size = params.length;
+var key, value;
+for(var i=0 ; i < size ; i++) {
+    key = params[i].split("=")[0];
+    value = params[i].split("=")[1];
+
+   param[key] = value;
+}
+key=param["key"];
+
+var signUp=function(data){
+	if(data.result=="success"){
+		alert('넥스터즈 회원이 되신걸 축하드립니다!');
+		location.href=serverUrl;
+	}else{
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+
+	}
+}
+var getAuthMailUser=function(data){
+	if(data.result=="success"){
+		
+		member=data.resData[0].member;
+		if(member==null){
+			alert('비정상적인 접근입니다');
+			var customWindow = window.open('', '_blank', '');
+		    customWindow.close();
+			
+		}else{
+			
+			info=data.resData[0].info;
+			$('#userId').attr("userNo",member.userNo);
+			$('#userId').val(member.userId);
+			$('#userNm').val(member.userNm);
+			str="";
+			
+			for(i=0; i<info.length;i++){
+				str+="<div class='form-group'>";
+				str+="<label class='col-sm-3 control-label'>"+info[i].desc+"</label>";
+				str+="<div class='col-sm-6'>";
+				if(info[i].attr=="introduction"){
+					str+="<textarea class='form-control' id="+info[i].attr+" placeholder="+info[i].attr+" required></textarea>";
+				}else{
+					str+="<input type='text' class='form-control' id="+info[i].attr+" placeholder="+info[i].attr+" required>";
+
+				}
+				str+="</div>";
+				str+="</div>";
+				
+				
+			}
+			
+			
+			
+			
+			
+			$('#info').html(str);
+			
+			
+			$('#signUpSubmit').click(function(){
+				returned=false;
+				if(!passwordMatch){
+					alert('비밀번호를 확인하세요!');
+					return false;
+				}else{
+					
+						
+					$('input').each(function(){
+						if($(this).val().trim()==''){
+							alert('모두 입력하세요');
+							returned=true;
+							return false;
+						}
+					})
+					
+					if(returned==true){
+						
+						return false;
+					}
+					
+					$('textarea').each(function(){
+						if($(this).val().trim()==''){
+							alert('모두 입력하세요');
+							returned=true;
+							return false;
+						}
+					})
+					
+					if(returned==true){
+						
+						return false;
+					}
+					
+						
+					data={userNo:$('#userId').attr('userNo'),password:$('#userPw').val().trim()};
+					
+					for(i=0;i<info.length;i++){
+						
+						
+						
+						eval("data."+info[i].attr+"=$('#"+info[i].attr+"').val().trim()");
+							
+						
+							
+						
+						
+					}
+					
+					
+					
+					alert(data.birthDay)
+					requestJsonData("api/signUp.do",data,signUp);
+					
+					return false;
+							
+
+						
+					
+				}
+			})
+			
+			
+		}
+	}else {
+		alert("오류가 발생했습니다.\n계속적으로 발생시 관리자께 해당 메시지를 캡쳐하여 보내주세요.\n오류 코드: " + data.resData[0].errorCd + "\n오류 메시지: " + data.resData[0].errorMsg);
+	}
+}
+$(document).ready(function(){
+	
+	requestJsonData("api/getAuthMailUser.do",{hashedCode:key},getAuthMailUser);
+	$('#userPwConfirm').keyup(function(){
+		if($(this).val().trim()!=""){
+			if($(this).val()!=$('#userPw').val()){
+				passwordMatch=false;
+				$('#confirmMsg').css('color','red');
+				$('#confirmMsg').html('mismatch');
+			}else{
+				passwordMatch=true;
+				$('#confirmMsg').css('color','blue');
+				$('#confirmMsg').html('match');
+			}
+		}else{
+			passwordMatch=false;
+			$('#confirmMsg').html('');
+		}
+		
+	})
+	
+	
+})
+
+</script>
+</head>
+<body>
+
+    <div class="container">
+
+      <form class="form-horizontal">
+        <h2 class="form-signin-heading" align="center">Nexters SignUp!</h2>
+        <hr>
+        <br>
+        
+        <div class="form-group">
+        	<label for="inputEmail" class="col-sm-3 control-label">아이디</label>
+        	<div class="col-sm-6">
+        		<input type="email" class="form-control" id="userId" readonly placeholder="Email address" required >
+       		</div>
+        </div>
+        
+        <div class="form-group">
+        	<label for="inputName" class="col-sm-3 control-label">이름</label>
+        	<div class="col-sm-6">
+        		<input type="text" class="form-control"  id="userNm" readonly placeholder="Name" required >
+       		</div>
+        </div>
+        
+        <div class="form-group">
+        	<label for="inputPassword" class="col-sm-3 control-label">비밀번호</label>
+        	<div class="col-sm-6">
+        		<input type="password" class="form-control"  id="userPw" placeholder="Password" required autofocus>
+       		</div>
+        </div>
+        
+        <div class="form-group">
+        	<label for="inputPassword" class="col-sm-3 control-label">비밀번호 확인</label>
+        	<div class="col-sm-6">
+        		<input type="password" class="form-control"  id="userPwConfirm" placeholder="Password" required>
+       		</div>
+       		<div class="col-sm-3" id="confirmMsg">
+       		</div>
+        </div>
+        
+        <div id="info">
+        
+        </div>
+        
+        <div class="form-group" >
+        	<label class="col-sm-3"></label>
+        	<div class="col-sm-6">
+        		<button class="btn btn-lg btn-primary btn-block" id="signUpSubmit" type="button">Sign up</button>
+        	</div>
+        </div>
+        
+        
+      </form>
+
+    </div> <!-- /container -->
+    
+    
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+</body>
+</html>

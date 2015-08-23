@@ -18,6 +18,8 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.teamnexters.dao.AuthMailDAO;
+import com.teamnexters.dto.AuthMailDTO;
 import com.teamnexters.dto.MemberDTO;
 
 @Component
@@ -29,6 +31,10 @@ public class EmailSender implements SendMailService {
 	private String id;
 	@Value("#{emailconfig['password']}")
 	private String pass;
+	@Autowired
+	private AuthMailDAO authMailDao;
+	@Autowired
+	private AuthMailDTO authMailDto;
 
 	@Override
 	public void sendEmail(String subject, String content,MemberDTO memDto) throws MessagingException {
@@ -54,7 +60,7 @@ public class EmailSender implements SendMailService {
 		PasswordEncoder encoder = new Md5PasswordEncoder();
 	    String hashedCode = encoder.encodePassword(authenticode, null);
 	   
-	    String codeContent=content+"<br> 인증 url: <a href='abc.html?key="+hashedCode+"'>회원가입</a>";
+	    String codeContent=content+"<br> 인증 url: <a href='http://localhost:8080/NextersHomepage/authMail.html?key="+hashedCode+"'>회원가입</a>";
 
 		try{
 			Properties props=new Properties();
@@ -81,6 +87,12 @@ public class EmailSender implements SendMailService {
 			message.setContent(codeContent,"text/html;charset=utf-8");
 
 			Transport.send(message);
+			
+			authMailDto.setUserNo(memDto.getUserNo());
+			authMailDto.setHashedCode(hashedCode);
+			authMailDao.deleteAuth(authMailDto);
+			
+			authMailDao.addAuth(authMailDto);
 		} catch(MessagingException e){
 			e.printStackTrace();
 		} catch (Exception e){

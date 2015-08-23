@@ -62,11 +62,11 @@ public class MemberDAO implements MemberMapper {
 	public Object insertNewUser(Object tmp){
 		return sqlsession.insert("insertNewUser", tmp);
 	}
-	public void updateActivity(Object param){
-		sqlsession.update("updateActivity",param);
+	public void updateMail(Object param){
+		sqlsession.update("updateMail",param);
 	}
-	public Object getActivityMemberList(){
-		return sqlsession.selectList("getActivityMemberList");
+	public Object getAssosiateMemberList(){
+		return sqlsession.selectList("getAssosiateMemberList");
 	}
 	public Object getMemberCountDeveloper(Object param){
 		return sqlsession.selectOne("getMemberCountDeveloper",param);
@@ -79,6 +79,9 @@ public class MemberDAO implements MemberMapper {
 	}
 	public Object getMemberListForBooks(){
 		return sqlsession.selectList("getMemberListForBooks");
+	}
+	public void insertPassword(Object param){
+		sqlsession.insert("insertPassword",param);
 	}
 }
 

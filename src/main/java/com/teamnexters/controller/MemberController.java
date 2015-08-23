@@ -6,8 +6,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.mail.MessagingException;
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.teamnexters.dao.AuthMailDAO;
 import com.teamnexters.dao.MemberAuthDAO;
 import com.teamnexters.dao.MemberDAO;
 import com.teamnexters.dao.MemberInfoDAO;
 import com.teamnexters.dao.RecordBooksValueDAO;
+import com.teamnexters.dto.AuthMailDTO;
 import com.teamnexters.dto.MemberAuthDTO;
 import com.teamnexters.dto.MemberDTO;
 import com.teamnexters.dto.MemberInfoDTO;
@@ -44,6 +48,10 @@ public class MemberController {
 	private EmailSender emailSender;
 	@Autowired
 	RecordBooksValueDAO booksValueDao;
+	@Autowired
+	AuthMailDAO authMailDao;
+	@Autowired
+	AuthMailDTO authMailDto;
 
 
 
@@ -274,7 +282,7 @@ public class MemberController {
 	@RequestMapping("api/admin/activitySet.do")
 	public @ResponseBody Map<String, Object> updateActivity(@RequestParam Map<String,String> params){
 		
-		memDao.updateActivity(params);
+		
 		String activityYN=params.get("activityYN");
 		if(activityYN.equals("Y")){
 			if(!booksValueDao.bookValueExist(params)){
@@ -287,15 +295,47 @@ public class MemberController {
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
 
-	@RequestMapping("sendAuthEmail.do")
-	public @ResponseBody Map<String, Object> emailSend(@RequestParam(value="userNo", required=false) String userNo,@RequestParam(value="userId", required=false) String userId ) throws MessagingException{
+	@RequestMapping("api/admin/sendAuthEmail.do")
+	public @ResponseBody Map<String, Object> emailSend(@RequestParam(value="userNo") String userNo,@RequestParam(value="userId") String userId ) throws MessagingException{
 
 		memDto.setUserNo(userNo);
 		memDto.setUserId(userId);
 		String subject="회원가입 안내";
 		String content="회원가입입니다 <br> ㅊㅋㅊㅋ";
 		emailSender.sendEmail(subject, content, memDto);
+		
+		memDao.updateMail(memDto);
+		
 
+		return JsonUtil.putSuccessJsonContainer(null);
+	}
+	@RequestMapping("api/getAuthMailUser.do")
+	public @ResponseBody Map<String,Object> getAuthMailUser(AuthMailDTO authMailDto){
+		MemberDTO member=(MemberDTO)authMailDao.getAuthMailUser(authMailDto);
+		Map<String,Object> param=new HashMap<String,Object>();
+		param.put("member", member);
+		ArrayList list=(ArrayList)memInfoDao.getMemberInfoAttr();
+		param.put("info", list);
+		
+		return JsonUtil.putSuccessJsonContainer(param);
+	}
+	@RequestMapping("api/signUp.do")
+	public @ResponseBody Map<String,Object> signUp(@RequestParam Map<String,String> data){
+		
+		memDao.insertPassword(data);
+		for(String key:data.keySet()){
+			if(!key.equals("password") && !key.equals("userNo")){
+				
+				Map<String,Object> map=new HashMap<String,Object>();
+				map.put("userNo", data.get("userNo"));
+				map.put("attr",key);
+				map.put("value", data.get(key));
+				memInfoDao.signUpInfo(map);
+			}
+			authMailDto.setUserNo(data.get("userNo"));
+			authMailDao.deleteAuth(authMailDto);
+			
+		}
 		return JsonUtil.putSuccessJsonContainer(null);
 	}
 
@@ -368,5 +408,13 @@ public class MemberController {
 		Map<String,Object> reqParam =new HashMap<String,Object>();
 		reqParam.put("list", memDao.getMemberListForBooks());
 		return JsonUtil.putSuccessJsonContainer(reqParam);
+	}
+	
+	@RequestMapping("api/admin/getAssosiateMemberList.do")
+	public @ResponseBody Map<String,Object> getAssosiateMemberList(){
+		ArrayList<MemberDTO> list=(ArrayList<MemberDTO>)memDao.getAssosiateMemberList();
+		Map<String,Object> param=new HashMap<String,Object>();
+		param.put("list", list);
+		return JsonUtil.putSuccessJsonContainer(param);
 	}
 }

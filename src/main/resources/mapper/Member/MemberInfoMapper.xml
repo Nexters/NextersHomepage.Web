@@ -40,4 +40,9 @@
 	<delete id="deleteInfo">
 		delete from member_info where "desc"=#desc;
 	</delete>
+	
+	<insert id="signUpInfo">
+		
+		insert into member_info_value("userNo","attr","value") values(#{userNo},#{attr},#{value})
+	</insert>
 </mapper>

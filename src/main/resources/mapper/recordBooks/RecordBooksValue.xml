@@ -9,7 +9,7 @@
 		"userNo" as userno,
 		#{columnNo} as bookcolumnno
 		from member
-		where activityYN='Y'
+		where mailYN='Y'
 	</insert>
 	
 	<select id="getBooksValueList" resultType="com.teamnexters.dto.RecordBooksValueDTO">
