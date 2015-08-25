@@ -1,16 +1,36 @@
 <div class="container col-lg-12" style="background-color:#ffffff;">
-<ul class="pagination">
+  <ul class="pagination">
     <li ng-repeat="gener in geners"><a>{{gener.gener}}</a></li>
-</ul>
+  </ul>
 
-<div class="col-lg-12" style="padding:0">
-  <div class="col-lg-3" ng-repeat="member in members">
-    <div class="col-lg-12" style="height:200px; background-color:#eeeeee">
-      {{member.userNm}}<br>
-      {{member.CellNum}}<br>
-      {{member.userId}}<br>
+  <div class="col-lg-12" style="padding:0">
+    <div class="col-lg-3" ng-repeat="member in members">
+      <div class="mar-bot5 mar-top5" style="height:310px;background-color:#eeeeee">
+        <div style="height:160px">
+          <div class="col-lg-12" style="padding:0;">
+            <img class="img-responsive" ng-src="./img/product/{{member.userNm}}">
+          </div>
+        </div>
+        <div style="height:150px">
+          <div class="col-lg-12"style="height:30px; color:white; text-align:center; display: table;">
+            <span style="line-height: 90%; display: table-cell; vertical-align: middle">{{member.userNm}}</span>
+          </div>
+          <div class="col-lg-12"style="height:30px; color:white; text-align:center; display: table;">
+            <span style="line-height: 90%; display: table-cell; vertical-align: middle">2</span>
+          </div>
+          <div class="col-lg-12"style="height:30px; color:white; text-align:center; display: table;">
+            <span style="line-height: 90%; display: table-cell; vertical-align: middle">{{member.userNo}}</span>
+          </div>
+          <div class="col-lg-12"style="height:30px; color:white; text-align:center; display: table;">
+            <span style="line-height: 90%; display: table-cell; vertical-align: middle">{{member.userAddinfo.Array[0]}}</span>
+          </div>
+          <div class="col-lg-12"style="height:30px; color:white; text-align:center; display: table;">
+            <span style="line-height: 90%; display: table-cell; vertical-align: middle">{{member.userId}}</span>
+          </div>
+        </div>
 
+
+      </div>
     </div>
   </div>
-</div>
 </div>

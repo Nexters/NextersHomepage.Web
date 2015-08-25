@@ -1,10 +1,27 @@
-<div class="container col-lg-12" style="background-color:#ffffff;">
+<div class="col-lg-12 pad-bot40" style="background-color:#ffffff;">
 
 <div class="col-lg-12" style="padding:0">
-  <div class="col-lg-3" ng-repeat="project in projects">
-    <div class="col-lg-12" style="height:200px; background-color:#eeeeee">
-      {{project.projectDesc}}<br>
-      {{project.projectNo}}
+  <div class="col-lg-3 pad-top5 " ng-repeat="project in projects">
+    <div class="mar-bot5 mar-top5" style="height:320px;background-color:#f8f8f8">
+      <div style="height:205px; border-bottom-style: solid; border-bottom-color: #32dcfa; border-width: 1px;">
+        <div class="col-lg-12" style="padding:0;">
+          <img class="img-responsive" ng-src="./img/product/{{project.projectImg}}">
+        </div>
+
+      </div>
+      <div style="height:120px">
+        <div class="col-lg-12"style="height:30px;  text-align:center; display: table;">
+          <span style="line-height: 90%; display: table-cell; vertical-align: middle">{{project.projectNm}}</span>
+        </div>
+        <div class="col-lg-12"style="height:30px;  text-align:center; display: table;">
+          <span style="line-height: 90%; display: table-cell; vertical-align: middle">{{project.projectLink}}</span>
+        </div>
+        <div class="col-lg-12"style="height:60px;  text-align:center; display: table;">
+          <span style="line-height: 90%; display: table-cell; vertical-align: middle">참여멤버</span>
+        </div>
+      </div>
+
+
     </div>
   </div>
 </div>
