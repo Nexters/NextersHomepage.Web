@@ -1,3 +1,4 @@
+<script type="text/javascript" src="js/editor/HuskyEZCreator.js" charset="utf-8"></script>
 <div class="container-fluid">
 
 	<div class="col-lg-12">
@@ -8,7 +9,7 @@
 
 	<div class="container-fluid col-lg-12 ">
 
-		<button class='btn btn-default btn-md addProduct' href=""
+		<button class='btn btn-default btn-md ' id="mailManageBtn" href="#mailManageModal"
 			data-toggle="modal">메일 내용 관리</button><br><br>
 	</div>
 
@@ -33,4 +34,112 @@
 	</div>
 </div>
 
+
+
+
+<div id="mailManageModal" class="modal fade" role="dialog">
+		<div class="modal-dialog" style="width:80%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">x</button>
+					<h2>메일 정보</h2>
+				</div>
+				<div class="modal-body">
+					
+					<form class="form-horizontal">
+					
+					
+						
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label">제목</label>
+							<div class="col-sm-8">
+								<div style="border:1px solid black;" id="mailTitle"
+									></div>
+								<input type="text" id="mailTitleInput" class="form-control">
+							</div>
+						</div>
+			
+						
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label">내용</label>
+							<div class="col-sm-8" >
+								<div id="mailContent" style="border:1px solid black;" >
+								</div>
+								<div id="mailContentInput">
+								<textarea class="form-control" name="postContent" id="ir1"  style="width:100%;display:none;"></textarea>
+								</div>
+							</div>
+						</div>
+				
+						<div class="form-group">
+							<div class="col-sm-offset-5 col-sm-10">
+								<button type="button" class="btn btn-primary" id="modifyMailButton"
+						>내용 수정</button>
+								<div id="modifyDiv">
+									<button type="button" class="btn btn-primary" id="writeMailButton"
+							>쓰기</button>
+									<button type="button" class="btn btn-default" id="cancelMailButton"
+							>취소</button>
+								</div>
+							</div>
+
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
 <script src="js/authMailManagement.js"></script>
+<script>
+var oEditors = [];
+nhn.husky.EZCreator.createInIFrame({
+	oAppRef: oEditors,
+	elPlaceHolder: "ir1",
+	sSkinURI: "service/SmartEditor2Skin.html",	
+	htParams : {
+		bUseToolbar : true,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+		bUseVerticalResizer : true,		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+		bUseModeChanger : true,			// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+		//aAdditionalFontList : aAdditionalFontSet,		// 추가 글꼴 목록
+		fOnBeforeUnload : function(){
+			//alert("완료!");
+		}
+	}, //boolean
+	fOnAppLoad : function(){
+		//예제 코드
+		//oEditors.getById["ir1"].exec("PASTE_HTML", ["로딩이 완료된 후에 본문에 삽입되는 text입니다."]);
+	},
+	fCreator: "createSEditor2"
+});
+
+function pasteHTML() {
+	var sHTML = "<span style='color:#FF0000;'>이미지도 같은 방식으로 삽입합니다.<\/span>";
+	oEditors.getById["ir1"].exec("PASTE_HTML", [sHTML]);
+}
+
+function showHTML() {
+	var sHTML = oEditors.getById["ir1"].getIR();
+	alert(sHTML);
+}
+	
+function submitContents(elClickedObj) {
+	oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);	// 에디터의 내용이 textarea에 적용됩니다.
+	
+	// 에디터의 내용에 대한 값 검증은 이곳에서 document.getElementById("ir1").value를 이용해서 처리하면 됩니다.
+	
+	try {
+		elClickedObj.form.submit();
+	} catch(e) {}
+}
+
+function setDefaultFont() {
+	var sDefaultFont = '궁서';
+	var nFontSize = 24;
+	oEditors.getById["ir1"].setDefaultFont(sDefaultFont, nFontSize);
+}
+
+</script>

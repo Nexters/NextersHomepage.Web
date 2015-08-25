@@ -1,5 +1,12 @@
 package com.teamnexters.controller;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,6 +20,9 @@ import javax.swing.text.html.HTMLDocument.Iterator;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +62,9 @@ public class MemberController {
 	AuthMailDAO authMailDao;
 	@Autowired
 	AuthMailDTO authMailDto;
+	@Value("#{uploadPath['path']}")
+	private String url;
+	
 
 
 
@@ -296,12 +309,13 @@ public class MemberController {
 	}
 
 	@RequestMapping("api/admin/sendAuthEmail.do")
-	public @ResponseBody Map<String, Object> emailSend(@RequestParam(value="userNo") String userNo,@RequestParam(value="userId") String userId ) throws MessagingException{
+	public @ResponseBody Map<String, Object> emailSend(@RequestParam(value="userNo") String userNo,
+														@RequestParam(value="subject") String subject,
+														@RequestParam(value="content") String content,@RequestParam(value="userId") String userId ) throws MessagingException{
 
 		memDto.setUserNo(userNo);
 		memDto.setUserId(userId);
-		String subject="회원가입 안내";
-		String content="회원가입입니다 <br> ㅊㅋㅊㅋ";
+		
 		emailSender.sendEmail(subject, content, memDto);
 		
 		memDao.updateMail(memDto);
@@ -319,8 +333,37 @@ public class MemberController {
 		
 		return JsonUtil.putSuccessJsonContainer(param);
 	}
+	@RequestMapping("api/admin/mailContentModify.do")
+	public @ResponseBody Map<String,Object> mailContentModify(@RequestParam(value="mailTitle") String mailTitle,
+																@RequestParam(value="mailContent") String mailContent){
+		
+		String titleFile=url+"admin/service/authMailTitle.html";
+		String contentFile=url+"admin/service/authMailContent.html";
+		System.out.println(mailTitle+" "+mailContent);
+		
+		
+		try {
+			BufferedWriter buffWrite = new BufferedWriter(new FileWriter(titleFile));
+			buffWrite.write(mailTitle,0,mailTitle.length());
+			buffWrite.flush();
+			buffWrite = new BufferedWriter(new FileWriter(contentFile));
+			buffWrite.write(mailContent,0,mailContent.length());
+			buffWrite.flush();
+			buffWrite.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		
+		return JsonUtil.putSuccessJsonContainer(null);
+	}
 	@RequestMapping("api/signUp.do")
 	public @ResponseBody Map<String,Object> signUp(@RequestParam Map<String,String> data){
+		PasswordEncoder pe=new BCryptPasswordEncoder();
+		data.put("password", pe.encode(data.get("password")));
+		
 		
 		memDao.insertPassword(data);
 		for(String key:data.keySet()){

@@ -66,7 +66,7 @@ function getMemberColumn(data) {
 		}
 		memberInfoList += "<th>권한</th>";
 		memberInfoList += "<th>상태</th>";
-		memberInfoList += "<th>메일</th>";
+		
 		memberInfoList += "<th>액션</th>";
 		memberInfoList += "</tr>";
 		$("#DataTable thead").html(memberInfoList);
@@ -100,11 +100,6 @@ function getMemberList(data) {
 			});
 			memberInfoList += "<td>" + getUserRole(data.resData[0].userList[i].userRole) + "</td>\n";
 			memberInfoList += "<td>" + getUserStatus(data.resData[0].userList[i].userStatus) + "</td>\n";
-			if(data.resData[0].userList[i].userStatus==3){
-				memberInfoList += "<td style='text-align:center;'>" + "<button class='btn btn-default btn-xs mailSend' userNo='"+data.resData[0].userList[i].userNo+"' userId='"+data.resData[0].userList[i].userId+"'>전송</button>" + "</td>\n";
-			}else{
-				memberInfoList += "<td style='text-align:center;'></td>\n";
-			}
 			
 			memberInfoList += "<td style='text-align:center;'><button status=\"modify\" class=\"btn btn-default btn-xs infoChange\" userNo=\"" + data.resData[0].userList[i].userNo + "\">수정</button>&nbsp;&nbsp;&nbsp;<button class=\" btn btn-default btn-xs delete\" userNo=\""
 					+ data.resData[0].userList[i].userNo + "\">삭제</button></td>\n";

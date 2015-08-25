@@ -140,7 +140,7 @@ var getAuthMailUser=function(data){
 					
 					
 					
-					alert(data.birthDay)
+				
 					requestJsonData("api/signUp.do",data,signUp);
 					
 					return false;
@@ -178,6 +178,22 @@ $(document).ready(function(){
 		
 	})
 	
+	$('#userPw').keyup(function(){
+		if($('#userPwConfirm').val().trim()!=""){
+			if($(this).val()!=$('#userPwConfirm').val()){
+				passwordMatch=false;
+				$('#confirmMsg').css('color','red');
+				$('#confirmMsg').html('mismatch');
+			}else{
+				passwordMatch=true;
+				$('#confirmMsg').css('color','blue');
+				$('#confirmMsg').html('match');
+			}
+		}else{
+			passwordMatch=false;
+		}
+	})
+	
 	
 })
 
@@ -188,6 +204,7 @@ $(document).ready(function(){
     <div class="container">
 
       <form class="form-horizontal">
+      	<br><br>
         <h2 class="form-signin-heading" align="center">Nexters SignUp!</h2>
         <hr>
         <br>
