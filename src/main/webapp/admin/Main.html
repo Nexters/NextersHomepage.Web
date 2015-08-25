@@ -97,18 +97,11 @@
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li><a href="#"
-						onclick="getPageContents('service/memberManagement.html');"><i class="fa fa-fw"></i>회원 관리</a></li>
-					<li><a href="#"
-						onclick="getPageContents('service/authMailManagement.html');"><i class="fa fa-fw"></i>인증 메일 관리</a></li>
-					<li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw"></i>출석부 장부 설문지 <i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo" class="collapse">
-                        	<li><a href="#" onclick="getPageContents('service/BooksList.html');">장부</a></li>
-                            <li><a href="#" onclick="getPageContents('service/attendenceManagement.html');">출석부</a></li>
-							<li><a href="#">장부</a></li>
-							<li><a href="#">설문지</a></li>
-							
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="member"><i class="fa fa-fw"></i>회원<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="member" class="collapse">
+                        	<li><a href="#" onclick="getPageContents('service/memberManagement.html');"><i class="fa fa-fw"></i>목록</a></li>
+							<li><a href="#" onclick="getPageContents('service/authMailManagement.html');"><i class="fa fa-fw"></i>인증 메일</a></li>
                         </ul>
                     </li>
                     <li>
