@@ -10,6 +10,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
+import javax.xml.ws.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,7 +61,7 @@ public class EmailSender implements SendMailService {
 		PasswordEncoder encoder = new Md5PasswordEncoder();
 	    String hashedCode = encoder.encodePassword(authenticode, null);
 	   
-	    String codeContent=content+"<br> 인증 url: <a href='http://localhost:8080/NextersHomepage/authMail.html?key="+hashedCode+"'>회원가입</a>";
+	    String codeContent=content+"<br> 인증 url: <a href='http://localhost:8080/NextersHomepage/SignUp.html?key="+hashedCode+"'>회원가입</a>";
 
 		try{
 			Properties props=new Properties();
@@ -103,7 +104,7 @@ public class EmailSender implements SendMailService {
 
 
 	@Override
-	public void sendContact(String name, String content, String email)
+	public void sendContact(String name, String subject,String content, String email)
 			throws MessagingException {
 		
 		String host="smtp.gmail.com";
@@ -131,15 +132,16 @@ public class EmailSender implements SendMailService {
 			});
 			Message message=new MimeMessage(mailSession);
 			message.setFrom(new InternetAddress(from,MimeUtility.encodeText(fromName,"UTF-8","B")));
-
+			
 			InternetAddress[] address={new InternetAddress(mailTo)};
+			InternetAddress[] reply={new InternetAddress(from,MimeUtility.encodeText(fromName,"UTF-8","B"))};
 			message.setRecipients(Message.RecipientType.TO, address);
 			
 			message.addFrom(InternetAddress.parse(from));
-			message.setSubject("넥스터즈 Contact : "+ email+" "+ name);
+			message.setSubject("넥스터즈 Contact : "+subject);
 			message.setSentDate(new java.util.Date());
 			message.setContent(content.replaceAll("\n","<br>"),"text/html;charset=utf-8");
-
+			message.setReplyTo(reply);
 			Transport.send(message);
 		} catch(MessagingException e){
 			e.printStackTrace();

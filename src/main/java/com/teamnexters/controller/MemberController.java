@@ -264,13 +264,14 @@ public class MemberController {
 		return JsonUtil.putSuccessJsonContainer(mapMemberReqData);
 	}
 
-	@RequestMapping("/contact.do")
+	@RequestMapping("api/contact.do")
 	public @ResponseBody Map<String, Object> contactMailSubmit(@RequestParam Map<String,String> params) throws MessagingException{
 		String name=params.get("userName");
 		String email=params.get("userEmail");
+		String subject=params.get("userSubject");
 		String comment=params.get("userComment");
 
-		emailSender.sendContact(name, comment, email);
+		emailSender.sendContact(name, subject,comment, email);
 
 		return JsonUtil.putSuccessJsonContainer(null);
 	}

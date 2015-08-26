@@ -50,7 +50,7 @@ var app = angular
   $urlRouterProvider.otherwise('/');
 }])
 .value('environment',{
-  domain: "/"
+  domain: "http://localhost:8080/NextersHomepage/"
 })
 .controller('navControler',function ($scope,$location,$anchorScroll) {
   $scope.gotoTop = function (){

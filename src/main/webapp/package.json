@@ -1,0 +1,15 @@
+{
+  "name": "nh",
+  "version": "0.0.1",
+  "description": "haha",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "angular-ui-router": "^0.2.15",
+    "express": "^4.13.3"
+  }
+}
