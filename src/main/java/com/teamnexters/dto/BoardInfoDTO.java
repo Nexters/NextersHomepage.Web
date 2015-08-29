@@ -16,6 +16,7 @@ public class BoardInfoDTO {
 	private int postHits;
 	private MultipartFile uploadFile;
 	private String file;
+	private int commentCount;
 	
 	public void setPostNo(int postNo){
 		this.postNo=postNo;
@@ -76,6 +77,12 @@ public class BoardInfoDTO {
 	}
 	public String getFile(){
 		return file;
+	}
+	public void setCommentCount(int commentCount){
+		this.commentCount=commentCount;
+	}
+	public int getCommentCount(){
+		return commentCount;
 	}
 	
 	

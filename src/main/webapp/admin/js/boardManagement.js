@@ -188,11 +188,15 @@ var postList=function(data){
 		list=data.resData[0].list;
 		if(list.length>=1){
 			var str="";
+			
 			for(i=0;i<list.length;i++){
 				str+="<tr class='postTr' postNo="+list[i].postNo+" data-toggle='modal' href='#postViewModal'>";
 				str+="<td>"+list[i].postNo+"</td>";
 				str+="<td>"+list[i].userName+"</td>";
-				str+="<td>"+list[i].postTitle+"</td>";
+				if(list[i].commentCount!=0)
+					str+="<td>"+list[i].postTitle+" ["+list[i].commentCount+"]</td>";
+				else
+					str+="<td>"+list[i].postTitle+"</td>";
 				str+="<td>"+list[i].postDate+"</td>";
 				str+="<td>"+list[i].postHits+"</td>";
 				str+="</tr>";

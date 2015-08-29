@@ -14,7 +14,7 @@
 	</insert>
 	
 	<select id="postList" parameterType="com.teamnexters.dto.BoardInfoDTO" resultType="com.teamnexters.dto.BoardInfoDTO">
-		select postno,boardno,(select "userNm" from member where "userNo"=userno) username,userno,posttitle,postcontent,postdate,posthits from board_info where boardno=#{boardNo} order by postno desc;
+		select postno,boardno,(select "userNm" from member where "userNo"=userno) username,userno,posttitle,postcontent,postdate,posthits,(select count(postno) from board_comment where postno=board_info.postno) "commentCount" from board_info where boardno=#{boardNo} order by postno desc;
 	</select>
 	
 	<select id="getPost" parameterType="com.teamnexters.dto.BoardInfoDTO" resultType="com.teamnexters.dto.BoardInfoDTO">
