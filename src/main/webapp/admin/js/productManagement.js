@@ -64,7 +64,7 @@ function getProjectList(data){
 		for(i=0;i<list.length;i++){
 			
 			productList+="<div class='col-lg-3 productList' align='center'><div class='inner'><div style='margin:5px;' align='right' status="+list[i].projectNo+"><input type='button' class='btn btn-default btn-xs productModify' value='수정' data-toggle='modal' href='#productModifyModal'>&nbsp;<input type='button' class='btn btn-danger btn-xs productRemove' value='삭제' ></div><span class='projectNm' style='font-weight:bold;'>"+list[i].projectNm+"</span><br>";
-			productList+="<a class='projectLink' href='"+list[i].projectLink+"'><img class='projectImg' width='200px' height='100px' style='margin-top:15px;' alt='"+list[i].projectImg+"' src='img/product/"+list[i].projectImg+"'></a><br>";
+			productList+="<a class='projectLink' href='"+list[i].projectLink+"'><img class='projectImg' width='200px' height='100px' style='margin-top:15px;' alt='"+list[i].projectImg+"' src='http://data.teamnexters.com/nh/img/"+list[i].projectImg+"'></a><br>";
 			productList+="<span class='projectDesc'>"+list[i].projectDesc+"</span></div></div>";
 			
 			

@@ -11,6 +11,10 @@ productController.controller('Activites.productController',function ($scope,prod
     console.log(data.list);
     $scope.projects=data.list;
   })
+
+  $scope.checkImage = function(url){
+
+  }
   /*console.log("!!!!"+product.getProductList());
   product.test1().then(product.test2).then(function (data) {
     console.log(data);

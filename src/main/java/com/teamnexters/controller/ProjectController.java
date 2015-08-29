@@ -1,34 +1,19 @@
 package com.teamnexters.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
-
-
-
-
-
-
-
-
-
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.postgresql.core.Parser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -89,7 +74,7 @@ public class ProjectController {
 			try {
 				
 				
-				File file = new File(realPath + "product/"+fileName);
+				File file = new File(realPath + fileName);
 
 
 
@@ -159,7 +144,7 @@ public class ProjectController {
 		projectDto.setProjectNo(projectNo);
 		projectDao.deleteProject(projectDto);
 		
-		File file=new File(realPath + "product/"+ projectImg);
+		File file=new File(realPath + projectImg);
 		
 		if(file.exists()){
 			
@@ -208,7 +193,7 @@ public class ProjectController {
 			try {
 				
 				System.out.println(realPath);
-				File file = new File(realPath + "product/"+fileName);
+				File file = new File(realPath + fileName);
 
 				System.out.println(fileDto.getOriginProjectImg());
 				File originFile=new File(realPath+fileDto.getOriginProjectImg());

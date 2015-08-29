@@ -4,10 +4,12 @@
   </ul>
 
   <div class="col-lg-12" style="padding:0">
-    <div class="col-lg-3" ng-repeat="member in members">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3" ng-repeat="member in members">
       <div class="mar-bot5 mar-top5" style="height:310px;background-color:#eeeeee">
         <div style="height:160px">
           <div class="col-lg-12" style="padding:0;">
+
+
             <img class="img-responsive" ng-src="./img/product/{{member.userNm}}">
           </div>
         </div>
@@ -15,13 +17,13 @@
           <div class="col-lg-12"style="height:30px; color:white; text-align:center; display: table;">
             <span style="line-height: 90%; display: table-cell; vertical-align: middle">{{member.userNm}}</span>
           </div>
-          <div class="col-lg-12"style="height:30px; color:white; text-align:center; display: table;">
-            <span style="line-height: 90%; display: table-cell; vertical-align: middle">2</span>
+          <div  class="col-lg-12"style="height:30px; color:white; text-align:center; display: table;">
+            <span style="line-height: 90%; display: table-cell; vertical-align: middle"></span>
           </div>
           <div class="col-lg-12"style="height:30px; color:white; text-align:center; display: table;">
             <span style="line-height: 90%; display: table-cell; vertical-align: middle">{{member.userNo}}</span>
           </div>
-          <div class="col-lg-12"style="height:30px; color:white; text-align:center; display: table;">
+          <div ng-if="member.userAddinfo.Array[0].length" class="col-xs-12 col-sm-6 col-md-6 col-lg-12"style="height:30px; color:white; text-align:center; display: table;">
             <span style="line-height: 90%; display: table-cell; vertical-align: middle">{{member.userAddinfo.Array[0]}}</span>
           </div>
           <div class="col-lg-12"style="height:30px; color:white; text-align:center; display: table;">

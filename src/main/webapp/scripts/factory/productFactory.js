@@ -35,8 +35,6 @@ productFactory.factory('product',function ($http,$q,environment) {
     return deferred.promise;
   }
 
-
-
   product.test2 = function (data) {
     var deferred = $q.defer();
     setTimeout(function () {
