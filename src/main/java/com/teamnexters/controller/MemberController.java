@@ -38,6 +38,8 @@ import com.teamnexters.dto.AuthMailDTO;
 import com.teamnexters.dto.MemberAuthDTO;
 import com.teamnexters.dto.MemberDTO;
 import com.teamnexters.dto.MemberInfoDTO;
+import com.teamnexters.jms.ClientSender;
+import com.teamnexters.jms.ServerReceiver;
 import com.teamnexters.mail.EmailSender;
 import com.teamnexters.util.JsonUtil;
 
@@ -62,6 +64,10 @@ public class MemberController {
 	AuthMailDAO authMailDao;
 	@Autowired
 	AuthMailDTO authMailDto;
+	@Autowired
+	private ClientSender clientSender;
+	@Autowired
+	private ServerReceiver serverReceiver;
 	@Value("#{uploadPath['path']}")
 	private String url;
 	
@@ -460,5 +466,28 @@ public class MemberController {
 		Map<String,Object> param=new HashMap<String,Object>();
 		param.put("list", list);
 		return JsonUtil.putSuccessJsonContainer(param);
+	}
+	@RequestMapping("api/jmsTest.do")
+	public @ResponseBody Map<String,Object> jmsTest(){
+		 	memDto.setUserNm("TaeHee1");
+	        memDto.setUserId("ksi4687@nate.com");
+	        clientSender.sendInfo(memDto);
+	        memDto.setUserNm("TaeHee2");
+	        clientSender.sendInfo(memDto);
+	        memDto.setUserNm("TaeHee3");
+	        clientSender.sendInfo(memDto);
+	        memDto.setUserNm("TaeHee4");
+	        clientSender.sendInfo(memDto);
+	        memDto.setUserNm("TaeHee5");
+	        clientSender.sendInfo(memDto);
+	        memDto.setUserNm("TaeHee6");
+	        clientSender.sendInfo(memDto);
+	        memDto.setUserNm("TaeHee7");
+	        clientSender.sendInfo(memDto);
+	        
+	        MemberDTO sm1 = serverReceiver.receive();
+	        System.out.println("=========>"+sm1.getUserNm());
+	      
+	        return JsonUtil.putSuccessJsonContainer(null);
 	}
 }

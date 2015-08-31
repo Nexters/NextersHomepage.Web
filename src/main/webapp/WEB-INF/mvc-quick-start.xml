@@ -41,5 +41,26 @@
     <util:properties id="uploadPath" location="/WEB-INF/uploadPath.properties"/>
     <util:properties id="emailconfig" location="/WEB-INF/email.properties"/>
     
+     <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616" />
+    </bean>
+    
+   	<bean id="maxDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="net.max.msg.queue" />
+    </bean>   
+	
+	 <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestination" ref="maxDestination"/>
+        <!-- <property name="receiveTimeout" ref="60000"/> --> 
+        <property name="messageConverter" ref="memberConverter"/>
+    </bean>
+
+	
+	
+    
+    <bean id="memberConverter" class="com.teamnexters.jms.MemberMessageConverter"/>   
+	
+    
 	<context:component-scan base-package="com.teamnexters"/>    
 </beans>
