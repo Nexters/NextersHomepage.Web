@@ -27,8 +27,8 @@ public class NewBoardController {
 		Map<String, Object> mapRequestData = new HashMap<String, Object>();
 		Map<String, Object> mapRsltData = new HashMap<String, Object>();
 		
-		mapRequestData.put("limit", strLimit);
-		mapRequestData.put("offset", strOffset);
+		mapRequestData.put("limit", Integer.parseInt(strLimit));
+		mapRequestData.put("offset", Integer.parseInt(strOffset));
 		
 		ArrayList<NewBoardDTO> rsltData = (ArrayList<NewBoardDTO>)newboarddao.getBooksList(mapRequestData);
 		mapRsltData.put("list", rsltData);
@@ -38,7 +38,7 @@ public class NewBoardController {
 	
 	@RequestMapping("/api/board/getNewBoardContent.do")
 	public @ResponseBody Map<String, Object> getNewBoardContent(@RequestParam(value="no") String strNo){
-		Map<String,Object> rsltData = (Map<String,Object>)newboarddao.getBoardContents(strNo);
+		Map<String,Object> rsltData = (Map<String,Object>)newboarddao.getBoardContents(Integer.parseInt(strNo));
 		return JsonUtil.putSuccessJsonContainer(rsltData);
 	
 	} 

@@ -13,7 +13,7 @@ public class NewBoardDAO {
 		return sqlsession.selectList("getNewBoardList", requestParam);
 	}
 	
-	public Object getBoardContents(String no) {
+	public Object getBoardContents(int no) {
 		return sqlsession.selectOne("getNewBoardContent", no);
 	}
 	
