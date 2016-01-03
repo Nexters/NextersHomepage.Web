@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.teamnexters.mapper">   
+
+	<select id="getNewBoardList"  resultType="com.teamnexters.dto.NewBoardDTO">
+		select no, title, writer, insdate, view from newBoard LIMIT #{limit} OFFSET #{offset}
+	</select>
+	<select id='getNewBoardContent' resultType="Map">
+		select no, title, writer, insdate, view from newBoard where no = #{no}
+	</select>
+	<insert id="insertBoard" parameterType="com.teamnexters.dto.NewBoardDTO">
+		INSERT INTO newboard(writer, title, contents, insdate, view, password)
+    	VALUES (#{writer}, #{title}, #{contents}, #{insdate}, #{view}, #{password});
+	</insert>
+	
+	<select id="getNewBoardContentCount" resultType="integer">
+		select count(*) as cnt from newBoard
+	</select>
+</mapper>
