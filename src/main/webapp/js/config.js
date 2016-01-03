@@ -1,1 +1,1 @@
-var serverUrl = "http://localhost:8080/NextersHomepage/";
+var serverUrl = "http://new.teamnexters.com/";
