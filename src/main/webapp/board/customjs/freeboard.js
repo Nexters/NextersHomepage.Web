@@ -1,3 +1,5 @@
+    //리얼에 포팅 시 ContextName이 존재하지 않습니다.
+
 $(document).ready(function(){
 
   eventSetting();
@@ -24,7 +26,7 @@ function getTotalContentsNumber(){
   
   $.ajax({
     type:"POST",
-    url:"/NextersHomepage/api/board/getBoardTotCnt.do",
+    url:"/api/board/getBoardTotCnt.do",
     success:function(data){
       setPaginationNumber(data);
       //alert("asd");
@@ -65,7 +67,7 @@ function getBoardList(number){
   var offset=number-1;
   $.ajax({
     type:"POST",
-    url:"/NextersHomepage/api/board/getNewBoardList.do?"+"limit="+10+"&offset="+offset,
+    url:"/api/board/getNewBoardList.do?"+"limit="+10+"&offset="+offset,
     success:function(data){
       setBoardList(data);
     },
@@ -103,7 +105,7 @@ function setBoardList(data){
 function getBoardContent(boardNumber){
 	$.ajax({
 	    type:"POST",
-	    url:"/NextersHomepage/api/board/getNewBoardContent.do?"+"no="+boardNumber,
+	    url:"/api/board/getNewBoardContent.do?"+"no="+boardNumber,
 	    success:function(data){
 	      //setBoardList(data);
 	    	alert(data.resData[0].contents);
