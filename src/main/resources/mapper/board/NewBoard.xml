@@ -7,7 +7,7 @@
 		select no, title, writer, insdate, view from newBoard LIMIT #{limit} OFFSET #{offset}
 	</select>
 	<select id='getNewBoardContent' resultType="Map">
-		select no, title, writer, insdate, view from newBoard where no = #{no}
+		select no, title, writer, insdate, contents, view from newBoard where no = #{no}
 	</select>
 	<insert id="insertBoard" parameterType="com.teamnexters.dto.NewBoardDTO">
 		INSERT INTO newboard(writer, title, contents, insdate, view, password)
