@@ -9,7 +9,7 @@ public class NewBoardDTO {
 	private int no;
 	private String writer;
 	private String title; 
-	private String contetns;
+	private String contents;
 	private Date insdate;
 	private int view;
 	private String password;
@@ -32,11 +32,11 @@ public class NewBoardDTO {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getContetns() {
-		return contetns;
+	public String getContents() {
+		return contents;
 	}
-	public void setContetns(String contetns) {
-		this.contetns = contetns;
+	public void setContents(String contents) {
+		this.contents = contents;
 	}
 	public Date getInsdate() {
 		return insdate;

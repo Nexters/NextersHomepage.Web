@@ -1,25 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title></title>
-  <script type="text/javascript" src="./smartEditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script type="text/javascript" src="./smartEditor/js/HuskyEZCreator.js"
+	charset="utf-8"></script>
 
 </head>
-<body>
-  <section>
-  	<textarea name="ir1" id="ir1" rows="10" cols="100">에디터에 기본으로 삽입할 글(수정 모드)이 없다면 이 value 값을 지정하지 않으시면 됩니다.</textarea>
-  </section>
-  
+<body class="col-md-8 col-md-offset-2">
+
+	<div style="margin-top:100px">
+		<section >
+
+		<div class="col-md-10" style="padding: 0;">
+			<div class="form-group">
+				<label>제목</label>
+				<input type="title" class="form-control" id="title" placeholder="제목">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputPassword1">작성자</label>
+				<input type="writer" class="form-control" id="writer" placeholder="writer">
+			</div>
+		</div>
+
+
+
+	</section>
+	<!-- 작성 하는 부분-->
+	<section>
+		<textarea class="col-md-11" name="ir1" id="ir1" rows="10">에디터에 기본으로 삽입할 글(수정 모드)이 없다면 이 value 값을 지정하지 않으시면 됩니다.</textarea>
+	</section>
+	<!-- 확인 버튼-->
+
+	<section class="col-md-11">
+		<button id="submit" style="float:right" type="submit" class="btn btn-default">글쓰기</button>
+	</section>
+	</div>
+
+
 </body>
 </html>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="customjs/write.js" type="text/javascript"></script>
+
 <script type="text/javascript">
-  var oEditors = [];
-  nhn.husky.EZCreator.createInIFrame({
-    oAppRef: oEditors,
-    elPlaceHolder: "ir1",
-    sSkinURI: "./smartEditor/SmartEditor2Skin.html",
-    fCreator: "createSEditor2"
-  });
+
 </script>

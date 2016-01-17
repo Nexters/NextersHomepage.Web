@@ -2,14 +2,26 @@ $(document).ready(function(){
 
   eventSetting();
   getTotalContentsNumber();
-  
- 
+
+
   $(".pageClick").click(function(){
 		alert("clicked");
 		console.log("ASdasd22");
 	});
-  
+
 })
+
+function getPageContents(fileLocation) {
+
+	$.ajax({
+	       url: fileLocation,
+	       success: function(data) {
+	          //this is the redirect
+	          document.location.href=fileLocation;
+	       }
+    });
+
+}
 
 function eventSetting(){
 	$("#boardPagination li a").click(function(){
@@ -21,7 +33,7 @@ function eventSetting(){
 //
 
 function getTotalContentsNumber(){
-  
+
   $.ajax({
     type:"POST",
     url:"/NextersHomepage/api/board/getBoardTotCnt.do",
@@ -35,21 +47,21 @@ function getTotalContentsNumber(){
   });
 }
 function setPaginationNumber(data){
-	
+
 	var totalCount = data.resData[0].totCnt;
-	
+
 	var paginationHtml="";
 	for(i=0;i<totalCount/10;i++){
 		paginationHtml+='<li><a>'+(i+1)+'</a></li>\n';
 	}
 	console.log("zz");
-	
+
 	$("#boardPagination").html(paginationHtml);
-	
+
 	$("#boardPagination li a").click(function() {
 		getBoardList($(this).html());
 	});
-	
+
 	getBoardList(1);
 }
 //@Params //-> 각 pageNation에 해당하는 list 목록 가져오기
@@ -74,11 +86,10 @@ function getBoardList(number){
     }
   });
 }
-
 function setBoardList(data){
-	
+
 	var boardList=data.resData[0].list;
-	
+
 	var boardListHtml="";
 	for(i=0;i<boardList.length;i++){
 		boardListHtml+='<tr>';
@@ -90,11 +101,11 @@ function setBoardList(data){
 		boardListHtml+="</tr>";
 	}
 	$("#NextersFreeBoard").html(boardListHtml);
-	
+
 	$("#NextersFreeBoard td a").click(function(){
 		getBoardContent($(this).attr("boardNumber"));
 	});
-	
+
 }
 
 //@Params //->클릭한 게시물의 번호 입력
@@ -114,9 +125,4 @@ function getBoardContent(boardNumber){
 	      alert(error);
 	    }
 	  });
-}
-//@Params //-> 쓰기
-// BoardInfo
-function boardWrite(){
-
 }

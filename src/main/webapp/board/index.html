@@ -228,29 +228,39 @@
 		<!--start board Section-->
 
 
-		<section style="margin-top: 100px">
-			<div style="margin: 0 auto; max-width: 900px;">
-				<ul class="pagination" id="boardPagination">
-					
-				</ul>
+		<section style="margin-top: 100px; margin-bottom: 50px">
+
+			<div class="" style="margin: 0 auto; max-width: 900px;">
+				<table class="table"
+					style="margin: 0 auto; table-layout: fixed; word-wrap: break-word;">
+					<thead>
+						<tr>
+							<th style="width: 10%">글 번호</th>
+							<th style="width: 52%">제목</th>
+							<th style="width: 10%">작성자</th>
+							<th style="width: 10%">날짜</th>
+							<th style="width: 10%">조회수</th>
+							<th style="width: 8%">댓글</th>
+						</tr>
+					</thead>
+					<tbody id="NextersFreeBoard">
+
+					</tbody>
+
+				</table>
+				<div class="" style="maring-top:20px;">
+					<span style="float:right"><button type="button" style="border: 2px solid #eeeeee; color: #222222;"class="btn btn-default btn-sm" onclick="getPageContents('./write.html');">글쓰기</button> </span>
+				</div>
+				<div class="" style="text-align: center; ">
+					<ul class="pagination" id="boardPagination">
+
+					</ul>
+				</div>
+
+
 			</div>
 
-			<table class="table"
-				style="margin: 0 auto; max-width: 900px; table-layout: fixed; word-wrap: break-word;">
-				<thead>
-					<tr>
-						<th style="width: 10%">글 번호</th>
-						<th style="width: 52%">제목</th>
-						<th style="width: 10%">작성자</th>
-						<th style="width: 10%">날짜</th>
-						<th style="width: 10%">조회수</th>
-						<th style="width: 8%">댓글</th>
-					</tr>
-				</thead>
-				<tbody id="NextersFreeBoard">
-				
-				</tbody>
-			</table>
+
 		</section>
 		<!-- End board Section -->
 

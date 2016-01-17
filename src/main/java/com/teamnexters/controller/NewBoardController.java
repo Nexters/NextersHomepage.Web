@@ -52,7 +52,7 @@ public class NewBoardController {
 		Map<String, Object> mapRsltData = new HashMap<String, Object>();
 
 		NewBoardDTO requestBoardDTO = new NewBoardDTO();
-		requestBoardDTO.setContetns(strContents);
+		requestBoardDTO.setContents(strContents);
 		requestBoardDTO.setInsdate(new Date());
 		requestBoardDTO.setPassword(strPassword);
 		requestBoardDTO.setTitle(strTitle);
