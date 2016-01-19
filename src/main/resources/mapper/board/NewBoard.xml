@@ -4,7 +4,7 @@
 <mapper namespace="com.teamnexters.mapper">   
 
 	<select id="getNewBoardList"  resultType="com.teamnexters.dto.NewBoardDTO">
-		select no, title, writer, insdate, view from newBoard LIMIT #{limit} OFFSET #{offset}
+		select no, title, writer, insdate, view from newBoard ORDER BY insdate desc LIMIT #{limit} OFFSET #{offset}
 	</select>
 	<select id='getNewBoardContent' resultType="Map">
 		select no, title, writer, insdate, contents, view from newBoard where no = #{no}

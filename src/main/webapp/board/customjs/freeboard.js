@@ -94,11 +94,13 @@ function setBoardList(data){
 
 	var boardListHtml="";
 	for(i=0;i<boardList.length;i++){
+		var sysdate = new Date(boardList[i].insdate);
+		
 		boardListHtml+='<tr>';
 		boardListHtml+="<td>"+boardList[i].no+"</td>";
 		boardListHtml+='<td><a boardNumber='+boardList[i].no+'>'+boardList[i].title+'</a></td>';
 		boardListHtml+="<td>"+boardList[i].writer+"</td>";
-		boardListHtml+="<td>"+boardList[i].insdate+"</td>";
+		boardListHtml+="<td>"+sysdate.getFullYear()+"-"+(sysdate.getMonth()+1)+"-"+sysdate.getDate()+"</td>";
 		boardListHtml+="<td>"+boardList[i].view+"</td>";
 		boardListHtml+="</tr>";
 	}

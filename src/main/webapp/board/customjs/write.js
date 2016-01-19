@@ -17,7 +17,6 @@ $(document).ready(function(){
       title:  $("input[type='title']").val(),
       writer: $("input[type='writer']").val(),
       contents: document.getElementById("ir1").value,
-      insdate: dateString,
       password: '123'
     }
     boardWrite(writeData);
