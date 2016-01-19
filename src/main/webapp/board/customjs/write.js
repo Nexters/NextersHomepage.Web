@@ -36,11 +36,11 @@ function boardWrite(writeData){
   console.log(writeData);
   $.ajax({
 	    type:"POST",
-	    url:"/NextersHomepage/api/board/insertBoardContents.do?"+"writer="+writeData.writer+"&title="+writeData.title+"&contents="+writeData.contents+"&insdate="+""+"&password="+123,
+	    url:"/api/board/insertBoardContents.do?"+"writer="+writeData.writer+"&title="+writeData.title+"&contents="+writeData.contents+"&insdate="+""+"&password="+123,
 	    success:function(data){
 	      //setBoardList(data);
 	    	alert("글쓰기가 완료되었습니다");
-        $(window).attr('location','/NextersHomepage/board/');
+        $(window).attr('location','/board/');
 	    	//console.log(data);
 	    	//data.resData[0]
 	    },

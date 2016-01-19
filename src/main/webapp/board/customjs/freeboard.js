@@ -70,13 +70,19 @@ function setPaginationNumber(data){
 //  limit : 현재위치 (page nation 값)
 //  offset : 10
 function getBoardList(number){
-
+//1 -> 1, 2 -> 10 , 3-> 20
   //console.log(myData);
 	var data = JSON.stringify({
 	      limit: 10,
 	      offset: number,
 	});
-  var offset=number-1;
+	 var offset=number-1;
+
+	if(number==1) {
+		offset = 1;
+	} else {
+		offset = (number-1)*10
+	}
   $.ajax({
     type:"POST",
     url:"/api/board/getNewBoardList.do?"+"limit="+10+"&offset="+offset,
