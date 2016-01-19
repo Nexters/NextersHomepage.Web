@@ -76,13 +76,7 @@ function getBoardList(number){
 	      limit: 10,
 	      offset: number,
 	});
-	 var offset=number-1;
-
-	if(number==1) {
-		offset = 1;
-	} else {
-		offset = (number-1)*10
-	}
+	 var offset=(number-1)*10;
   $.ajax({
     type:"POST",
     url:"/api/board/getNewBoardList.do?"+"limit="+10+"&offset="+offset,
